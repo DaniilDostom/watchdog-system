@@ -43,8 +43,9 @@ function rateLimiter(req, res, next) {
 }
 app.use('/api', rateLimiter);
 
-// Serve root directly to the main Watchdog Dashboard
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
+// Serve root directly to the Watchdog Login Portal
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public', 'login.html')));
+app.get('/login', (req, res) => res.sendFile(path.join(__dirname, 'public', 'login.html')));
 app.get('/home.html', (req, res) => res.redirect('/'));
 
 // Static asset delivery with ETags enabled
