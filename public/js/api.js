@@ -77,11 +77,13 @@ async function fetchDB(endpoint, forceFresh = false) {
 
     const fetchPromise = (async () => {
         try {
-            const res = await fetch(`${API_URL}/${endpoint}`, {
-                headers: {
-                    'x-server-id': serverId
-                }
-            });
+            const headers = {
+                'x-server-id': serverId
+            };
+            if (user && user.token) headers['Authorization'] = `Bearer ${user.token}`;
+            if (user && user.discordId) headers['x-discord-id'] = user.discordId;
+
+            const res = await fetch(`${API_URL}/${endpoint}`, { headers });
             if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
             const data = await res.json();
             clientApiCache.set(cacheKey, {
@@ -101,13 +103,18 @@ async function fetchDB(endpoint, forceFresh = false) {
 async function writeDB(endpoint, data) {
     clientApiCache.clear();
     inFlightRequests.clear();
+    const user = (typeof getAuthUser === 'function') ? getAuthUser() : null;
     const serverId = getActiveServerId();
+    const headers = {
+        'Content-Type': 'application/json',
+        'x-server-id': serverId
+    };
+    if (user && user.token) headers['Authorization'] = `Bearer ${user.token}`;
+    if (user && user.discordId) headers['x-discord-id'] = user.discordId;
+
     const response = await fetch(`${API_URL}/${endpoint}`, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'x-server-id': serverId
-        },
+        headers,
         body: JSON.stringify(data)
     });
     if (!response.ok) throw new Error(`Request failed: ${response.status}`);

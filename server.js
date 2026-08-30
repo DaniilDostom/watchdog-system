@@ -3,11 +3,21 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const compression = require('compression');
+const crypto = require('crypto');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 const db = require('./db');
 
 const app = express();
 
-// Security Headers Middleware
+// 1. Enhanced Security Headers (Helmet)
+app.use(helmet({
+    contentSecurityPolicy: false,
+    crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: { policy: 'cross-origin' }
+}));
+
+// Additional HTTP Hardening
 app.use((req, res, next) => {
     res.setHeader('X-Content-Type-Options', 'nosniff');
     res.setHeader('X-Frame-Options', 'SAMEORIGIN');
@@ -21,27 +31,63 @@ app.use(cors());
 app.use(compression({ level: 6, threshold: 512 }));
 app.use(express.json({ limit: '2mb' }));
 
-// Memory Rate Limiter for API
-const rateLimitMap = new Map();
-const RATE_LIMIT_WINDOW = 60 * 1000;
-const RATE_LIMIT_MAX = 400; // max requests per minute per IP
+// 2. Cryptographic Session Token Engine (HMAC-SHA256)
+const AUTH_SECRET = process.env.AUTH_SECRET || 'wd_super_secret_auth_key_2026_' + (process.env.DISCORD_BOT_TOKEN || 'seed_key').substring(0, 16);
 
-function rateLimiter(req, res, next) {
-    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown';
-    const now = Date.now();
-    let entry = rateLimitMap.get(ip);
-    if (!entry || now - entry.startTime > RATE_LIMIT_WINDOW) {
-        entry = { startTime: now, count: 1 };
-        rateLimitMap.set(ip, entry);
-    } else {
-        entry.count += 1;
-        if (entry.count > RATE_LIMIT_MAX) {
-            return res.status(429).json({ error: 'Too many requests. Please slow down.' });
-        }
-    }
-    next();
+function generateAuthToken(payload) {
+    const data = {
+        ...payload,
+        iat: Date.now(),
+        exp: Date.now() + 7 * 24 * 60 * 60 * 1000 // 7 days expiration
+    };
+    const bodyStr = Buffer.from(JSON.stringify(data)).toString('base64url');
+    const signature = crypto.createHmac('sha256', AUTH_SECRET).update(bodyStr).digest('base64url');
+    return `${bodyStr}.${signature}`;
 }
-app.use('/api', rateLimiter);
+
+function verifyAuthToken(token) {
+    if (!token || typeof token !== 'string') return null;
+    const parts = token.split('.');
+    if (parts.length !== 2) return null;
+    const [bodyStr, signature] = parts;
+    const expectedSig = crypto.createHmac('sha256', AUTH_SECRET).update(bodyStr).digest('base64url');
+    if (signature !== expectedSig) return null;
+    try {
+        const data = JSON.parse(Buffer.from(bodyStr, 'base64url').toString('utf8'));
+        if (data.exp && Date.now() > data.exp) return null;
+        return data;
+    } catch {
+        return null;
+    }
+}
+
+function extractToken(req) {
+    const authHeader = req.headers['authorization'];
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+        return authHeader.substring(7).trim();
+    }
+    return req.headers['x-auth-token'] || req.query.token || null;
+}
+
+// 3. Rate Limiting Middleware
+const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 35, // 35 auth attempts per 15 min
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { authorized: false, error: 'Too many authentication attempts. Please try again later.' }
+});
+
+const globalApiLimiter = rateLimit({
+    windowMs: 60 * 1000, // 1 minute
+    max: 600, // 600 requests per minute
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { error: 'Too many requests. Please slow down.' }
+});
+
+app.use('/api/', globalApiLimiter);
+app.use('/api/auth/', authLimiter);
 
 // Serve root directly to the Watchdog Login Portal
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public', 'login.html')));
@@ -56,11 +102,18 @@ app.use(express.static(path.join(__dirname, 'public'), {
 
 // Master Admin Verification Middleware
 function requireMasterAdmin(req, res, next) {
-    const adminId = req.headers['x-discord-id'] || req.query.adminId || req.body?.adminId;
-    if (!adminId || !db.isOwner(adminId)) {
-        return res.status(403).json({ error: 'Forbidden: Master Admin privileges required.' });
+    const token = extractToken(req);
+    const user = verifyAuthToken(token);
+    if (user && user.isMaster) {
+        req.user = user;
+        return next();
     }
-    next();
+    const adminId = req.headers['x-discord-id'] || req.query.adminId || req.body?.adminId;
+    if (adminId && db.isOwner(adminId)) {
+        req.user = { discordId: adminId, isMaster: true, isOwner: true };
+        return next();
+    }
+    return res.status(403).json({ error: 'Forbidden: Master Admin privileges required.' });
 }
 
 // Master Admin Endpoints
@@ -176,8 +229,11 @@ app.post('/api/auth/verify-staff', async (req, res) => {
 
     // 1. MASTER CREATOR
     if (isMaster) {
+        const tokenPayload = { discordId, role: 'owner', isOwner: true, isMaster: true, serverId: 'default_server' };
+        const token = generateAuthToken(tokenPayload);
         return res.json({
             authorized: true,
+            token,
             role: 'owner',
             isOwner: true,
             isMaster: true,
@@ -208,8 +264,11 @@ app.post('/api/auth/verify-staff', async (req, res) => {
         }
 
         const requiresPasswordSetup = !customerServer.password;
+        const tokenPayload = { discordId, role: 'owner', isOwner: true, isMaster: false, serverId: customerServer.id };
+        const token = generateAuthToken(tokenPayload);
         return res.json({
             authorized: true,
+            token,
             role: 'owner',
             isOwner: true,
             isMaster: false,
@@ -225,8 +284,11 @@ app.post('/api/auth/verify-staff', async (req, res) => {
     }
 
     // 3. STAFFER / NON-OWNER: Authenticated with Discord, now requires DB Password
+    const tokenPayload = { discordId, role: 'staffer', isOwner: false, isMaster: false, serverId: srv.id };
+    const token = generateAuthToken(tokenPayload);
     return res.json({
         authorized: true,
+        token,
         role: 'staffer',
         isOwner: false,
         isMaster: false,

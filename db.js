@@ -465,20 +465,47 @@ getReasons('default_server');
 getModerators('default_server');
 getDiscordCache();
 
+const bcrypt = require('bcryptjs');
+
 function setServerPassword(serverId, password) {
     if (!serverId) throw new Error('Server ID is required');
-    const pwd = password ? String(password).trim() : null;
-    db.prepare('UPDATE servers SET password = ? WHERE id = ?').run(pwd, serverId);
+    if (!password) {
+        db.prepare('UPDATE servers SET password = NULL WHERE id = ?').run(serverId);
+        return true;
+    }
+    const pwd = String(password).trim();
+    const hash = (pwd.startsWith('$2a$') || pwd.startsWith('$2b$')) ? pwd : bcrypt.hashSync(pwd, 10);
+    db.prepare('UPDATE servers SET password = ? WHERE id = ?').run(hash, serverId);
     return true;
 }
 
 function verifyServerPassword(password, serverId = null) {
     if (!password) return null;
     const pwd = String(password).trim();
+    
     if (serverId) {
-        return db.prepare("SELECT * FROM servers WHERE id = ? AND password = ? AND status = 'ACTIVE'").get(serverId, pwd) || null;
+        const srv = db.prepare("SELECT * FROM servers WHERE id = ? AND status = 'ACTIVE'").get(serverId);
+        if (!srv || !srv.password) return null;
+        if (srv.password.startsWith('$2a$') || srv.password.startsWith('$2b$')) {
+            return bcrypt.compareSync(pwd, srv.password) ? srv : null;
+        }
+        if (srv.password === pwd) {
+            setServerPassword(srv.id, pwd);
+            return srv;
+        }
+        return null;
     }
-    return db.prepare("SELECT * FROM servers WHERE password = ? AND status = 'ACTIVE'").get(pwd) || null;
+
+    const activeServers = db.prepare("SELECT * FROM servers WHERE status = 'ACTIVE' AND password IS NOT NULL").all();
+    for (const srv of activeServers) {
+        if (srv.password.startsWith('$2a$') || srv.password.startsWith('$2b$')) {
+            if (bcrypt.compareSync(pwd, srv.password)) return srv;
+        } else if (srv.password === pwd) {
+            setServerPassword(srv.id, pwd);
+            return srv;
+        }
+    }
+    return null;
 }
 
 function getServerPassword(serverId) {
