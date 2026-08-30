@@ -316,6 +316,66 @@ app.post('/api/auth/server/set-password', (req, res) => {
     res.json({ success: true, message: 'Server access password set successfully.' });
 });
 
+// Get Current Server Information for Settings Page
+app.get('/api/server/current', (req, res) => {
+    const serverId = resolveServerId(req);
+    const srv = db.getServerById(serverId);
+    if (!srv) {
+        return res.status(404).json({ error: 'Server not found.' });
+    }
+    return res.json({
+        id: srv.id,
+        name: srv.name,
+        ownerDiscordId: srv.ownerDiscordId,
+        apiKey: srv.apiKey,
+        hasPassword: !!srv.password,
+        status: srv.status,
+        expiresAt: srv.expiresAt,
+        createdAt: srv.createdAt
+    });
+});
+
+// Update Database Password
+app.post('/api/server/update-password', (req, res) => {
+    const serverId = resolveServerId(req);
+    const { newPassword, discordId } = req.body || {};
+    if (!newPassword || String(newPassword).trim().length < 4) {
+        return res.status(400).json({ success: false, error: 'Password must be at least 4 characters long.' });
+    }
+
+    const srv = db.getServerById(serverId);
+    if (!srv) return res.status(404).json({ success: false, error: 'Server not found.' });
+
+    const adminId = discordId || req.headers['x-discord-id'];
+    const isMasterAdmin = adminId && db.isOwner(adminId);
+    const isServerOwner = adminId && srv.ownerDiscordId === String(adminId).trim();
+
+    if (!isMasterAdmin && !isServerOwner) {
+        return res.status(403).json({ success: false, error: 'Unauthorized: Only the Server Owner can change the database password.' });
+    }
+
+    db.setServerPassword(srv.id, newPassword);
+    return res.json({ success: true, message: 'Database password updated successfully.' });
+});
+
+// Regenerate FiveM Secret Key for Active Server
+app.post('/api/server/regenerate-key', (req, res) => {
+    const serverId = resolveServerId(req);
+    const srv = db.getServerById(serverId);
+    if (!srv) return res.status(404).json({ error: 'Server not found.' });
+
+    const adminId = req.headers['x-discord-id'];
+    const isMasterAdmin = adminId && db.isOwner(adminId);
+    const isServerOwner = adminId && srv.ownerDiscordId === String(adminId).trim();
+
+    if (!isMasterAdmin && !isServerOwner) {
+        return res.status(403).json({ error: 'Unauthorized: Only the Server Owner can regenerate the FiveM Key.' });
+    }
+
+    const newKey = db.regenerateServerApiKey(srv.id);
+    return res.json({ apiKey: newKey });
+});
+
 app.get('/api/auth/current-owner', (req, res) => {
     res.json({ ownerDiscordId: db.getOwnerDiscordId() });
 });

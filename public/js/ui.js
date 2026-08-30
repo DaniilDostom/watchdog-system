@@ -301,6 +301,20 @@ function initSidebarPlayerNavigation() {
             if (window.lucide && lucide.createIcons) lucide.createIcons();
         }
     }
+
+    // Server Settings link for Server Owners and Master Creators
+    if (user && (user.isOwner || user.isMaster)) {
+        if (!nav.querySelector('a[href*="settings.html"]')) {
+            const settingsLink = document.createElement('a');
+            settingsLink.href = 'settings.html';
+            settingsLink.innerHTML = '<i data-lucide="settings"></i> <span>Server Settings</span>';
+            if (window.location.pathname.endsWith('settings.html') || window.location.href.includes('settings.html')) {
+                settingsLink.classList.add('active');
+            }
+            nav.appendChild(settingsLink);
+            if (window.lucide && lucide.createIcons) lucide.createIcons();
+        }
+    }
 }
 
 window.initSidebarPlayerNavigation = initSidebarPlayerNavigation;

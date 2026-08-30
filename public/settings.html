@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Zero-Flash Security Guard (Synchronous Head Verification) -->
+    <script>
+        (function() {
+            try {
+                var u = JSON.parse(localStorage.getItem('watchdog_auth_user') || 'null');
+                if (!u || !u.authorized) {
+                    window.location.replace('login.html');
+                } else if (!u.isOwner && !u.isMaster) {
+                    window.location.replace('index.html');
+                }
+            } catch (e) {
+                window.location.replace('login.html');
+            }
+        })();
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server Settings | Watchdog Systems</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="stylesheet" href="css/style.css?v=25">
+    <link rel="stylesheet" href="css/layout.css?v=25">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(440px, 1fr));
+            gap: 24px;
+            margin-top: 20px;
+        }
+
+        .settings-card {
+            background: linear-gradient(145deg, rgba(15, 23, 42, 0.9), rgba(7, 14, 27, 0.95));
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 26px;
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .settings-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #6366f1, #38bdf8);
+        }
+
+        .settings-card-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 18px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .settings-card-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .settings-card-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #ffffff;
+            margin: 0;
+        }
+
+        .settings-card-sub {
+            font-size: 12.5px;
+            color: #94a3b8;
+            margin-top: 2px;
+        }
+
+        .code-box {
+            background: #030712;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: #38bdf8;
+            overflow-x: auto;
+            position: relative;
+            margin-top: 14px;
+        }
+
+        .copy-code-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .copy-code-btn:hover {
+            background: rgba(99, 102, 241, 0.3);
+            border-color: #818cf8;
+        }
+    </style>
+</head>
+<body class="dark-theme">
+    <aside class="sidebar">
+        <div class="logo">
+            <img src="logo.png" alt="Watchdog Logo" class="sidebar-logo-img">
+            <span>SanctionAnalyser</span>
+        </div>
+        <nav>
+            <a href="index.html"><i data-lucide="layout-dashboard"></i> Dashboard</a>
+            <a href="players.html"><i data-lucide="users"></i> Players</a>
+            <a href="moderators.html" class="sub-link"><i data-lucide="user-cog"></i> Staffers</a>
+            <a href="reasons.html" class="sub-link"><i data-lucide="list-checks"></i> Reasons</a>
+            <a href="statistics.html"><i data-lucide="bar-chart-2"></i> Statistics</a>
+            <a href="activity.html"><i data-lucide="activity"></i> Activity</a>
+            <a href="settings.html" class="active"><i data-lucide="settings"></i> Server Settings</a>
+        </nav>
+        <div class="sidebar-footer">
+            Made by Watchdog, purely for statistics forensics investigation
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <div class="breadcrumb"><a href="index.html">Dashboard</a><span class="breadcrumb-separator">/</span><a href="settings.html">Server Settings</a></div>
+        </header>
+
+        <div class="content-header" style="margin-bottom: 24px;">
+            <div class="title-with-actions">
+                <div>
+                    <h1 style="font-size: 24px; font-weight: 800; color: #fff; margin: 0 0 6px 0;">Server Settings & Security</h1>
+                    <p style="font-size: 13.5px; color: #94a3b8; margin: 0;">Configure your Database Access Password, FiveM live integration key, and server preferences.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="settings-grid">
+            <!-- 1. DATABASE PASSWORD SECURITY CARD -->
+            <div class="settings-card">
+                <div class="settings-card-header">
+                    <div class="settings-card-icon" style="background: rgba(99, 102, 241, 0.15); color: #818cf8; border: 1px solid rgba(129, 140, 248, 0.25);">
+                        <i data-lucide="lock"></i>
+                    </div>
+                    <div>
+                        <h2 class="settings-card-title">Database Access Password</h2>
+                        <div class="settings-card-sub">Staff Security Redundancy</div>
+                    </div>
+                </div>
+
+                <p style="font-size: 13px; color: #cbd5e1; line-height: 1.5; margin-bottom: 18px;">
+                    Your staff members must enter this password after identifying with Discord to unlock this server's dashboard.
+                </p>
+
+                <div id="pwd-change-msg" class="auth-error-msg" style="display: none;"></div>
+
+                <form id="change-db-pwd-form" onsubmit="handleUpdateDbPassword(event)">
+                    <div class="form-group">
+                        <label>New Database Password</label>
+                        <input type="password" id="settings-new-pwd" class="auth-input" placeholder="••••••••••••" required minlength="4" />
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm New Password</label>
+                        <input type="password" id="settings-confirm-pwd" class="auth-input" placeholder="••••••••••••" required minlength="4" />
+                    </div>
+                    <button type="submit" id="btn-save-settings-pwd" class="btn-auth-submit" style="margin-top: 16px;">
+                        <i data-lucide="shield-check" style="width: 17px; height: 17px;"></i>
+                        <span>Update Security Password</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- 2. FIVEM INTEGRATION & API KEY CARD -->
+            <div class="settings-card">
+                <div class="settings-card-header">
+                    <div class="settings-card-icon" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.25);">
+                        <i data-lucide="key-round"></i>
+                    </div>
+                    <div>
+                        <h2 class="settings-card-title">FiveM Live Sync Key</h2>
+                        <div class="settings-card-sub">Resource Authentication</div>
+                    </div>
+                </div>
+
+                <p style="font-size: 13px; color: #cbd5e1; line-height: 1.5; margin-bottom: 14px;">
+                    This Secret API Key authorizes your FiveM server resource to automatically stream players and sanction bans directly into this database.
+                </p>
+
+                <div class="server-key-box" style="margin-bottom: 16px;">
+                    <i data-lucide="key" style="width: 14px; height: 14px; color: #38bdf8; flex-shrink: 0;"></i>
+                    <input type="password" id="settings-api-key-val" value="" readonly class="server-key-input" />
+                    <button type="button" class="key-action-btn" onclick="toggleSettingsKeyVisibility()" title="Toggle Visibility">
+                        <i data-lucide="eye" id="settings-eye-icon" style="width: 13px; height: 13px;"></i>
+                    </button>
+                    <button type="button" class="key-action-btn" onclick="copySettingsApiKey()" title="Copy Key">
+                        <i data-lucide="copy" style="width: 13px; height: 13px;"></i>
+                    </button>
+                    <button type="button" class="key-action-btn" onclick="regenerateSettingsApiKey()" title="Regenerate Key">
+                        <i data-lucide="refresh-cw" style="width: 13px; height: 13px;"></i>
+                    </button>
+                </div>
+
+                <div style="font-size: 12px; font-weight: 700; color: #94a3b8; margin-top: 14px; text-transform: uppercase;">
+                    config.lua configuration preview
+                </div>
+
+                <div class="code-box">
+                    <button type="button" class="copy-code-btn" onclick="copyLuaSnippet()">
+                        <i data-lucide="copy" style="width: 12px; height: 12px;"></i> Copy
+                    </button>
+                    <pre style="margin: 0;" id="lua-code-preview">-- Loading configuration...</pre>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container"></div>
+
+    <script src="js/api.js?v=25"></script>
+    <script src="js/ui.js?v=25"></script>
+    <script src="js/settings.js?v=25"></script>
+</body>
+</html>
