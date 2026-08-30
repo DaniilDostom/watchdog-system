@@ -35,42 +35,69 @@ loadReasonLists();
 const clientApiCache = new Map();
 const inFlightRequests = new Map();
 
+function getActiveServerId() {
+    try {
+        return localStorage.getItem('watchdog_active_server_id') || 'default_server';
+    } catch {
+        return 'default_server';
+    }
+}
+window.getActiveServerId = getActiveServerId;
+
+function setActiveServerId(serverId) {
+    localStorage.setItem('watchdog_active_server_id', serverId || 'default_server');
+    clearClientApiCache();
+    location.reload();
+}
+window.setActiveServerId = setActiveServerId;
+
 async function fetchDB(endpoint, forceFresh = false) {
+    const serverId = getActiveServerId();
+    const cacheKey = `${serverId}:${endpoint}`;
+
     if (!forceFresh) {
-        const cached = clientApiCache.get(endpoint);
+        const cached = clientApiCache.get(cacheKey);
         if (cached && cached.expiresAt > Date.now()) {
             return typeof structuredClone === 'function' ? structuredClone(cached.data) : JSON.parse(JSON.stringify(cached.data));
         }
-        if (inFlightRequests.has(endpoint)) {
-            return inFlightRequests.get(endpoint);
+        if (inFlightRequests.has(cacheKey)) {
+            return inFlightRequests.get(cacheKey);
         }
     }
 
     const fetchPromise = (async () => {
         try {
-            const res = await fetch(`${API_URL}/${endpoint}`);
+            const res = await fetch(`${API_URL}/${endpoint}`, {
+                headers: {
+                    'x-server-id': serverId
+                }
+            });
             if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
             const data = await res.json();
-            clientApiCache.set(endpoint, {
+            clientApiCache.set(cacheKey, {
                 data,
                 expiresAt: Date.now() + 8000 // 8s fast client cache
             });
             return data;
         } finally {
-            inFlightRequests.delete(endpoint);
+            inFlightRequests.delete(cacheKey);
         }
     })();
 
-    inFlightRequests.set(endpoint, fetchPromise);
+    inFlightRequests.set(cacheKey, fetchPromise);
     return fetchPromise;
 }
 
 async function writeDB(endpoint, data) {
     clientApiCache.clear();
     inFlightRequests.clear();
+    const serverId = getActiveServerId();
     const response = await fetch(`${API_URL}/${endpoint}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json',
+            'x-server-id': serverId
+        },
         body: JSON.stringify(data)
     });
     if (!response.ok) throw new Error(`Request failed: ${response.status}`);

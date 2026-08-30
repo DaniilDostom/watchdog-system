@@ -89,7 +89,7 @@ async function loadServers() {
                     </td>
                     <td style="color: #94a3b8; font-size: 12px; white-space: nowrap;">${expiryStr}</td>
                     <td style="text-align: right; white-space: nowrap;">
-                        <button type="button" class="action-icon-btn" onclick="inspectServerDatabase('${escapeHtml(s.id)}')" title="Inspect Server Database"><i data-lucide="database" style="width:14px;height:14px;"></i></button>
+                        <button type="button" class="action-icon-btn" onclick="inspectServerDatabase('${escapeHtml(s.id)}', '${escapeHtml(s.name)}')" title="Inspect Server Database"><i data-lucide="database" style="width:14px;height:14px;"></i></button>
                         <button type="button" class="action-icon-btn" onclick="exportServerDatabase('${escapeHtml(s.id)}')" title="Download JSON Backup"><i data-lucide="download" style="width:14px;height:14px;"></i></button>
                         <button type="button" class="action-icon-btn" onclick="toggleServerStatus('${escapeHtml(s.id)}')" title="${isActive ? 'Suspend License' : 'Activate License'}"><i data-lucide="${isActive ? 'pause' : 'play'}" style="width:14px;height:14px;"></i></button>
                         <button type="button" class="action-icon-btn" onclick="regenerateKey('${escapeHtml(s.id)}')" title="Regenerate Secret Key"><i data-lucide="refresh-cw" style="width:14px;height:14px;"></i></button>
@@ -205,11 +205,13 @@ function exportServerDatabase(id) {
 }
 window.exportServerDatabase = exportServerDatabase;
 
-function inspectServerDatabase(id) {
-    showToast(`Switched to server ${id}. Redirecting to Dashboard...`, 'info');
+function inspectServerDatabase(id, name) {
+    localStorage.setItem('watchdog_active_server_id', id);
+    if (typeof clearClientApiCache === 'function') clearClientApiCache();
+    showToast(`Switched active database to "${name || id}". Loading...`, 'info');
     setTimeout(() => {
         location.href = 'index.html';
-    }, 600);
+    }, 400);
 }
 window.inspectServerDatabase = inspectServerDatabase;
 

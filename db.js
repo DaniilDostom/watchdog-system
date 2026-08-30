@@ -14,32 +14,7 @@ db.pragma('journal_mode = WAL');
 db.pragma('synchronous = NORMAL');
 
 db.exec(`
-    CREATE TABLE IF NOT EXISTS players (
-        seq INTEGER PRIMARY KEY AUTOINCREMENT,
-        id TEXT UNIQUE NOT NULL,
-        data TEXT NOT NULL
-    );
-    CREATE TABLE IF NOT EXISTS actions (
-        seq INTEGER PRIMARY KEY AUTOINCREMENT,
-        id TEXT UNIQUE NOT NULL,
-        playerId TEXT,
-        type TEXT,
-        timestamp TEXT,
-        data TEXT NOT NULL
-    );
-    CREATE INDEX IF NOT EXISTS idx_actions_playerId ON actions(playerId);
-    CREATE INDEX IF NOT EXISTS idx_actions_type ON actions(type);
-    CREATE TABLE IF NOT EXISTS moderators (
-        name TEXT PRIMARY KEY,
-        discordId TEXT,
-        avatarUrl TEXT,
-        bannerUrl TEXT
-    );
-    CREATE TABLE IF NOT EXISTS settings (
-        key TEXT PRIMARY KEY,
-        value TEXT NOT NULL
-    );
-        CREATE TABLE IF NOT EXISTS servers (
+    CREATE TABLE IF NOT EXISTS servers (
         id TEXT PRIMARY KEY,
         name TEXT NOT NULL,
         ownerDiscordId TEXT NOT NULL,
@@ -47,6 +22,34 @@ db.exec(`
         status TEXT NOT NULL DEFAULT 'ACTIVE',
         expiresAt INTEGER,
         createdAt INTEGER
+    );
+    CREATE TABLE IF NOT EXISTS players (
+        seq INTEGER PRIMARY KEY AUTOINCREMENT,
+        serverId TEXT DEFAULT 'default_server',
+        id TEXT NOT NULL,
+        data TEXT NOT NULL
+    );
+    CREATE TABLE IF NOT EXISTS actions (
+        seq INTEGER PRIMARY KEY AUTOINCREMENT,
+        serverId TEXT DEFAULT 'default_server',
+        id TEXT NOT NULL,
+        playerId TEXT,
+        type TEXT,
+        timestamp TEXT,
+        data TEXT NOT NULL
+    );
+    CREATE TABLE IF NOT EXISTS moderators (
+        serverId TEXT DEFAULT 'default_server',
+        name TEXT NOT NULL,
+        discordId TEXT,
+        avatarUrl TEXT,
+        bannerUrl TEXT,
+        isFormer INTEGER DEFAULT 0
+    );
+    CREATE TABLE IF NOT EXISTS settings (
+        serverId TEXT DEFAULT 'default_server',
+        key TEXT NOT NULL,
+        value TEXT NOT NULL
     );
     CREATE TABLE IF NOT EXISTS discord_cache (
         discordId TEXT PRIMARY KEY,
@@ -56,9 +59,21 @@ db.exec(`
     );
 `);
 
-try { db.exec('ALTER TABLE moderators ADD COLUMN avatarUrl TEXT;'); } catch (e) {}
-try { db.exec('ALTER TABLE moderators ADD COLUMN bannerUrl TEXT;'); } catch (e) {}
-try { db.exec('ALTER TABLE moderators ADD COLUMN isFormer INTEGER DEFAULT 0;'); } catch (e) {}
+// Migrations for existing columns
+try { db.exec("ALTER TABLE players ADD COLUMN serverId TEXT DEFAULT 'default_server';"); } catch (e) {}
+try { db.exec("ALTER TABLE actions ADD COLUMN serverId TEXT DEFAULT 'default_server';"); } catch (e) {}
+try { db.exec("ALTER TABLE moderators ADD COLUMN serverId TEXT DEFAULT 'default_server';"); } catch (e) {}
+try { db.exec("ALTER TABLE settings ADD COLUMN serverId TEXT DEFAULT 'default_server';"); } catch (e) {}
+try { db.exec("CREATE INDEX IF NOT EXISTS idx_players_serverId ON players(serverId);"); } catch (e) {}
+try { db.exec("CREATE INDEX IF NOT EXISTS idx_actions_serverId ON actions(serverId);"); } catch (e) {}
+try { db.exec("CREATE INDEX IF NOT EXISTS idx_actions_playerId ON actions(playerId);"); } catch (e) {}
+try { db.exec("CREATE INDEX IF NOT EXISTS idx_actions_type ON actions(type);"); } catch (e) {}
+
+// Ensure all unassigned legacy records belong to 'default_server'
+db.exec("UPDATE players SET serverId = 'default_server' WHERE serverId IS NULL OR serverId = '';");
+db.exec("UPDATE actions SET serverId = 'default_server' WHERE serverId IS NULL OR serverId = '';");
+db.exec("UPDATE moderators SET serverId = 'default_server' WHERE serverId IS NULL OR serverId = '';");
+db.exec("UPDATE settings SET serverId = 'default_server' WHERE serverId IS NULL OR serverId = '';");
 
 const DEFAULT_REASON_LISTS = {
     normal: [
@@ -82,18 +97,18 @@ const DEFAULT_REASON_LISTS = {
 };
 
 // =========================================================================
-// ENTERPRISE L1 IN-MEMORY CACHE (< 0.1ms access time)
+// L1 IN-MEMORY CACHE (Scoped by ServerId)
 // =========================================================================
 const memoryCache = {
-    players: null,
-    actions: null,
-    reasons: null,
-    moderators: null,
+    players: {},
+    actions: {},
+    reasons: {},
+    moderators: {},
     discordCache: null
 };
 
-function getSetting(key, fallback) {
-    const row = db.prepare('SELECT value FROM settings WHERE key = ?').get(key);
+function getSetting(key, fallback, serverId = 'default_server') {
+    const row = db.prepare('SELECT value FROM settings WHERE serverId = ? AND key = ?').get(serverId, key);
     if (!row) return fallback;
     try {
         return JSON.parse(row.value);
@@ -102,48 +117,54 @@ function getSetting(key, fallback) {
     }
 }
 
-function setSetting(key, value) {
+function setSetting(key, value, serverId = 'default_server') {
     db.prepare(`
-        INSERT INTO settings (key, value) VALUES (@key, @value)
-        ON CONFLICT(key) DO UPDATE SET value = excluded.value
-    `).run({ key, value: JSON.stringify(value) });
+        INSERT INTO settings (serverId, key, value) VALUES (@serverId, @key, @value)
+        ON CONFLICT(serverId, key) DO UPDATE SET value = excluded.value
+    `).run({ serverId, key, value: JSON.stringify(value) });
 }
 
-function getReasons() {
-    if (memoryCache.reasons) return memoryCache.reasons;
-    memoryCache.reasons = {
-        normal: getSetting('reasons_normal', DEFAULT_REASON_LISTS.normal),
-        bad: getSetting('reasons_bad', DEFAULT_REASON_LISTS.bad),
-        good: getSetting('reasons_good', DEFAULT_REASON_LISTS.good)
+function getReasons(serverId = 'default_server') {
+    if (!memoryCache.reasons) memoryCache.reasons = {};
+    if (memoryCache.reasons[serverId]) return memoryCache.reasons[serverId];
+    const data = {
+        normal: getSetting('reasons_normal', DEFAULT_REASON_LISTS.normal, serverId),
+        bad: getSetting('reasons_bad', DEFAULT_REASON_LISTS.bad, serverId),
+        good: getSetting('reasons_good', DEFAULT_REASON_LISTS.good, serverId)
     };
-    return memoryCache.reasons;
+    memoryCache.reasons[serverId] = data;
+    return data;
 }
 
-function saveReasons(reasons) {
+function saveReasons(reasons, serverId = 'default_server') {
+    if (!memoryCache.reasons) memoryCache.reasons = {};
     const cleanReasons = {
         normal: Array.isArray(reasons.normal) ? reasons.normal : [],
         bad: Array.isArray(reasons.bad) ? reasons.bad : [],
         good: Array.isArray(reasons.good) ? reasons.good : []
     };
-    memoryCache.reasons = cleanReasons;
-    setSetting('reasons_normal', cleanReasons.normal);
-    setSetting('reasons_bad', cleanReasons.bad);
-    setSetting('reasons_good', cleanReasons.good);
+    memoryCache.reasons[serverId] = cleanReasons;
+    setSetting('reasons_normal', cleanReasons.normal, serverId);
+    setSetting('reasons_bad', cleanReasons.bad, serverId);
+    setSetting('reasons_good', cleanReasons.good, serverId);
 }
 
-function getModerators() {
-    if (memoryCache.moderators) return memoryCache.moderators;
-    memoryCache.moderators = db.prepare('SELECT name, discordId, avatarUrl, bannerUrl, isFormer FROM moderators ORDER BY name COLLATE NOCASE ASC').all();
-    return memoryCache.moderators;
+function getModerators(serverId = 'default_server') {
+    if (!memoryCache.moderators) memoryCache.moderators = {};
+    if (memoryCache.moderators[serverId]) return memoryCache.moderators[serverId];
+    const list = db.prepare('SELECT name, discordId, avatarUrl, bannerUrl, isFormer FROM moderators WHERE serverId = ? ORDER BY name COLLATE NOCASE ASC').all(serverId);
+    memoryCache.moderators[serverId] = list;
+    return list;
 }
 
-function saveModerators(list) {
-    if (!Array.isArray(list) || !list.length) return;
-    memoryCache.moderators = list;
+function saveModerators(list, serverId = 'default_server') {
+    if (!Array.isArray(list)) return;
+    if (!memoryCache.moderators) memoryCache.moderators = {};
+    memoryCache.moderators[serverId] = list;
     const upsert = db.prepare(`
-        INSERT INTO moderators (name, discordId, avatarUrl, bannerUrl, isFormer)
-        VALUES (@name, @discordId, @avatarUrl, @bannerUrl, @isFormer)
-        ON CONFLICT(name) DO UPDATE SET
+        INSERT INTO moderators (serverId, name, discordId, avatarUrl, bannerUrl, isFormer)
+        VALUES (@serverId, @name, @discordId, @avatarUrl, @bannerUrl, @isFormer)
+        ON CONFLICT(serverId, name) DO UPDATE SET
             discordId = excluded.discordId,
             avatarUrl = excluded.avatarUrl,
             bannerUrl = excluded.bannerUrl,
@@ -152,6 +173,7 @@ function saveModerators(list) {
     const runAll = db.transaction((items) => {
         for (const item of items) {
             upsert.run({
+                serverId,
                 name: String(item.name),
                 discordId: item.discordId ? String(item.discordId).trim() : null,
                 avatarUrl: item.avatarUrl || null,
@@ -172,53 +194,45 @@ function readLegacyJson(file) {
     }
 }
 
-// One-time import from the old .txt/JSON files
 function migrateLegacyDataIfNeeded() {
-    const playersCount = db.prepare('SELECT COUNT(*) AS count FROM players').get().count;
+    const playersCount = db.prepare("SELECT COUNT(*) AS count FROM players WHERE serverId = 'default_server'").get().count;
     if (playersCount === 0) {
         const legacyPlayers = readLegacyJson(LEGACY_PLAYERS_FILE);
-        if (legacyPlayers.length) replaceAll('players', legacyPlayers);
+        if (legacyPlayers.length) replaceAll('players', legacyPlayers, 'default_server');
     }
 
-    const actionsCount = db.prepare('SELECT COUNT(*) AS count FROM actions').get().count;
+    const actionsCount = db.prepare("SELECT COUNT(*) AS count FROM actions WHERE serverId = 'default_server'").get().count;
     if (actionsCount === 0) {
         const legacyActions = readLegacyJson(LEGACY_ACTIONS_FILE);
-        if (legacyActions.length) replaceAll('actions', legacyActions);
+        if (legacyActions.length) replaceAll('actions', legacyActions, 'default_server');
     }
 }
 
-const getAllStatements = {
-    players: db.prepare('SELECT data FROM players ORDER BY seq ASC'),
-    actions: db.prepare('SELECT data FROM actions ORDER BY seq ASC')
-};
-
-function getAll(table) {
-    if (memoryCache[table]) return memoryCache[table];
-    const data = getAllStatements[table].all().map(row => JSON.parse(row.data));
-    memoryCache[table] = data;
+function getAll(table, serverId = 'default_server') {
+    if (!memoryCache[table]) memoryCache[table] = {};
+    if (memoryCache[table][serverId]) return memoryCache[table][serverId];
+    const rows = db.prepare(`SELECT data FROM ${table} WHERE serverId = ? ORDER BY seq ASC`).all(serverId);
+    const data = rows.map(row => JSON.parse(row.data));
+    memoryCache[table][serverId] = data;
     return data;
 }
 
-const insertStatements = {
-    players: db.prepare('INSERT INTO players (id, data) VALUES (@id, @data)'),
-    actions: db.prepare('INSERT INTO actions (id, playerId, type, timestamp, data) VALUES (@id, @playerId, @type, @timestamp, @data)')
-};
+function replaceAll(table, records, serverId = 'default_server') {
+    if (!memoryCache[table]) memoryCache[table] = {};
+    memoryCache[table][serverId] = Array.isArray(records) ? records.slice() : [];
+    const deleteStmt = db.prepare(`DELETE FROM ${table} WHERE serverId = ?`);
+    const insertPlayer = db.prepare('INSERT INTO players (serverId, id, data) VALUES (@serverId, @id, @data)');
+    const insertAction = db.prepare('INSERT INTO actions (serverId, id, playerId, type, timestamp, data) VALUES (@serverId, @id, @playerId, @type, @timestamp, @data)');
 
-const deleteAllStatements = {
-    players: db.prepare('DELETE FROM players'),
-    actions: db.prepare('DELETE FROM actions')
-};
-
-function replaceAll(table, records) {
-    memoryCache[table] = Array.isArray(records) ? records.slice() : [];
     const runReplace = db.transaction((items) => {
-        deleteAllStatements[table].run();
+        deleteStmt.run(serverId);
         for (const item of items) {
             const data = JSON.stringify(item);
             if (table === 'players') {
-                insertStatements.players.run({ id: String(item.id), data });
+                insertPlayer.run({ serverId, id: String(item.id), data });
             } else {
-                insertStatements.actions.run({
+                insertAction.run({
+                    serverId,
                     id: String(item.id),
                     playerId: item.playerId != null ? String(item.playerId) : null,
                     type: item.type || null,
@@ -249,7 +263,6 @@ function setDiscordCache(discordId, data) {
         bannerUrl: data.bannerUrl || null,
         updatedAt: Date.now()
     });
-
     db.prepare(`
         INSERT INTO discord_cache (discordId, url, bannerUrl, updatedAt)
         VALUES (@discordId, @url, @bannerUrl, @updatedAt)
@@ -265,41 +278,44 @@ function setDiscordCache(discordId, data) {
     });
 }
 
-function getApiKey() {
-    let key = getSetting('server_api_key', null);
+function getApiKey(serverId = 'default_server') {
+    const srv = getServerById(serverId);
+    if (srv && srv.apiKey) return srv.apiKey;
+    let key = getSetting('server_api_key', null, serverId);
     if (!key) {
         const crypto = require('crypto');
         key = 'wd_live_' + crypto.randomBytes(20).toString('hex');
-        setSetting('server_api_key', key);
+        setSetting('server_api_key', key, serverId);
     }
     return key;
 }
 
-function regenerateApiKey() {
+function regenerateApiKey(serverId = 'default_server') {
     const crypto = require('crypto');
     const key = 'wd_live_' + crypto.randomBytes(20).toString('hex');
-    setSetting('server_api_key', key);
+    setSetting('server_api_key', key, serverId);
+    db.prepare('UPDATE servers SET apiKey = ? WHERE id = ?').run(key, serverId);
     return key;
 }
 
-function validateApiKey(key) {
+function validateApiKey(key, serverId = 'default_server') {
     if (!key || typeof key !== 'string') return false;
-    const current = getApiKey();
+    const current = getApiKey(serverId);
     return key.trim() === current.trim();
 }
 
-function getModeratorByDiscordId(discordId) {
+function getModeratorByDiscordId(discordId, serverId = 'default_server') {
     if (!discordId) return null;
-    const mods = getModerators();
+    const mods = getModerators(serverId);
     return mods.find(m => String(m.discordId).trim() === String(discordId).trim()) || null;
 }
 
 function getOwnerDiscordId() {
-    return getSetting('owner_discord_id', process.env.DISCORD_OWNER_ID || '320110089727901697');
+    return getSetting('owner_discord_id', process.env.DISCORD_OWNER_ID || '320110089727901697', 'default_server');
 }
 
 function setOwnerDiscordId(discordId) {
-    setSetting('owner_discord_id', String(discordId).trim());
+    setSetting('owner_discord_id', String(discordId).trim(), 'default_server');
 }
 
 function isOwner(discordId) {
@@ -307,16 +323,6 @@ function isOwner(discordId) {
     const currentOwner = getOwnerDiscordId();
     return String(discordId).trim() === String(currentOwner).trim();
 }
-
-// Warm up L1 cache on initial load
-migrateLegacyDataIfNeeded();
-getAll('players');
-getAll('actions');
-getReasons();
-getModerators();
-getDiscordCache();
-getApiKey();
-
 
 // ==========================================
 // MULTI-TENANT SERVER / CUSTOMER MANAGEMENT
@@ -327,7 +333,7 @@ function initDefaultServer() {
         const count = db.prepare('SELECT COUNT(*) as count FROM servers').get().count;
         if (count === 0) {
             const masterOwnerId = getOwnerDiscordId();
-            const masterKey = getApiKey();
+            const masterKey = 'wd_live_master_' + require('crypto').randomBytes(16).toString('hex');
             db.prepare(`
                 INSERT INTO servers (id, name, ownerDiscordId, apiKey, status, expiresAt, createdAt)
                 VALUES (@id, @name, @ownerDiscordId, @apiKey, @status, @expiresAt, @createdAt)
@@ -337,7 +343,7 @@ function initDefaultServer() {
                 ownerDiscordId: masterOwnerId,
                 apiKey: masterKey,
                 status: 'ACTIVE',
-                expiresAt: null, // Lifetime
+                expiresAt: null,
                 createdAt: Date.now()
             });
         }
@@ -349,15 +355,17 @@ function initDefaultServer() {
 function getServers() {
     initDefaultServer();
     const rows = db.prepare('SELECT * FROM servers ORDER BY createdAt DESC').all();
-    const totalPlayers = getAll('players').length;
-    const totalActions = getAll('actions').length;
 
-    return rows.map(s => ({
-        ...s,
-        playerCount: s.id === 'default_server' ? totalPlayers : 0,
-        actionCount: s.id === 'default_server' ? totalActions : 0,
-        isMaster: s.id === 'default_server'
-    }));
+    return rows.map(s => {
+        const playerCount = db.prepare('SELECT COUNT(*) as count FROM players WHERE serverId = ?').get(s.id).count;
+        const actionCount = db.prepare('SELECT COUNT(*) as count FROM actions WHERE serverId = ?').get(s.id).count;
+        return {
+            ...s,
+            playerCount,
+            actionCount,
+            isMaster: s.id === 'default_server'
+        };
+    });
 }
 
 function getServerById(id) {
@@ -422,9 +430,6 @@ function regenerateServerApiKey(id) {
     const crypto = require('crypto');
     const newKey = 'wd_live_' + crypto.randomBytes(20).toString('hex');
     db.prepare('UPDATE servers SET apiKey = ? WHERE id = ?').run(newKey, id);
-    if (id === 'default_server') {
-        setSetting('server_api_key', newKey);
-    }
     return newKey;
 }
 
@@ -439,8 +444,24 @@ function toggleServerStatus(id) {
 function deleteServer(id) {
     if (id === 'default_server') throw new Error('Cannot delete main system server');
     db.prepare('DELETE FROM servers WHERE id = ?').run(id);
+    db.prepare('DELETE FROM players WHERE serverId = ?').run(id);
+    db.prepare('DELETE FROM actions WHERE serverId = ?').run(id);
+    db.prepare('DELETE FROM moderators WHERE serverId = ?').run(id);
+    db.prepare('DELETE FROM settings WHERE serverId = ?').run(id);
+    if (memoryCache.players) delete memoryCache.players[id];
+    if (memoryCache.actions) delete memoryCache.actions[id];
+    if (memoryCache.reasons) delete memoryCache.reasons[id];
+    if (memoryCache.moderators) delete memoryCache.moderators[id];
     return true;
 }
+
+// Warm up default server
+migrateLegacyDataIfNeeded();
+getAll('players', 'default_server');
+getAll('actions', 'default_server');
+getReasons('default_server');
+getModerators('default_server');
+getDiscordCache();
 
 module.exports = {
     getAll,
@@ -455,6 +476,9 @@ module.exports = {
     regenerateApiKey,
     validateApiKey,
     getModeratorByDiscordId,
+    getOwnerDiscordId,
+    setOwnerDiscordId,
+    isOwner,
     getServers,
     getServerById,
     getServerByApiKey,
@@ -463,10 +487,5 @@ module.exports = {
     updateServer,
     regenerateServerApiKey,
     toggleServerStatus,
-    deleteServer,
-
-    getOwnerDiscordId,
-    setOwnerDiscordId,
-    isOwner
+    deleteServer
 };
-

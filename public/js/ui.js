@@ -324,7 +324,7 @@ function initSidebarPlayerNavigation() {
 
 window.initSidebarPlayerNavigation = initSidebarPlayerNavigation;
 
-// Topbar Watchdog SaaS & FiveM Sync Actions
+// Topbar Watchdog SaaS, Server Switcher & FiveM Sync Actions
 function initWatchdogTopbar() {
     const topbar = document.querySelector('.topbar');
     if (!topbar || topbar.querySelector('.topbar-actions')) return;
@@ -332,6 +332,11 @@ function initWatchdogTopbar() {
     const actionsDiv = document.createElement('div');
     actionsDiv.className = 'topbar-actions';
     actionsDiv.innerHTML = `
+        <div class="topbar-server-badge" id="topbar-server-badge" onclick="openServerSwitcherModal()" title="Switch Active Server Database">
+            <i data-lucide="server" style="width: 14px; height: 14px; color: #38bdf8;"></i>
+            <span id="topbar-server-name-label">Main Server</span>
+            <i data-lucide="chevron-down" style="width: 12px; height: 12px; color: #94a3b8;"></i>
+        </div>
         <button class="btn-fivem-sync" title="FiveM Server Integration & Secret Key" onclick="openFivemSyncModal()">
             <i data-lucide="key-round"></i>
             <span>FiveM Sync</span>
@@ -343,9 +348,116 @@ function initWatchdogTopbar() {
     `;
     topbar.appendChild(actionsDiv);
     if (window.lucide && lucide.createIcons) lucide.createIcons();
+    updateTopbarServerName();
 }
 
 window.initWatchdogTopbar = initWatchdogTopbar;
+
+async function updateTopbarServerName() {
+    const label = document.getElementById('topbar-server-name-label');
+    if (!label) return;
+    const activeId = (typeof getActiveServerId === 'function') ? getActiveServerId() : (localStorage.getItem('watchdog_active_server_id') || 'default_server');
+    if (activeId === 'default_server') {
+        label.textContent = 'Main Server';
+        return;
+    }
+    try {
+        const user = (typeof getAuthUser === 'function') ? getAuthUser() : null;
+        const res = await fetch(`${API_URL}/admin/servers`, {
+            headers: { 'x-discord-id': user?.discordId || '' }
+        });
+        if (res.ok) {
+            const servers = await res.json();
+            const current = servers.find(s => s.id === activeId);
+            if (current) label.textContent = current.name;
+        }
+    } catch {}
+}
+window.updateTopbarServerName = updateTopbarServerName;
+
+async function openServerSwitcherModal() {
+    let overlay = document.getElementById('server-switcher-modal');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'server-switcher-modal';
+        overlay.className = 'modal-overlay';
+        document.body.appendChild(overlay);
+    }
+
+    const user = (typeof getAuthUser === 'function') ? getAuthUser() : null;
+    let servers = [];
+    try {
+        const res = await fetch(`${API_URL}/admin/servers`, {
+            headers: { 'x-discord-id': user?.discordId || '' }
+        });
+        if (res.ok) servers = await res.json();
+    } catch {}
+
+    const activeId = (typeof getActiveServerId === 'function') ? getActiveServerId() : 'default_server';
+
+    overlay.innerHTML = `
+        <div class="modal modal-pro modal-anim" style="max-width: 500px; padding: 24px;">
+            <div class="modal-hero-header" style="margin-bottom: 18px;">
+                <div class="modal-title-box">
+                    <div class="modal-icon-badge" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8;">
+                        <i data-lucide="server"></i>
+                    </div>
+                    <div>
+                        <h2 style="font-size: 18px; font-weight: 800; color: #fff; margin: 0;">Switch Server Database</h2>
+                        <span style="font-size: 12px; color: #94a3b8;">Select a customer server to inspect its isolated database</span>
+                    </div>
+                </div>
+                <button type="button" class="modal-close" onclick="closeServerSwitcherModal()"><i data-lucide="x"></i></button>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 8px; max-height: 360px; overflow-y: auto; margin-bottom: 20px;">
+                ${servers.map(s => {
+                    const isCurrent = s.id === activeId;
+                    return `
+                        <div onclick="selectServerTenant('${escapeHtml(s.id)}', '${escapeHtml(s.name)}')" style="display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; border-radius: 12px; background: ${isCurrent ? 'rgba(99, 102, 241, 0.2)' : 'rgba(15, 23, 42, 0.7)'}; border: 1px solid ${isCurrent ? 'rgba(129, 140, 248, 0.5)' : 'rgba(255, 255, 255, 0.08)'}; cursor: pointer; transition: all 0.15s ease;">
+                            <div>
+                                <div style="font-weight: 700; color: #ffffff; font-size: 13.5px; display: flex; align-items: center; gap: 6px;">
+                                    ${escapeHtml(s.name)}
+                                    ${s.isMaster ? '<span style="font-size: 10px; font-weight: 800; color: #fbbf24; background: rgba(245, 158, 11, 0.15); padding: 2px 6px; border-radius: 8px;">MASTER</span>' : ''}
+                                    ${isCurrent ? '<span style="font-size: 10px; font-weight: 800; color: #34d399; background: rgba(16, 185, 129, 0.15); padding: 2px 6px; border-radius: 8px;">ACTIVE</span>' : ''}
+                                </div>
+                                <div style="font-size: 11px; color: #94a3b8; font-family: monospace; margin-top: 2px;">
+                                    ID: ${escapeHtml(s.id)} • ${s.playerCount || 0} Players • ${s.actionCount || 0} Sanctions
+                                </div>
+                            </div>
+                            <i data-lucide="${isCurrent ? 'check-circle' : 'chevron-right'}" style="width: 16px; height: 16px; color: ${isCurrent ? '#34d399' : '#64748b'};"></i>
+                        </div>
+                    `;
+                }).join('')}
+            </div>
+
+            <div style="display: flex; justify-content: flex-end;">
+                <button type="button" class="cta" style="width: auto; background: transparent; border: 1px solid rgba(255, 255, 255, 0.15);" onclick="closeServerSwitcherModal()">Cancel</button>
+            </div>
+        </div>
+    `;
+
+    overlay.style.display = 'flex';
+    if (window.lucide && lucide.createIcons) lucide.createIcons();
+    overlay.onclick = (e) => { if (e.target === overlay) closeServerSwitcherModal(); };
+}
+window.openServerSwitcherModal = openServerSwitcherModal;
+
+function closeServerSwitcherModal() {
+    const overlay = document.getElementById('server-switcher-modal');
+    if (overlay) overlay.style.display = 'none';
+}
+window.closeServerSwitcherModal = closeServerSwitcherModal;
+
+function selectServerTenant(id, name) {
+    if (typeof setActiveServerId === 'function') {
+        setActiveServerId(id);
+    } else {
+        localStorage.setItem('watchdog_active_server_id', id);
+        location.reload();
+    }
+}
+window.selectServerTenant = selectServerTenant;
 
 async function openFivemSyncModal() {
     let overlay = document.getElementById('fivem-sync-modal');

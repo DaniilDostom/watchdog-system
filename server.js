@@ -53,60 +53,6 @@ app.use(express.static(path.join(__dirname, 'public'), {
     etag: true
 }));
 
-// REST API Endpoints (Direct L1 Memory Cache with sub-millisecond dispatch)
-app.get('/api/players', (req, res) => {
-    res.setHeader('Cache-Control', 'no-cache');
-    res.json(db.getAll('players'));
-});
-
-// FiveM ban-check endpoint — called by server-side Lua script on player connect
-// GET /api/check-license/:license  →  { found, player, activeBan, activePermanentBan, warnCount, reason, expiry }
-app.get('/api/check-license/:license', (req, res) => {
-    res.setHeader('Cache-Control', 'no-cache');
-    const clientKey = req.headers['x-watchdog-key'] || req.query.key;
-    if (clientKey && !db.validateApiKey(clientKey)) {
-        return res.status(401).json({ error: 'Unauthorized: Invalid Secret API Key' });
-    }
-
-    const license = decodeURIComponent(req.params.license || '').trim().toLowerCase();
-    if (!license) return res.status(400).json({ error: 'License is required' });
-    const players = db.getAll('players');
-    const actions = db.getAll('actions');
-    const player = players.find(p => (p.fivemLicense || '').toLowerCase() === license);
-    if (!player) return res.json({ found: false, player: null, activeBan: false, activePermanentBan: false, warnCount: 0 });
-
-    const playerActions = actions.filter(a => a.playerId === player.id);
-    const now = Date.now();
-    const activePermanentBanAction = playerActions.find(a => a.type === 'BAN' && a.permanent && !a.permanentBanRemoval && !a.removed);
-    const activePermanentBan = !!activePermanentBanAction;
-
-    let activeTempBanAction = null;
-    const activeTempBan = playerActions.some(a => {
-        if (a.type !== 'BAN' || a.permanent || a.permanentBanRemoval || a.removed) return false;
-        const dur = Number(a.duration);
-        if (!Number.isFinite(dur) || dur <= 0) return true;
-        const ms = String(a.durationUnit || 'Days').toLowerCase().startsWith('hour') ? dur * 3600000 : dur * 86400000;
-        const isActive = now < new Date(a.timestamp).getTime() + ms;
-        if (isActive) activeTempBanAction = a;
-        return isActive;
-    });
-
-    const activeBan = activePermanentBan || activeTempBan;
-    const banReason = activePermanentBanAction?.reason || activeTempBanAction?.reason || null;
-    const banIssuer = activePermanentBanAction?.issuer || activeTempBanAction?.issuer || null;
-    const warnCount = playerActions.filter(a => a.type === 'WARN' && !a.warningRemoval && !a.removed).length;
-
-    res.json({
-        found: true,
-        player: { id: player.id, username: player.username, discordId: player.discordId, fivemLicense: player.fivemLicense, status: player.status },
-        activeBan,
-        activePermanentBan,
-        banReason,
-        banIssuer,
-        warnCount
-    });
-});
-
 // Master Admin Verification Middleware
 function requireMasterAdmin(req, res, next) {
     const adminId = req.headers['x-discord-id'] || req.query.adminId || req.body?.adminId;
@@ -173,10 +119,10 @@ app.get('/api/admin/servers/:id/export', requireMasterAdmin, (req, res) => {
     
     const dump = {
         server,
-        players: db.getAll('players'),
-        actions: db.getAll('actions'),
-        moderators: db.getModerators(),
-        reasons: db.getReasons(),
+        players: db.getAll('players', server.id),
+        actions: db.getAll('actions', server.id),
+        moderators: db.getModerators(server.id),
+        reasons: db.getReasons(server.id),
         exportedAt: new Date().toISOString()
     };
     
@@ -185,79 +131,59 @@ app.get('/api/admin/servers/:id/export', requireMasterAdmin, (req, res) => {
     res.json(dump);
 });
 
-// Secret API Key management
-app.get('/api/server/api-key', (req, res) => {
-    res.setHeader('Cache-Control', 'no-cache');
-    res.json({ apiKey: db.getApiKey() });
-});
-
-app.post('/api/server/api-key/regenerate', (req, res) => {
-    const newKey = db.regenerateApiKey();
-    res.json({ apiKey: newKey });
-});
-
-// Staff verification & Discord Login endpoint
-app.post('/api/auth/verify-staff', async (req, res) => {
-    const rawId = req.body?.discordId;
-    if (!rawId) return res.status(400).json({ authorized: false, error: 'Discord ID is required' });
-    
-    const discordId = String(rawId).trim();
-    const isOwner = db.isOwner(discordId);
-    const mod = db.getModeratorByDiscordId(discordId);
-
-    if (!isOwner && (!mod || mod.isFormer)) {
-        return res.status(403).json({
-            authorized: false,
-            error: 'Unauthorized: Your Discord account is not registered as a Staffer or Owner for this Watchdog server.'
-        });
+// Multi-Tenant Server Context Resolver
+function resolveServerId(req) {
+    const key = req.headers['x-watchdog-key'] || req.query.key;
+    if (key) {
+        const srv = db.getServerByApiKey(key);
+        if (srv) return srv.id;
     }
+    const headerServerId = req.headers['x-server-id'];
+    if (headerServerId && typeof headerServerId === 'string' && headerServerId.trim()) {
+        return headerServerId.trim();
+    }
+    const queryServerId = req.query.serverId;
+    if (queryServerId && typeof queryServerId === 'string' && queryServerId.trim()) {
+        return queryServerId.trim();
+    }
+    return 'default_server';
+}
 
-    // Resolve real live Discord profile (avatar, display name)
-    const profile = await resolveDiscordProfile(discordId);
-
-    return res.json({
-        authorized: true,
-        role: isOwner ? 'owner' : 'staffer',
-        name: mod?.name || profile.globalName || profile.username || (isOwner ? 'Owner' : 'Staffer'),
-        username: profile.username || mod?.name || 'User',
-        isOwner,
-        discordId,
-        avatarUrl: profile.url || mod?.avatarUrl || null
-    });
-});
-
-app.get('/api/auth/current-owner', (req, res) => {
-    res.json({ ownerDiscordId: db.getOwnerDiscordId() });
+// REST API Endpoints (Direct L1 Memory Cache with sub-millisecond dispatch)
+app.get('/api/players', (req, res) => {
+    res.setHeader('Cache-Control', 'no-cache');
+    res.json(db.getAll('players', resolveServerId(req)));
 });
 
 app.post('/api/players', (req, res) => {
-    db.replaceAll('players', req.body);
+    db.replaceAll('players', req.body, resolveServerId(req));
     res.sendStatus(200);
 });
 
 app.get('/api/actions', (req, res) => {
     res.setHeader('Cache-Control', 'no-cache');
-    res.json(db.getAll('actions'));
+    res.json(db.getAll('actions', resolveServerId(req)));
 });
 
 app.post('/api/actions', (req, res) => {
-    db.replaceAll('actions', req.body);
+    db.replaceAll('actions', req.body, resolveServerId(req));
     res.sendStatus(200);
 });
 
 app.get('/api/reasons', (req, res) => {
     res.setHeader('Cache-Control', 'no-cache');
-    res.json(db.getReasons());
+    res.json(db.getReasons(resolveServerId(req)));
 });
 
 app.post('/api/reasons', (req, res) => {
-    db.saveReasons(req.body);
+    db.saveReasons(req.body, resolveServerId(req));
     res.sendStatus(200);
 });
 
 app.get('/api/moderators', (req, res) => {
     res.setHeader('Cache-Control', 'no-cache');
-    const list = db.getModerators();
+    const serverId = resolveServerId(req);
+    const list = db.getModerators(serverId);
     for (const m of list) {
         if (m.discordId && (!m.avatarUrl || !m.bannerUrl)) {
             const cached = discordProfileCache.get(m.discordId);
@@ -269,8 +195,74 @@ app.get('/api/moderators', (req, res) => {
 });
 
 app.post('/api/moderators', (req, res) => {
-    db.saveModerators(req.body);
+    db.saveModerators(req.body, resolveServerId(req));
     res.sendStatus(200);
+});
+
+app.get('/api/server/api-key', (req, res) => {
+    res.setHeader('Cache-Control', 'no-cache');
+    res.json({ apiKey: db.getApiKey(resolveServerId(req)) });
+});
+
+app.post('/api/server/api-key/regenerate', (req, res) => {
+    const newKey = db.regenerateApiKey(resolveServerId(req));
+    res.json({ apiKey: newKey });
+});
+app.get('/api/check-license/:license', (req, res) => {
+    res.setHeader('Cache-Control', 'no-cache');
+    const clientKey = req.headers['x-watchdog-key'] || req.query.key;
+    let serverId = 'default_server';
+    if (clientKey) {
+        const server = db.getServerByApiKey(clientKey);
+        if (!server) {
+            return res.status(401).json({ error: 'Unauthorized: Invalid Secret API Key' });
+        }
+        if (server.status === 'SUSPENDED') {
+            return res.status(403).json({ error: 'Forbidden: Server license is suspended. Please renew.' });
+        }
+        if (server.expiresAt && Date.now() > server.expiresAt) {
+            return res.status(403).json({ error: 'Forbidden: Server license has expired.' });
+        }
+        serverId = server.id;
+    }
+
+    const license = decodeURIComponent(req.params.license || '').trim().toLowerCase();
+    if (!license) return res.status(400).json({ error: 'License is required' });
+    const players = db.getAll('players', serverId);
+    const actions = db.getAll('actions', serverId);
+    const player = players.find(p => (p.fivemLicense || '').toLowerCase() === license);
+    if (!player) return res.json({ found: false, player: null, activeBan: false, activePermanentBan: false, warnCount: 0 });
+
+    const playerActions = actions.filter(a => a.playerId === player.id);
+    const now = Date.now();
+    const activePermanentBanAction = playerActions.find(a => a.type === 'BAN' && a.permanent && !a.permanentBanRemoval && !a.removed);
+    const activePermanentBan = !!activePermanentBanAction;
+
+    let activeTempBanAction = null;
+    const activeTempBan = playerActions.some(a => {
+        if (a.type !== 'BAN' || a.permanent || a.permanentBanRemoval || a.removed) return false;
+        const dur = Number(a.duration);
+        if (!Number.isFinite(dur) || dur <= 0) return true;
+        const ms = String(a.durationUnit || 'Days').toLowerCase().startsWith('hour') ? dur * 3600000 : dur * 86400000;
+        const isActive = now < new Date(a.timestamp).getTime() + ms;
+        if (isActive) activeTempBanAction = a;
+        return isActive;
+    });
+
+    const activeBan = activePermanentBan || activeTempBan;
+    const banReason = activePermanentBanAction?.reason || activeTempBanAction?.reason || null;
+    const banIssuer = activePermanentBanAction?.issuer || activeTempBanAction?.issuer || null;
+    const warnCount = playerActions.filter(a => a.type === 'WARN' && !a.warningRemoval && !a.removed).length;
+
+    res.json({
+        found: true,
+        player: { id: player.id, username: player.username, discordId: player.discordId, fivemLicense: player.fivemLicense, status: player.status },
+        activeBan,
+        activePermanentBan,
+        banReason,
+        banIssuer,
+        warnCount
+    });
 });
 
 async function fetchDiscordJson(url, headers, attempts = 2) {
