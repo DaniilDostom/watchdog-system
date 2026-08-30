@@ -69,9 +69,16 @@ async function loadServerCards() {
                             </div>
                         </div>
 
-                        <div style="font-size: 11.5px; color: #94a3b8; margin-bottom: 16px; display: flex; align-items: center; gap: 6px;">
-                            <i data-lucide="user" style="width: 12px; height: 12px; color: #818cf8;"></i>
-                            <span>Owner: ${escapeHtml(s.ownerName || s.ownerUsername || 'Owner')} (${escapeHtml(s.ownerDiscordId)})</span>
+                        <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 12px; padding: 8px 12px; margin-bottom: 18px; display: flex; align-items: center; gap: 10px;">
+                            <img src="${escapeHtml(s.ownerAvatarUrl || 'https://cdn.discordapp.com/embed/avatars/0.png')}" alt="Avatar" style="width: 32px; height: 32px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.15); object-fit: cover;" onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'" />
+                            <div style="display: flex; flex-direction: column; overflow: hidden; text-align: left;">
+                                <span style="font-weight: 700; color: #ffffff; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                    ${escapeHtml(s.ownerName || s.ownerUsername || 'Server Owner')}
+                                </span>
+                                <span style="font-size: 11px; color: #94a3b8; font-family: monospace;">
+                                    @${escapeHtml(s.ownerUsername || 'user')} • ${escapeHtml(s.ownerDiscordId)}
+                                </span>
+                            </div>
                         </div>
                     </div>
 

@@ -381,7 +381,7 @@ async function resolveDiscordProfile(userId) {
     if (!/^\d{17,20}$/.test(userId)) return { url: null, isDefault: true };
 
     const cachedProfile = discordProfileCache.get(userId);
-    if (cachedProfile && cachedProfile.expiresAt > Date.now()) return cachedProfile.data;
+    if (cachedProfile && cachedProfile.expiresAt > Date.now() && cachedProfile.data.username) return cachedProfile.data;
     if (cachedProfile) discordProfileCache.delete(userId);
 
     const defaultAvatarIndex = Number((BigInt(userId) >> 22n) % 6n);
@@ -407,13 +407,19 @@ async function resolveDiscordProfile(userId) {
             ? `https://cdn.discordapp.com/banners/${user.id}/${user.banner}.${bannerExtension}?size=1024`
             : null;
 
-        const profile = { url: url || defaultAvatarUrl, isDefault: !url, bannerUrl };
+        const profile = {
+            url: url || defaultAvatarUrl,
+            isDefault: !url,
+            bannerUrl,
+            username: user.username || 'user',
+            globalName: user.global_name || user.username || 'User'
+        };
         const ttl = url ? discordProfileCacheTtl : 60 * 60 * 1000;
         discordProfileCache.set(userId, { data: profile, expiresAt: Date.now() + ttl });
         try { db.setDiscordCache(userId, profile); } catch (e) {}
         return profile;
     } catch (error) {
-        const profile = { url: defaultAvatarUrl, isDefault: true };
+        const profile = { url: defaultAvatarUrl, isDefault: true, username: 'user', globalName: 'User' };
         discordProfileCache.set(userId, { data: profile, expiresAt: Date.now() + 3 * 60 * 1000 });
         return profile;
     }
