@@ -39,6 +39,15 @@ db.exec(`
         key TEXT PRIMARY KEY,
         value TEXT NOT NULL
     );
+        CREATE TABLE IF NOT EXISTS servers (
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        ownerDiscordId TEXT NOT NULL,
+        apiKey TEXT UNIQUE NOT NULL,
+        status TEXT NOT NULL DEFAULT 'ACTIVE',
+        expiresAt INTEGER,
+        createdAt INTEGER
+    );
     CREATE TABLE IF NOT EXISTS discord_cache (
         discordId TEXT PRIMARY KEY,
         url TEXT,
@@ -308,6 +317,131 @@ getModerators();
 getDiscordCache();
 getApiKey();
 
+
+// ==========================================
+// MULTI-TENANT SERVER / CUSTOMER MANAGEMENT
+// ==========================================
+
+function initDefaultServer() {
+    try {
+        const count = db.prepare('SELECT COUNT(*) as count FROM servers').get().count;
+        if (count === 0) {
+            const masterOwnerId = getOwnerDiscordId();
+            const masterKey = getApiKey();
+            db.prepare(`
+                INSERT INTO servers (id, name, ownerDiscordId, apiKey, status, expiresAt, createdAt)
+                VALUES (@id, @name, @ownerDiscordId, @apiKey, @status, @expiresAt, @createdAt)
+            `).run({
+                id: 'default_server',
+                name: 'Main Watchdog Server',
+                ownerDiscordId: masterOwnerId,
+                apiKey: masterKey,
+                status: 'ACTIVE',
+                expiresAt: null, // Lifetime
+                createdAt: Date.now()
+            });
+        }
+    } catch (e) {
+        console.error('Error initializing default server:', e);
+    }
+}
+
+function getServers() {
+    initDefaultServer();
+    const rows = db.prepare('SELECT * FROM servers ORDER BY createdAt DESC').all();
+    const totalPlayers = getAll('players').length;
+    const totalActions = getAll('actions').length;
+
+    return rows.map(s => ({
+        ...s,
+        playerCount: s.id === 'default_server' ? totalPlayers : 0,
+        actionCount: s.id === 'default_server' ? totalActions : 0,
+        isMaster: s.id === 'default_server'
+    }));
+}
+
+function getServerById(id) {
+    if (!id) return null;
+    return db.prepare('SELECT * FROM servers WHERE id = ?').get(id) || null;
+}
+
+function getServerByApiKey(apiKey) {
+    if (!apiKey || typeof apiKey !== 'string') return null;
+    return db.prepare('SELECT * FROM servers WHERE apiKey = ?').get(apiKey.trim()) || null;
+}
+
+function getServerByOwner(discordId) {
+    if (!discordId) return null;
+    return db.prepare('SELECT * FROM servers WHERE ownerDiscordId = ?').get(String(discordId).trim()) || null;
+}
+
+function createServer({ name, ownerDiscordId, durationDays }) {
+    if (!name || !ownerDiscordId) throw new Error('Name and Owner Discord ID are required');
+    const crypto = require('crypto');
+    const slug = name.toLowerCase().replace(/[^a-z0-9]/g, '_').slice(0, 12) || 'server';
+    const id = `srv_${slug}_${crypto.randomBytes(3).toString('hex')}`;
+    const apiKey = 'wd_live_' + crypto.randomBytes(20).toString('hex');
+    const days = Number(durationDays);
+    const expiresAt = Number.isFinite(days) && days > 0 ? Date.now() + (days * 86400000) : null;
+    const createdAt = Date.now();
+
+    db.prepare(`
+        INSERT INTO servers (id, name, ownerDiscordId, apiKey, status, expiresAt, createdAt)
+        VALUES (@id, @name, @ownerDiscordId, @apiKey, @status, @expiresAt, @createdAt)
+    `).run({
+        id,
+        name: name.trim(),
+        ownerDiscordId: String(ownerDiscordId).trim(),
+        apiKey,
+        status: 'ACTIVE',
+        expiresAt,
+        createdAt
+    });
+
+    return getServerById(id);
+}
+
+function updateServer(id, fields = {}) {
+    const current = getServerById(id);
+    if (!current) return null;
+
+    const name = fields.name !== undefined ? fields.name.trim() : current.name;
+    const ownerDiscordId = fields.ownerDiscordId !== undefined ? String(fields.ownerDiscordId).trim() : current.ownerDiscordId;
+    const status = fields.status !== undefined ? fields.status : current.status;
+    const expiresAt = fields.expiresAt !== undefined ? fields.expiresAt : current.expiresAt;
+
+    db.prepare(`
+        UPDATE servers SET name = @name, ownerDiscordId = @ownerDiscordId, status = @status, expiresAt = @expiresAt
+        WHERE id = @id
+    `).run({ id, name, ownerDiscordId, status, expiresAt });
+
+    return getServerById(id);
+}
+
+function regenerateServerApiKey(id) {
+    const crypto = require('crypto');
+    const newKey = 'wd_live_' + crypto.randomBytes(20).toString('hex');
+    db.prepare('UPDATE servers SET apiKey = ? WHERE id = ?').run(newKey, id);
+    if (id === 'default_server') {
+        setSetting('server_api_key', newKey);
+    }
+    return newKey;
+}
+
+function toggleServerStatus(id) {
+    const current = getServerById(id);
+    if (!current) return null;
+    const newStatus = current.status === 'ACTIVE' ? 'SUSPENDED' : 'ACTIVE';
+    db.prepare('UPDATE servers SET status = ? WHERE id = ?').run(newStatus, id);
+    return newStatus;
+}
+
+function deleteServer(id) {
+    if (id === 'default_server') throw new Error('Cannot delete main system server');
+    db.prepare('DELETE FROM servers WHERE id = ?').run(id);
+    return true;
+}
+
 module.exports = {
     getAll,
     replaceAll,
@@ -321,6 +455,16 @@ module.exports = {
     regenerateApiKey,
     validateApiKey,
     getModeratorByDiscordId,
+    getServers,
+    getServerById,
+    getServerByApiKey,
+    getServerByOwner,
+    createServer,
+    updateServer,
+    regenerateServerApiKey,
+    toggleServerStatus,
+    deleteServer,
+
     getOwnerDiscordId,
     setOwnerDiscordId,
     isOwner

@@ -302,6 +302,24 @@ function initSidebarPlayerNavigation() {
             playersLink.classList.add('active');
         }
     }
+
+    // Dynamic Master Hub link for Owner
+    const user = getAuthUser();
+    if (user && (user.isOwner || user.role === 'owner')) {
+        if (!nav.querySelector('a[href*="admin.html"]')) {
+            const adminLink = document.createElement('a');
+            adminLink.href = 'admin.html';
+            adminLink.innerHTML = '<i data-lucide="crown"></i> <span>Master Hub</span>';
+            adminLink.style.background = 'linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(217, 119, 6, 0.1))';
+            adminLink.style.borderColor = 'rgba(245, 158, 11, 0.35)';
+            adminLink.style.color = '#fbbf24';
+            if (window.location.pathname.endsWith('admin.html') || window.location.href.includes('admin.html')) {
+                adminLink.classList.add('active');
+            }
+            nav.appendChild(adminLink);
+            if (window.lucide && lucide.createIcons) lucide.createIcons();
+        }
+    }
 }
 
 window.initSidebarPlayerNavigation = initSidebarPlayerNavigation;

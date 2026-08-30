@@ -107,6 +107,84 @@ app.get('/api/check-license/:license', (req, res) => {
     });
 });
 
+// Master Admin Verification Middleware
+function requireMasterAdmin(req, res, next) {
+    const adminId = req.headers['x-discord-id'] || req.query.adminId || req.body?.adminId;
+    if (!adminId || !db.isOwner(adminId)) {
+        return res.status(403).json({ error: 'Forbidden: Master Admin privileges required.' });
+    }
+    next();
+}
+
+// Master Admin Endpoints
+app.get('/api/admin/servers', requireMasterAdmin, async (req, res) => {
+    res.setHeader('Cache-Control', 'no-cache');
+    const servers = db.getServers();
+    
+    const enriched = await Promise.all(servers.map(async (s) => {
+        const profile = await resolveDiscordProfile(s.ownerDiscordId);
+        return {
+            ...s,
+            ownerName: profile.globalName || profile.username || 'Owner',
+            ownerUsername: profile.username || 'user',
+            ownerAvatarUrl: profile.url || null
+        };
+    }));
+    
+    res.json(enriched);
+});
+
+app.post('/api/admin/servers', requireMasterAdmin, (req, res) => {
+    try {
+        const { name, ownerDiscordId, durationDays } = req.body || {};
+        if (!name || !ownerDiscordId) {
+            return res.status(400).json({ error: 'Server Name and Owner Discord ID are required.' });
+        }
+        const created = db.createServer({ name, ownerDiscordId, durationDays });
+        res.status(201).json(created);
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
+});
+
+app.post('/api/admin/servers/:id/toggle-status', requireMasterAdmin, (req, res) => {
+    const newStatus = db.toggleServerStatus(req.params.id);
+    if (!newStatus) return res.status(404).json({ error: 'Server not found' });
+    res.json({ status: newStatus });
+});
+
+app.post('/api/admin/servers/:id/regenerate-key', requireMasterAdmin, (req, res) => {
+    const newKey = db.regenerateServerApiKey(req.params.id);
+    res.json({ apiKey: newKey });
+});
+
+app.delete('/api/admin/servers/:id', requireMasterAdmin, (req, res) => {
+    try {
+        db.deleteServer(req.params.id);
+        res.json({ success: true });
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
+});
+
+app.get('/api/admin/servers/:id/export', requireMasterAdmin, (req, res) => {
+    const server = db.getServerById(req.params.id);
+    if (!server) return res.status(404).json({ error: 'Server not found' });
+    
+    const dump = {
+        server,
+        players: db.getAll('players'),
+        actions: db.getAll('actions'),
+        moderators: db.getModerators(),
+        reasons: db.getReasons(),
+        exportedAt: new Date().toISOString()
+    };
+    
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Content-Disposition', `attachment; filename="watchdog_backup_${server.id}.json"`);
+    res.json(dump);
+});
+
 // Secret API Key management
 app.get('/api/server/api-key', (req, res) => {
     res.setHeader('Cache-Control', 'no-cache');
