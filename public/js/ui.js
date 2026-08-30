@@ -303,9 +303,9 @@ function initSidebarPlayerNavigation() {
         }
     }
 
-    // Dynamic Master Hub link for Owner
+    // Dynamic Master Hub link ONLY for Master Admin
     const user = getAuthUser();
-    if (user && (user.isOwner || user.role === 'owner')) {
+    if (user && user.isMaster) {
         if (!nav.querySelector('a[href*="admin.html"]')) {
             const adminLink = document.createElement('a');
             adminLink.href = 'admin.html';
@@ -329,13 +329,16 @@ function initWatchdogTopbar() {
     const topbar = document.querySelector('.topbar');
     if (!topbar || topbar.querySelector('.topbar-actions')) return;
 
+    const user = getAuthUser();
+    const isMaster = user && user.isMaster;
+
     const actionsDiv = document.createElement('div');
     actionsDiv.className = 'topbar-actions';
     actionsDiv.innerHTML = `
-        <div class="topbar-server-badge" id="topbar-server-badge" onclick="openServerSwitcherModal()" title="Switch Active Server Database">
+        <div class="topbar-server-badge" id="topbar-server-badge" ${isMaster ? 'onclick="openServerSwitcherModal()" style="cursor:pointer;" title="Switch Active Server Database"' : 'style="cursor:default;" title="Active Server Database"'}>
             <i data-lucide="server" style="width: 14px; height: 14px; color: #38bdf8;"></i>
-            <span id="topbar-server-name-label">Main Server</span>
-            <i data-lucide="chevron-down" style="width: 12px; height: 12px; color: #94a3b8;"></i>
+            <span id="topbar-server-name-label">${user?.serverName || 'Main Server'}</span>
+            ${isMaster ? '<i data-lucide="chevron-down" style="width: 12px; height: 12px; color: #94a3b8;"></i>' : ''}
         </div>
         <button class="btn-fivem-sync" title="FiveM Server Integration & Secret Key" onclick="openFivemSyncModal()">
             <i data-lucide="key-round"></i>

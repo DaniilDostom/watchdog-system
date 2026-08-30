@@ -1,9 +1,9 @@
 
 async function initAdminHub() {
     const user = getAuthUser();
-    if (!user || (!user.isOwner && user.role !== 'owner')) {
-        showToast('Access denied: Master Admin permissions required.', 'error');
-        setTimeout(() => { location.href = 'index.html'; }, 1000);
+    if (!user || !user.isMaster) {
+        showToast('Access denied: Master Admin privileges required.', 'error');
+        setTimeout(() => { location.href = 'index.html'; }, 600);
         return;
     }
 
