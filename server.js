@@ -137,11 +137,23 @@ function resolveServerId(req) {
     const key = req.headers['x-watchdog-key'] || req.query.key;
     if (key) {
         const srv = db.getServerByApiKey(key);
-        if (srv) return srv.id;
+        if (srv) {
+            if (srv.status === 'SUSPENDED' || (srv.expiresAt && Date.now() > srv.expiresAt)) {
+                return 'suspended_empty';
+            }
+            return srv.id;
+        }
     }
     const headerServerId = req.headers['x-server-id'];
     if (headerServerId && typeof headerServerId === 'string' && headerServerId.trim()) {
-        return headerServerId.trim();
+        const sid = headerServerId.trim();
+        const srv = db.getServerById(sid);
+        const adminId = req.headers['x-discord-id'] || req.query.adminId;
+        const isMasterAdmin = adminId && db.isOwner(adminId);
+        if (srv && !isMasterAdmin && (srv.status === 'SUSPENDED' || (srv.expiresAt && Date.now() > srv.expiresAt))) {
+            return 'suspended_empty';
+        }
+        return sid;
     }
     const queryServerId = req.query.serverId;
     if (queryServerId && typeof queryServerId === 'string' && queryServerId.trim()) {
@@ -164,8 +176,24 @@ app.post('/api/auth/verify-staff', async (req, res) => {
     if (!isMaster && !customerServer && (!mod || mod.isFormer)) {
         return res.status(403).json({
             authorized: false,
-            error: 'Unauthorized: Your Discord account is not registered as a Staffer or Owner for this Watchdog server.'
+            error: 'Unauthorized: Your Discord account is not registered as a Staffer or Owner.'
         });
+    }
+
+    // Check if customer server is suspended or expired (Master Admin is exempt)
+    if (!isMaster && customerServer) {
+        if (customerServer.status === 'SUSPENDED') {
+            return res.status(403).json({
+                authorized: false,
+                error: 'License Suspended: Access to this server database has been suspended by the Master Administrator.'
+            });
+        }
+        if (customerServer.expiresAt && Date.now() > customerServer.expiresAt) {
+            return res.status(403).json({
+                authorized: false,
+                error: 'License Expired: Your server subscription has expired. Please contact the administrator.'
+            });
+        }
     }
 
     // Resolve real live Discord profile (avatar, display name)
@@ -253,6 +281,16 @@ app.get('/api/auth/discord/callback', async (req, res) => {
 
         if (!isMaster && !customerServer && (!mod || mod.isFormer)) {
             return res.redirect('/login.html?error=unauthorized');
+        }
+
+        // Check if customer server is suspended or expired (Master Admin is exempt)
+        if (!isMaster && customerServer) {
+            if (customerServer.status === 'SUSPENDED') {
+                return res.redirect('/login.html?error=' + encodeURIComponent('License Suspended: Access to this server database has been suspended by the Master Administrator.'));
+            }
+            if (customerServer.expiresAt && Date.now() > customerServer.expiresAt) {
+                return res.redirect('/login.html?error=' + encodeURIComponent('License Expired: Your server subscription has expired. Please contact the administrator.'));
+            }
         }
 
         const avatarExt = discordUser.avatar?.startsWith('a_') ? 'gif' : 'png';
