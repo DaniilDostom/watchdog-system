@@ -199,18 +199,79 @@ app.post('/api/auth/verify-staff', async (req, res) => {
     // Resolve real live Discord profile (avatar, display name)
     const profile = await resolveDiscordProfile(discordId);
     const isOwnerUser = isMaster || !!customerServer;
+    const hasPassword = customerServer ? !!customerServer.password : true;
+    const requiresPasswordSetup = !isMaster && !!customerServer && !hasPassword;
 
     return res.json({
         authorized: true,
         role: isOwnerUser ? 'owner' : 'staffer',
         isOwner: isOwnerUser,
         isMaster: isMaster,
+        requiresPasswordSetup,
         serverId: customerServer ? customerServer.id : (isMaster ? 'default_server' : serverId),
         serverName: customerServer ? customerServer.name : (isMaster ? 'Main Watchdog Server' : null),
         name: profile.globalName || profile.username || mod?.name || (isOwnerUser ? 'Owner' : 'Staffer'),
         username: profile.username || mod?.name || 'User',
         discordId,
         avatarUrl: profile.url || mod?.avatarUrl || null
+    });
+});
+
+// Set initial or updated server access password
+app.post('/api/auth/server/set-password', (req, res) => {
+    const { serverId, password, discordId } = req.body || {};
+    if (!serverId || !password) {
+        return res.status(400).json({ success: false, error: 'Server ID and Password are required.' });
+    }
+    if (String(password).trim().length < 4) {
+        return res.status(400).json({ success: false, error: 'Password must be at least 4 characters long.' });
+    }
+
+    const srv = db.getServerById(serverId);
+    if (!srv) return res.status(404).json({ success: false, error: 'Server not found.' });
+
+    const isMasterAdmin = discordId && db.isOwner(discordId);
+    const isServerOwner = discordId && srv.ownerDiscordId === String(discordId).trim();
+
+    if (!isMasterAdmin && !isServerOwner) {
+        return res.status(403).json({ success: false, error: 'Unauthorized: Only the Server Owner or Master Admin can set the access password.' });
+    }
+
+    db.setServerPassword(serverId, password);
+    res.json({ success: true, message: 'Server access password set successfully.' });
+});
+
+// Staff Password Login
+app.post('/api/auth/staff-password-login', (req, res) => {
+    const { password } = req.body || {};
+    if (!password || !String(password).trim()) {
+        return res.status(400).json({ authorized: false, error: 'Password is required.' });
+    }
+
+    const srv = db.verifyServerPassword(password);
+    if (!srv) {
+        return res.status(401).json({ authorized: false, error: 'Invalid Server Access Password.' });
+    }
+
+    if (srv.status === 'SUSPENDED') {
+        return res.status(403).json({ authorized: false, error: 'License Suspended: Access to this server database is suspended.' });
+    }
+
+    if (srv.expiresAt && Date.now() > srv.expiresAt) {
+        return res.status(403).json({ authorized: false, error: 'License Expired: This server license has expired.' });
+    }
+
+    return res.json({
+        authorized: true,
+        role: 'staffer',
+        isOwner: false,
+        isMaster: false,
+        serverId: srv.id,
+        serverName: srv.name,
+        name: `${srv.name} Staff`,
+        username: 'staff',
+        discordId: null,
+        avatarUrl: null
     });
 });
 

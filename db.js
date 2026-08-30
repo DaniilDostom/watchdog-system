@@ -60,6 +60,7 @@ db.exec(`
 `);
 
 // Migrations for existing columns
+try { db.exec("ALTER TABLE servers ADD COLUMN password TEXT DEFAULT NULL;"); } catch (e) {}
 try { db.exec("ALTER TABLE players ADD COLUMN serverId TEXT DEFAULT 'default_server';"); } catch (e) {}
 try { db.exec("ALTER TABLE actions ADD COLUMN serverId TEXT DEFAULT 'default_server';"); } catch (e) {}
 try { db.exec("ALTER TABLE moderators ADD COLUMN serverId TEXT DEFAULT 'default_server';"); } catch (e) {}
@@ -463,6 +464,28 @@ getReasons('default_server');
 getModerators('default_server');
 getDiscordCache();
 
+function setServerPassword(serverId, password) {
+    if (!serverId) throw new Error('Server ID is required');
+    const pwd = password ? String(password).trim() : null;
+    db.prepare('UPDATE servers SET password = ? WHERE id = ?').run(pwd, serverId);
+    return true;
+}
+
+function verifyServerPassword(password, serverId = null) {
+    if (!password) return null;
+    const pwd = String(password).trim();
+    if (serverId) {
+        return db.prepare("SELECT * FROM servers WHERE id = ? AND password = ? AND status = 'ACTIVE'").get(serverId, pwd) || null;
+    }
+    return db.prepare("SELECT * FROM servers WHERE password = ? AND status = 'ACTIVE'").get(pwd) || null;
+}
+
+function getServerPassword(serverId) {
+    if (!serverId) return null;
+    const row = db.prepare('SELECT password FROM servers WHERE id = ?').get(serverId);
+    return row?.password || null;
+}
+
 module.exports = {
     getAll,
     replaceAll,
@@ -487,5 +510,8 @@ module.exports = {
     updateServer,
     regenerateServerApiKey,
     toggleServerStatus,
-    deleteServer
+    deleteServer,
+    setServerPassword,
+    verifyServerPassword,
+    getServerPassword
 };
