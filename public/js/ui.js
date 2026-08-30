@@ -606,10 +606,11 @@ window.setAuthUser = setAuthUser;
 
 function logoutWatchdogUser() {
     localStorage.removeItem('watchdog_auth_user');
+    localStorage.removeItem('watchdog_active_server_id');
     showToast('Logged out successfully.', 'info');
     setTimeout(() => {
-        location.reload();
-    }, 400);
+        location.href = 'login.html';
+    }, 300);
 }
 window.logoutWatchdogUser = logoutWatchdogUser;
 

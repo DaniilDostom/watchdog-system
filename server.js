@@ -189,6 +189,96 @@ app.get('/api/auth/current-owner', (req, res) => {
     res.json({ ownerDiscordId: db.getOwnerDiscordId() });
 });
 
+// Discord OAuth2 Login Redirect
+app.get('/api/auth/discord/login', (req, res) => {
+    const clientId = process.env.DISCORD_CLIENT_ID || '1542217467105906798';
+    const host = req.get('host');
+    const protocol = req.protocol === 'https' || req.headers['x-forwarded-proto'] === 'https' ? 'https' : 'http';
+    const redirectUri = `${protocol}://${host}/api/auth/discord/callback`;
+
+    const authUrl = `https://discord.com/api/oauth2/authorize?client_id=${clientId}&response_type=code&redirect_uri=${encodeURIComponent(redirectUri)}&scope=identify`;
+    res.redirect(authUrl);
+});
+
+// Discord OAuth2 Callback Handler
+app.get('/api/auth/discord/callback', async (req, res) => {
+    const code = req.query.code;
+    if (!code) {
+        return res.redirect('/login.html?error=oauth_failed');
+    }
+
+    const clientId = process.env.DISCORD_CLIENT_ID || '1542217467105906798';
+    const clientSecret = process.env.DISCORD_CLIENT_SECRET;
+    const host = req.get('host');
+    const protocol = req.protocol === 'https' || req.headers['x-forwarded-proto'] === 'https' ? 'https' : 'http';
+    const redirectUri = `${protocol}://${host}/api/auth/discord/callback`;
+
+    if (!clientSecret) {
+        return res.redirect('/login.html?error=' + encodeURIComponent('Discord Client Secret not configured. Please use Direct Discord ID login.'));
+    }
+
+    try {
+        const tokenRes = await fetch('https://discord.com/api/oauth2/token', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({
+                client_id: clientId,
+                client_secret: clientSecret,
+                grant_type: 'authorization_code',
+                code,
+                redirect_uri: redirectUri
+            })
+        });
+
+        if (!tokenRes.ok) {
+            return res.redirect('/login.html?error=oauth_failed');
+        }
+
+        const tokenData = await tokenRes.json();
+        const userRes = await fetch('https://discord.com/api/users/@me', {
+            headers: { Authorization: `Bearer ${tokenData.access_token}` }
+        });
+
+        if (!userRes.ok) {
+            return res.redirect('/login.html?error=oauth_failed');
+        }
+
+        const discordUser = await userRes.json();
+        const discordId = discordUser.id;
+
+        const isMaster = db.isOwner(discordId);
+        const customerServer = db.getServerByOwner(discordId);
+        const mod = db.getModeratorByDiscordId(discordId, 'default_server');
+
+        if (!isMaster && !customerServer && (!mod || mod.isFormer)) {
+            return res.redirect('/login.html?error=unauthorized');
+        }
+
+        const avatarExt = discordUser.avatar?.startsWith('a_') ? 'gif' : 'png';
+        const avatarUrl = discordUser.avatar
+            ? `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.${avatarExt}?size=128`
+            : `https://cdn.discordapp.com/embed/avatars/${Number((BigInt(discordId) >> 22n) % 6n)}.png`;
+
+        const isOwnerUser = isMaster || !!customerServer;
+        const payload = {
+            authorized: true,
+            role: isOwnerUser ? 'owner' : 'staffer',
+            isOwner: isOwnerUser,
+            isMaster: isMaster,
+            serverId: customerServer ? customerServer.id : (isMaster ? 'default_server' : 'default_server'),
+            serverName: customerServer ? customerServer.name : (isMaster ? 'Main Watchdog Server' : null),
+            name: discordUser.global_name || discordUser.username || (isOwnerUser ? 'Owner' : 'Staffer'),
+            username: discordUser.username || 'user',
+            discordId,
+            avatarUrl
+        };
+
+        return res.redirect(`/login.html?auth_payload=${encodeURIComponent(JSON.stringify(payload))}`);
+    } catch (err) {
+        return res.redirect('/login.html?error=oauth_failed');
+    }
+});
+
 // REST API Endpoints (Direct L1 Memory Cache with sub-millisecond dispatch)
 app.get('/api/players', (req, res) => {
     res.setHeader('Cache-Control', 'no-cache');

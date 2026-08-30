@@ -1,6 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Zero-Flash Security Guard (Synchronous Head Verification) -->
+    <script>
+        (function() {
+            try {
+                var u = JSON.parse(localStorage.getItem('watchdog_auth_user') || 'null');
+                if (!u || !u.authorized) {
+                    window.location.replace('login.html');
+                }
+            } catch (e) {
+                window.location.replace('login.html');
+            }
+        })();
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Statistics | Moderation System</title>
