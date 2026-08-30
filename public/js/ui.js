@@ -302,7 +302,7 @@ function initSidebarPlayerNavigation() {
         }
     }
 
-    // Server Settings link for Server Owners and Master Creators
+    // Server Settings link for Server Owners and Master Creators (Positioned right above Activity)
     if (user && (user.isOwner || user.isMaster)) {
         if (!nav.querySelector('a[href*="settings.html"]')) {
             const settingsLink = document.createElement('a');
@@ -311,7 +311,12 @@ function initSidebarPlayerNavigation() {
             if (window.location.pathname.endsWith('settings.html') || window.location.href.includes('settings.html')) {
                 settingsLink.classList.add('active');
             }
-            nav.appendChild(settingsLink);
+            const activityLink = nav.querySelector('a[href*="activity.html"]');
+            if (activityLink) {
+                nav.insertBefore(settingsLink, activityLink);
+            } else {
+                nav.appendChild(settingsLink);
+            }
             if (window.lucide && lucide.createIcons) lucide.createIcons();
         }
     }

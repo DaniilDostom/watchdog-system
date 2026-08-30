@@ -21,15 +21,40 @@ async function loadCurrentServerSettings() {
         if (res.ok) {
             const data = await res.json();
             currentServerInfo = data;
-            renderServerSettings(data);
+            renderServerSettings(data, user);
         }
     } catch (err) {}
 }
 
-function renderServerSettings(data) {
+function renderServerSettings(data, user) {
+    // Hero Banner
+    const heroName = document.getElementById('hero-server-name');
+    const heroId = document.getElementById('hero-server-id');
+    const heroExpiry = document.getElementById('hero-expiry-label');
+    const heroStatus = document.getElementById('hero-status-pill');
+
+    if (heroName) heroName.textContent = data.name || 'Watchdog Server';
+    if (heroId) heroId.textContent = `ID: ${data.id}`;
+    if (heroExpiry) heroExpiry.textContent = data.expiresAt ? `Expires: ${new Date(data.expiresAt).toLocaleDateString()}` : 'Lifetime License';
+    if (heroStatus) {
+        heroStatus.textContent = data.status || 'ACTIVE';
+        heroStatus.className = `server-status-pill ${data.status === 'ACTIVE' ? 'active' : 'suspended'}`;
+    }
+
+    // Owner Avatar & Name
+    const ownerAvatar = document.getElementById('hero-owner-avatar');
+    const ownerName = document.getElementById('hero-owner-name');
+    const ownerSub = document.getElementById('hero-owner-sub');
+
+    if (ownerAvatar && user?.avatarUrl) ownerAvatar.src = user.avatarUrl;
+    if (ownerName && user?.name) ownerName.textContent = user.name;
+    if (ownerSub && user?.discordId) ownerSub.textContent = `@${user.username || 'owner'} • ${user.discordId}`;
+
+    // Key Box
     const keyInput = document.getElementById('settings-api-key-val');
     if (keyInput) keyInput.value = data.apiKey || '';
 
+    // Lua Preview
     const luaBox = document.getElementById('lua-code-preview');
     if (luaBox) {
         const originUrl = window.location.origin || 'http://localhost:3000';
@@ -54,7 +79,9 @@ async function handleUpdateDbPassword(e) {
         if (msgEl) {
             msgEl.textContent = 'Password must be at least 4 characters long.';
             msgEl.style.display = 'block';
-            msgEl.className = 'auth-error-msg';
+            msgEl.style.color = '#ef4444';
+            msgEl.style.borderColor = 'rgba(239, 68, 68, 0.4)';
+            msgEl.style.background = 'rgba(239, 68, 68, 0.1)';
         }
         return;
     }
@@ -63,7 +90,9 @@ async function handleUpdateDbPassword(e) {
         if (msgEl) {
             msgEl.textContent = 'Passwords do not match. Please re-enter.';
             msgEl.style.display = 'block';
-            msgEl.className = 'auth-error-msg';
+            msgEl.style.color = '#ef4444';
+            msgEl.style.borderColor = 'rgba(239, 68, 68, 0.4)';
+            msgEl.style.background = 'rgba(239, 68, 68, 0.1)';
         }
         return;
     }
@@ -94,9 +123,8 @@ async function handleUpdateDbPassword(e) {
             showToast('Database access password updated successfully!', 'success');
             document.getElementById('change-db-pwd-form')?.reset();
             if (msgEl) {
-                msgEl.textContent = 'Security password updated! Your staff will need this password on next login.';
+                msgEl.textContent = 'Security password updated! Your staff will need this password on their next login.';
                 msgEl.style.display = 'block';
-                msgEl.className = 'auth-error-msg';
                 msgEl.style.color = '#34d399';
                 msgEl.style.borderColor = 'rgba(52, 211, 153, 0.4)';
                 msgEl.style.background = 'rgba(52, 211, 153, 0.1)';
@@ -105,14 +133,15 @@ async function handleUpdateDbPassword(e) {
             if (msgEl) {
                 msgEl.textContent = data.error || 'Failed to update password.';
                 msgEl.style.display = 'block';
-                msgEl.className = 'auth-error-msg';
+                msgEl.style.color = '#ef4444';
+                msgEl.style.borderColor = 'rgba(239, 68, 68, 0.4)';
+                msgEl.style.background = 'rgba(239, 68, 68, 0.1)';
             }
         }
     } catch (err) {
         if (msgEl) {
             msgEl.textContent = 'Server connection error.';
             msgEl.style.display = 'block';
-            msgEl.className = 'auth-error-msg';
         }
     } finally {
         if (submitBtn) {
@@ -185,9 +214,14 @@ window.regenerateSettingsApiKey = regenerateSettingsApiKey;
 
 function copyLuaSnippet() {
     const luaBox = document.getElementById('lua-code-preview');
+    const label = document.getElementById('lua-copy-label');
     if (luaBox && luaBox.textContent) {
         navigator.clipboard.writeText(luaBox.textContent).then(() => {
             showToast('config.lua snippet copied to clipboard!', 'success');
+            if (label) {
+                label.textContent = 'Copied!';
+                setTimeout(() => { label.textContent = 'Copy'; }, 2000);
+            }
         });
     }
 }
