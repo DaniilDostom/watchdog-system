@@ -3,80 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Select Server Database | Watchdog SaaS</title>
+    <title>Master Hub & Server Workspaces | Watchdog Systems</title>
     <link rel="icon" type="image/png" href="logo.png">
-    <link rel="stylesheet" href="css/style.css?v=20">
-    <link rel="stylesheet" href="css/layout.css?v=20">
+    <link rel="stylesheet" href="css/style.css?v=22">
+    <link rel="stylesheet" href="css/layout.css?v=22">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        (function() {
+            try {
+                var u = JSON.parse(localStorage.getItem('watchdog_auth_user') || 'null');
+                if (!u || !u.authorized) {
+                    window.location.replace('login.html');
+                } else if (!u.isMaster) {
+                    window.location.replace('index.html');
+                }
+            } catch(e) {
+                window.location.replace('login.html');
+            }
+        })();
+    </script>
     <style>
         body {
             background: #030712;
             background-image: 
                 radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(56, 189, 248, 0.1) 0px, transparent 50%);
+                radial-gradient(at 100% 100%, rgba(56, 189, 248, 0.1) 0px, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(15, 23, 42, 0.6) 0px, transparent 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             color: #f1f5f9;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
         }
 
         .select-hub-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 24px 40px;
+            padding: 20px 40px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(12px);
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(16px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .select-hub-container {
-            max-width: 1200px;
-            margin: 40px auto;
+            max-width: 1280px;
+            margin: 32px auto;
             padding: 0 24px;
             width: 100%;
             flex: 1;
+            box-sizing: border-box;
         }
 
         .select-hero-text {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
 
         .select-hero-logo {
-            width: 68px;
-            height: 68px;
-            margin-bottom: 14px;
+            width: 64px;
+            height: 64px;
+            margin-bottom: 12px;
             filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.45));
         }
 
         .select-hero-title {
-            font-size: 32px;
+            font-size: 30px;
             font-weight: 800;
             color: #ffffff;
-            margin: 0 0 8px 0;
+            margin: 0 0 6px 0;
             letter-spacing: -0.5px;
         }
 
         .select-hero-sub {
-            font-size: 15px;
+            font-size: 14px;
             color: #94a3b8;
             max-width: 580px;
             margin: 0 auto;
             line-height: 1.5;
         }
 
+        /* KPI Cards */
+        .kpi-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .kpi-card {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 18px 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .kpi-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .kpi-val {
+            font-size: 24px;
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1.1;
+        }
+
+        .kpi-label {
+            font-size: 11.5px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-top: 3px;
+        }
+
+        /* Action Toolbar */
+        .hub-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        .hub-search-input {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 9px 14px 9px 38px;
+            font-size: 13px;
+            color: #ffffff;
+            outline: none;
+            width: 260px;
+            transition: all 0.2s ease;
+        }
+
+        .hub-search-input:focus {
+            border-color: #818cf8;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
         .servers-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
             gap: 22px;
         }
 
         .server-tenant-card {
-            background: linear-gradient(145deg, rgba(15, 23, 42, 0.85), rgba(7, 14, 27, 0.95));
+            background: linear-gradient(145deg, rgba(15, 23, 42, 0.88), rgba(7, 14, 27, 0.98));
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 18px;
-            padding: 24px;
+            padding: 22px;
             box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
             display: flex;
             flex-direction: column;
@@ -84,7 +176,6 @@
             transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
             overflow: hidden;
-            cursor: pointer;
         }
 
         .server-tenant-card::before {
@@ -100,9 +191,9 @@
         }
 
         .server-tenant-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(129, 140, 248, 0.4);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 25px rgba(99, 102, 241, 0.15);
+            transform: translateY(-3px);
+            border-color: rgba(129, 140, 248, 0.35);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 25px rgba(99, 102, 241, 0.12);
         }
 
         .server-tenant-card:hover::before {
@@ -110,7 +201,7 @@
         }
 
         .server-tenant-card.master-server {
-            border-color: rgba(245, 158, 11, 0.3);
+            border-color: rgba(245, 158, 11, 0.35);
         }
         .server-tenant-card.master-server::before {
             background: linear-gradient(90deg, #fbbf24, #f59e0b);
@@ -121,13 +212,13 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
         }
 
         .server-card-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
+            width: 40px;
+            height: 40px;
+            border-radius: 11px;
             background: rgba(99, 102, 241, 0.15);
             color: #818cf8;
             display: flex;
@@ -142,51 +233,108 @@
         }
 
         .server-card-title {
-            font-size: 18px;
+            font-size: 17.5px;
             font-weight: 800;
             color: #ffffff;
-            margin: 0 0 4px 0;
+            margin: 0 0 2px 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .server-card-id {
             font-size: 11px;
             color: #64748b;
             font-family: monospace;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .server-card-stats {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            background: rgba(3, 7, 18, 0.5);
+            gap: 8px;
+            background: rgba(3, 7, 18, 0.55);
             border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 12px;
-            margin: 18px 0;
+            border-radius: 11px;
+            padding: 10px 12px;
+            margin: 14px 0;
         }
 
         .server-stat-box {
             text-align: center;
         }
         .server-stat-val {
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 800;
             color: #ffffff;
         }
         .server-stat-label {
-            font-size: 11px;
+            font-size: 10.5px;
             color: #94a3b8;
             text-transform: uppercase;
             font-weight: 700;
             letter-spacing: 0.4px;
         }
 
-        .btn-launch-server {
+        /* Key Box */
+        .server-key-box {
+            background: rgba(3, 7, 18, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
+            padding: 8px 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .server-key-input {
+            background: transparent;
+            border: none;
+            color: #38bdf8;
+            font-family: monospace;
+            font-size: 11.5px;
             width: 100%;
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(56, 189, 248, 0.15));
-            border: 1px solid rgba(129, 140, 248, 0.35);
+            outline: none;
+        }
+
+        .key-action-btn {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #cbd5e1;
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            flex-shrink: 0;
+        }
+        .key-action-btn:hover {
+            background: rgba(99, 102, 241, 0.25);
+            border-color: rgba(129, 140, 248, 0.5);
             color: #ffffff;
-            padding: 11px;
+        }
+
+        /* Card Action Buttons */
+        .card-actions-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .btn-launch-server {
+            flex: 1;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(56, 189, 248, 0.2));
+            border: 1px solid rgba(129, 140, 248, 0.4);
+            color: #ffffff;
+            padding: 10px 14px;
             border-radius: 10px;
             font-size: 13px;
             font-weight: 700;
@@ -198,10 +346,36 @@
             transition: all 0.2s ease;
         }
 
-        .server-tenant-card:hover .btn-launch-server {
+        .btn-launch-server:hover {
             background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
             border-color: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 4px 16px rgba(79, 70, 229, 0.4);
+            box-shadow: 0 4px 16px rgba(79, 70, 229, 0.45);
+            transform: translateY(-1px);
+        }
+
+        .btn-tool-icon {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            flex-shrink: 0;
+        }
+        .btn-tool-icon:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+        .btn-tool-icon.danger:hover {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: rgba(239, 68, 68, 0.4);
+            color: #f87171;
         }
 
         .add-new-server-card {
@@ -216,13 +390,13 @@
             text-align: center;
             cursor: pointer;
             transition: all 0.2s ease;
-            min-height: 240px;
+            min-height: 280px;
         }
 
         .add-new-server-card:hover {
             background: rgba(99, 102, 241, 0.08);
             border-color: #818cf8;
-            transform: translateY(-4px);
+            transform: translateY(-3px);
         }
     </style>
 </head>
@@ -230,14 +404,14 @@
     <header class="select-hub-header">
         <div style="display: flex; align-items: center; gap: 12px;">
             <img src="logo.png" alt="Watchdog" style="width: 32px; height: 32px;" />
-            <span style="font-size: 17px; font-weight: 800; color: #fff; letter-spacing: -0.2px;">Watchdog Cloud Hub</span>
+            <span style="font-size: 17px; font-weight: 800; color: #fff; letter-spacing: -0.2px;">Watchdog Master Control</span>
         </div>
-        <div style="display: flex; align-items: center; gap: 14px;">
-            <a href="admin.html" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.18), rgba(217, 119, 6, 0.15)); border: 1px solid rgba(245, 158, 11, 0.35); color: #fbbf24; text-decoration: none; padding: 7px 14px; border-radius: 10px; font-size: 12.5px; font-weight: 700; display: flex; align-items: center; gap: 6px;">
-                <i data-lucide="crown" style="width: 14px; height: 14px;"></i>
-                <span>Master Hub</span>
-            </a>
-            <button type="button" onclick="logoutWatchdogUser()" style="background: transparent; border: 1px solid rgba(255, 255, 255, 0.12); color: #94a3b8; padding: 7px 12px; border-radius: 10px; font-size: 12.5px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <button type="button" class="cta" onclick="openCreateServerModal()" style="width: auto; margin: 0; padding: 8px 14px; display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);">
+                <i data-lucide="plus-circle" style="width: 14px; height: 14px;"></i>
+                <span>Create License</span>
+            </button>
+            <button type="button" onclick="logoutWatchdogUser()" style="background: transparent; border: 1px solid rgba(255, 255, 255, 0.12); color: #94a3b8; padding: 8px 12px; border-radius: 10px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px;">
                 <i data-lucide="log-out" style="width: 14px; height: 14px;"></i>
                 <span>Log Out</span>
             </button>
@@ -247,10 +421,55 @@
     <main class="select-hub-container">
         <div class="select-hero-text">
             <img src="logo.png" alt="Watchdog" class="select-hero-logo" />
-            <h1 class="select-hero-title">Select Database Workspace</h1>
-            <p class="select-hero-sub" id="select-hero-subtitle">Welcome back, Master Creator! Select which server environment you want to access.</p>
+            <h1 class="select-hero-title">Database & License Hub</h1>
+            <p class="select-hero-sub" id="select-hero-subtitle">Manage customer licenses, inspect isolated databases, and generate FiveM Secret Keys.</p>
         </div>
 
+        <!-- KPI Stat Ribbon -->
+        <div class="kpi-row">
+            <div class="kpi-card">
+                <div class="kpi-icon" style="background: rgba(99, 102, 241, 0.15); color: #818cf8; border: 1px solid rgba(129, 140, 248, 0.25);">
+                    <i data-lucide="server"></i>
+                </div>
+                <div>
+                    <div class="kpi-val" id="kpi-total-servers">0</div>
+                    <div class="kpi-label">Active Tenants</div>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.25);">
+                    <i data-lucide="users"></i>
+                </div>
+                <div>
+                    <div class="kpi-val" id="kpi-total-players">0</div>
+                    <div class="kpi-label">Tracked Players</div>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.25);">
+                    <i data-lucide="shield-alert"></i>
+                </div>
+                <div>
+                    <div class="kpi-val" id="kpi-total-actions">0</div>
+                    <div class="kpi-label">Total Sanctions</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Toolbar -->
+        <div class="hub-toolbar">
+            <div style="position: relative;">
+                <i data-lucide="search" style="position: absolute; left: 12px; top: 10px; width: 15px; height: 15px; color: #64748b;"></i>
+                <input type="text" id="hub-search" class="hub-search-input" placeholder="Search servers or Discord ID..." oninput="filterServerCards(this.value)" />
+            </div>
+            <div style="display: flex; gap: 8px;">
+                <button type="button" class="cta" onclick="loadServerCards()" style="width: auto; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1); color: #cbd5e1; padding: 8px 14px; font-size: 12.5px;">
+                    <i data-lucide="refresh-cw" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle; margin-right: 4px;"></i> Refresh
+                </button>
+            </div>
+        </div>
+
+        <!-- Server Cards Grid -->
         <div class="servers-grid" id="servers-select-grid">
             <div style="grid-column: 1 / -1; text-align: center; color: #64748b; padding: 40px;">
                 Loading server environments...
@@ -303,8 +522,8 @@
     <!-- Toast Container -->
     <div id="toast-container"></div>
 
-    <script src="js/api.js?v=20"></script>
-    <script src="js/ui.js?v=20"></script>
-    <script src="js/select-server.js?v=20"></script>
+    <script src="js/api.js?v=22"></script>
+    <script src="js/ui.js?v=22"></script>
+    <script src="js/select-server.js?v=22"></script>
 </body>
 </html>
