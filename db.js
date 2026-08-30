@@ -285,6 +285,20 @@ function getModeratorByDiscordId(discordId) {
     return mods.find(m => String(m.discordId).trim() === String(discordId).trim()) || null;
 }
 
+function getOwnerDiscordId() {
+    return getSetting('owner_discord_id', process.env.DISCORD_OWNER_ID || '320110089727901697');
+}
+
+function setOwnerDiscordId(discordId) {
+    setSetting('owner_discord_id', String(discordId).trim());
+}
+
+function isOwner(discordId) {
+    if (!discordId) return false;
+    const currentOwner = getOwnerDiscordId();
+    return String(discordId).trim() === String(currentOwner).trim();
+}
+
 // Warm up L1 cache on initial load
 migrateLegacyDataIfNeeded();
 getAll('players');
@@ -306,6 +320,9 @@ module.exports = {
     getApiKey,
     regenerateApiKey,
     validateApiKey,
-    getModeratorByDiscordId
+    getModeratorByDiscordId,
+    getOwnerDiscordId,
+    setOwnerDiscordId,
+    isOwner
 };
 

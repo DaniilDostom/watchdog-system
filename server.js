@@ -118,22 +118,38 @@ app.post('/api/server/api-key/regenerate', (req, res) => {
     res.json({ apiKey: newKey });
 });
 
-// Staff verification endpoint
-app.post('/api/auth/verify-staff', (req, res) => {
-    const { discordId, name } = req.body || {};
-    if (!discordId) return res.status(400).json({ authorized: false, error: 'Discord ID required' });
+// Staff verification & Discord Login endpoint
+app.post('/api/auth/verify-staff', async (req, res) => {
+    const rawId = req.body?.discordId;
+    if (!rawId) return res.status(400).json({ authorized: false, error: 'Discord ID is required' });
     
-    const ownerId = process.env.DISCORD_OWNER_ID;
-    const isOwner = ownerId && String(ownerId).trim() === String(discordId).trim();
+    const discordId = String(rawId).trim();
+    const isOwner = db.isOwner(discordId);
     const mod = db.getModeratorByDiscordId(discordId);
 
-    if (isOwner) {
-        return res.json({ authorized: true, role: 'owner', name: name || 'Owner', isOwner: true, discordId });
+    if (!isOwner && (!mod || mod.isFormer)) {
+        return res.status(403).json({
+            authorized: false,
+            error: 'Non sei autorizzato: il tuo account Discord non è registrato come Staffer o Owner per questo server Watchdog.'
+        });
     }
-    if (mod && !mod.isFormer) {
-        return res.json({ authorized: true, role: 'staffer', name: mod.name, isOwner: false, discordId, avatarUrl: mod.avatarUrl });
-    }
-    return res.status(403).json({ authorized: false, error: 'User is not an authorized staff member' });
+
+    // Resolve real live Discord profile (avatar, display name)
+    const profile = await resolveDiscordProfile(discordId);
+
+    return res.json({
+        authorized: true,
+        role: isOwner ? 'owner' : 'staffer',
+        name: mod?.name || profile.globalName || profile.username || (isOwner ? 'Owner' : 'Staffer'),
+        username: profile.username || mod?.name || 'User',
+        isOwner,
+        discordId,
+        avatarUrl: profile.url || mod?.avatarUrl || null
+    });
+});
+
+app.get('/api/auth/current-owner', (req, res) => {
+    res.json({ ownerDiscordId: db.getOwnerDiscordId() });
 });
 
 app.post('/api/players', (req, res) => {

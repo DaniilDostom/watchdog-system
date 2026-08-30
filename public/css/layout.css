@@ -284,3 +284,221 @@
     0%, 100% { opacity: 1; transform: scale(1); }
     50% { opacity: 0.4; transform: scale(0.85); }
 }
+
+/* Discord Topbar User Profile */
+.topbar-user-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 4px 10px 4px 6px;
+    border-radius: 24px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.topbar-user-badge:hover {
+    background: rgba(30, 41, 59, 0.95);
+    border-color: rgba(129, 140, 248, 0.4);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.topbar-user-avatar {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #4f46e5;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.topbar-user-name {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #f1f5f9;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.topbar-user-role {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 12px;
+    letter-spacing: 0.4px;
+}
+
+.topbar-user-role.owner {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.3));
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.4);
+}
+
+.topbar-user-role.staffer {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(79, 70, 229, 0.3));
+    color: #818cf8;
+    border: 1px solid rgba(99, 102, 241, 0.4);
+}
+
+.btn-topbar-logout {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    transition: color 0.2s ease;
+}
+
+.btn-topbar-logout:hover {
+    color: #ef4444;
+}
+
+/* Discord Auth Gate Overlay */
+.auth-gate-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(3, 7, 18, 0.94);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: authFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes authFadeIn {
+    from { opacity: 0; transform: scale(0.98); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.auth-gate-card {
+    background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(7, 14, 27, 0.98));
+    border: 1px solid rgba(129, 140, 248, 0.25);
+    border-radius: 20px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(99, 102, 241, 0.15);
+    width: 100%;
+    max-width: 440px;
+    padding: 32px 28px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.auth-gate-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #6366f1, #38bdf8, #818cf8);
+}
+
+.auth-gate-logo {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 16px auto;
+    display: block;
+    filter: drop-shadow(0 0 16px rgba(99, 102, 241, 0.4));
+}
+
+.auth-gate-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: #ffffff;
+    margin: 0 0 6px 0;
+    letter-spacing: -0.3px;
+}
+
+.auth-gate-subtitle {
+    font-size: 13px;
+    color: #94a3b8;
+    line-height: 1.5;
+    margin-bottom: 24px;
+}
+
+.auth-input-group {
+    margin-bottom: 18px;
+    text-align: left;
+}
+
+.auth-input-group label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    color: #cbd5e1;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 6px;
+}
+
+.auth-input {
+    width: 100%;
+    background: rgba(3, 7, 18, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 14px;
+    color: #ffffff;
+    font-family: monospace;
+    letter-spacing: 0.5px;
+    outline: none;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+.auth-input:focus {
+    border-color: #818cf8;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+    background: rgba(3, 7, 18, 0.9);
+}
+
+.btn-auth-submit {
+    width: 100%;
+    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    padding: 13px 18px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 16px rgba(79, 70, 229, 0.35);
+}
+
+.btn-auth-submit:hover {
+    background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(79, 70, 229, 0.5);
+}
+
+.auth-error-msg {
+    display: none;
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #f87171;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    text-align: left;
+    line-height: 1.4;
+}

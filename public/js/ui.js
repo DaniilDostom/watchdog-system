@@ -458,7 +458,182 @@ async function regenerateFivemKey() {
 }
 window.regenerateFivemKey = regenerateFivemKey;
 
+// ==========================================
+// DISCORD AUTH GATE & USER SESSION
+// ==========================================
+function getAuthUser() {
+    try {
+        const stored = localStorage.getItem('watchdog_auth_user');
+        return stored ? JSON.parse(stored) : null;
+    } catch {
+        return null;
+    }
+}
+window.getAuthUser = getAuthUser;
+
+function setAuthUser(user) {
+    if (user) {
+        localStorage.setItem('watchdog_auth_user', JSON.stringify(user));
+    } else {
+        localStorage.removeItem('watchdog_auth_user');
+    }
+    renderTopbarUser();
+}
+window.setAuthUser = setAuthUser;
+
+function logoutWatchdogUser() {
+    localStorage.removeItem('watchdog_auth_user');
+    showToast('Disconnessione effettuata.', 'info');
+    setTimeout(() => {
+        location.reload();
+    }, 400);
+}
+window.logoutWatchdogUser = logoutWatchdogUser;
+
+function renderTopbarUser() {
+    const user = getAuthUser();
+    const container = document.querySelector('.topbar-actions');
+    if (!container) return;
+
+    let userBadge = container.querySelector('.topbar-user-badge');
+    if (!user) {
+        if (userBadge) userBadge.remove();
+        return;
+    }
+
+    const initial = (user.name || user.username || 'U').charAt(0).toUpperCase();
+    const isOwner = user.role === 'owner' || user.isOwner;
+    const roleText = isOwner ? '👑 Owner' : '🛡️ Staff';
+    const roleClass = isOwner ? 'owner' : 'staffer';
+
+    if (!userBadge) {
+        userBadge = document.createElement('div');
+        userBadge.className = 'topbar-user-badge';
+        container.prepend(userBadge);
+    }
+
+    userBadge.innerHTML = `
+        ${user.avatarUrl 
+            ? `<img src="${user.avatarUrl}" alt="${escapeHtml(user.name)}" class="topbar-user-avatar" onerror="this.outerHTML='<div class=\\'topbar-user-avatar\\' style=\\'display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;\\'>${initial}</div>'" />`
+            : `<div class="topbar-user-avatar" style="display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;">${initial}</div>`
+        }
+        <span class="topbar-user-name">${escapeHtml(user.name || user.username || 'Utente')}</span>
+        <span class="topbar-user-role ${roleClass}">${roleText}</span>
+        <button type="button" class="btn-topbar-logout" onclick="event.stopPropagation(); logoutWatchdogUser();" title="Disconnetti account">
+            <i data-lucide="log-out" style="width: 14px; height: 14px;"></i>
+        </button>
+    `;
+
+    if (window.lucide && lucide.createIcons) lucide.createIcons();
+}
+window.renderTopbarUser = renderTopbarUser;
+
+function initDiscordAuthGate() {
+    const user = getAuthUser();
+    renderTopbarUser();
+
+    if (user && user.authorized) {
+        // User is already logged in
+        return;
+    }
+
+    // Show Auth Gate Modal
+    let overlay = document.getElementById('discord-auth-gate-overlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'discord-auth-gate-overlay';
+        overlay.className = 'auth-gate-overlay';
+        document.body.appendChild(overlay);
+    }
+
+    overlay.innerHTML = `
+        <div class="auth-gate-card">
+            <img src="logo.png" alt="Watchdog" class="auth-gate-logo" />
+            <h2 class="auth-gate-title">Watchdog Access Gate</h2>
+            <p class="auth-gate-subtitle">Identificati con il tuo account Discord per sbloccare la Dashboard di Moderazione.</p>
+
+            <div id="auth-gate-error" class="auth-error-msg"></div>
+
+            <form id="auth-gate-form" onsubmit="handleAuthGateSubmit(event)">
+                <div class="auth-input-group">
+                    <label>Discord ID Utente</label>
+                    <input type="text" id="auth-discord-id" class="auth-input" placeholder="es. 320110089727901697" required autofocus autocomplete="off" />
+                </div>
+                <button type="submit" id="auth-gate-btn" class="btn-auth-submit">
+                    <i data-lucide="shield-check" style="width: 17px; height: 17px;"></i>
+                    <span>Verifica ed Entra</span>
+                </button>
+            </form>
+
+            <div style="margin-top: 20px; font-size: 11.5px; color: #64748b; line-height: 1.4;">
+                <i data-lucide="lock" style="width: 12px; height: 12px; display: inline-block; vertical-align: middle; margin-right: 3px;"></i>
+                Accesso crittografato riservato all'Owner e agli Staffer registrati.
+            </div>
+        </div>
+    `;
+
+    if (window.lucide && lucide.createIcons) lucide.createIcons();
+    overlay.style.display = 'flex';
+}
+window.initDiscordAuthGate = initDiscordAuthGate;
+
+async function handleAuthGateSubmit(e) {
+    e.preventDefault();
+    const idInput = document.getElementById('auth-discord-id');
+    const submitBtn = document.getElementById('auth-gate-btn');
+    const errorEl = document.getElementById('auth-gate-error');
+
+    const discordId = (idInput?.value || '').trim();
+    if (!discordId) return;
+
+    if (errorEl) errorEl.style.display = 'none';
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `<span>Verifica in corso...</span>`;
+    }
+
+    try {
+        const res = await fetch(`${API_URL}/auth/verify-staff`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ discordId })
+        });
+
+        const data = await res.json();
+        if (res.ok && data.authorized) {
+            setAuthUser(data);
+            showToast(`Bentornato, ${data.name}! Accesso consentito come ${data.role === 'owner' ? 'Owner' : 'Staffer'}.`, 'success');
+
+            const overlay = document.getElementById('discord-auth-gate-overlay');
+            if (overlay) {
+                overlay.style.transition = 'opacity 0.3s ease';
+                overlay.style.opacity = '0';
+                setTimeout(() => overlay.remove(), 300);
+            }
+        } else {
+            if (errorEl) {
+                errorEl.textContent = data.error || 'Accesso non autorizzato: account Discord non abilitato.';
+                errorEl.style.display = 'block';
+            }
+            if (idInput) highlightInvalidInput(idInput, 'Discord ID non autorizzato');
+        }
+    } catch (err) {
+        if (errorEl) {
+            errorEl.textContent = 'Errore di connessione con il server. Riprova.';
+            errorEl.style.display = 'block';
+        }
+    } finally {
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = `<i data-lucide="shield-check" style="width: 17px; height: 17px;"></i> <span>Verifica ed Entra</span>`;
+            if (window.lucide && lucide.createIcons) lucide.createIcons();
+        }
+    }
+}
+window.handleAuthGateSubmit = handleAuthGateSubmit;
+
 document.addEventListener('DOMContentLoaded', () => {
     initSidebarPlayerNavigation();
     initWatchdogTopbar();
+    initDiscordAuthGate();
 });
