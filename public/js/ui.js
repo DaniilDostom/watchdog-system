@@ -346,8 +346,8 @@ async function openFivemSyncModal() {
                         <i data-lucide="shield-check"></i>
                     </div>
                     <div>
-                        <h2 style="font-size: 20px; font-weight: 800; color: #fff; margin: 0;">Integrazione Server FiveM</h2>
-                        <span style="font-size: 12.5px; color: #94a3b8;">Secret API Key e sincronizzazione ban in tempo reale</span>
+                        <h2 style="font-size: 20px; font-weight: 800; color: #fff; margin: 0;">FiveM Server Integration</h2>
+                        <span style="font-size: 12.5px; color: #94a3b8;">Secret API Key & Real-time Ban Synchronization</span>
                     </div>
                 </div>
                 <button type="button" class="modal-close" onclick="closeFivemSyncModal()"><i data-lucide="x"></i></button>
@@ -358,11 +358,11 @@ async function openFivemSyncModal() {
                     Secret Server API Key
                 </label>
                 <div style="display: flex; gap: 8px;">
-                    <input type="text" id="fivem-key-input" readonly value="Caricamento..." style="flex: 1; background: #070e1b; border: 1px solid rgba(129, 140, 248, 0.3); border-radius: 8px; padding: 10px 12px; font-family: monospace; font-size: 13px; color: #38bdf8;">
+                    <input type="text" id="fivem-key-input" readonly value="Loading..." style="flex: 1; background: #070e1b; border: 1px solid rgba(129, 140, 248, 0.3); border-radius: 8px; padding: 10px 12px; font-family: monospace; font-size: 13px; color: #38bdf8;">
                     <button type="button" class="cta" onclick="copyFivemKey()" style="width: auto; background: #4f46e5; padding: 0 16px; border-radius: 8px; font-size: 13px; display: flex; align-items: center; gap: 6px;">
-                        <i data-lucide="copy" style="width: 14px; height: 14px;"></i> Copia
+                        <i data-lucide="copy" style="width: 14px; height: 14px;"></i> Copy
                     </button>
-                    <button type="button" class="cta" onclick="regenerateFivemKey()" style="width: auto; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; padding: 0 12px; border-radius: 8px; font-size: 13px;" title="Rigenera nuova chiave">
+                    <button type="button" class="cta" onclick="regenerateFivemKey()" style="width: auto; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; padding: 0 12px; border-radius: 8px; font-size: 13px;" title="Regenerate new key">
                         <i data-lucide="refresh-cw" style="width: 14px; height: 14px;"></i>
                     </button>
                 </div>
@@ -371,17 +371,17 @@ async function openFivemSyncModal() {
             <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 16px; margin-bottom: 20px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                     <label style="font-size: 11.5px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; margin: 0;">
-                        Snippet Config FiveM (config.lua)
+                        FiveM Config Snippet (config.lua)
                     </label>
                     <button type="button" onclick="copyFivemConfigSnippet()" style="background: transparent; border: none; color: #818cf8; font-size: 12px; font-weight: 600; cursor: pointer;">
-                        Copia Codice
+                        Copy Snippet
                     </button>
                 </div>
                 <pre id="fivem-config-preview" style="background: #070e1b; border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 8px; padding: 12px; font-family: monospace; font-size: 12px; color: #a5f3fc; margin: 0; overflow-x: auto; white-space: pre-wrap; line-height: 1.5;"></pre>
             </div>
 
             <div style="display: flex; justify-content: flex-end; gap: 10px;">
-                <button type="button" class="cta" style="width: auto; background: transparent; border: 1px solid rgba(255, 255, 255, 0.15);" onclick="closeFivemSyncModal()">Chiudi</button>
+                <button type="button" class="cta" style="width: auto; background: transparent; border: 1px solid rgba(255, 255, 255, 0.15);" onclick="closeFivemSyncModal()">Close</button>
             </div>
         </div>
     `;
@@ -405,7 +405,7 @@ async function openFivemSyncModal() {
         const snippetPre = document.getElementById('fivem-config-preview');
         if (snippetPre) snippetPre.textContent = snippet;
     } catch (e) {
-        showToast('Impossibile recuperare la chiave API', 'error');
+        showToast('Failed to load API key', 'error');
     }
 }
 
@@ -421,7 +421,7 @@ function copyFivemKey() {
     const keyInput = document.getElementById('fivem-key-input');
     if (keyInput && keyInput.value) {
         navigator.clipboard.writeText(keyInput.value).then(() => {
-            showToast('Secret Key copiata negli appunti!', 'success');
+            showToast('Secret Key copied to clipboard!', 'success');
         });
     }
 }
@@ -431,14 +431,14 @@ function copyFivemConfigSnippet() {
     const snippetPre = document.getElementById('fivem-config-preview');
     if (snippetPre && snippetPre.textContent) {
         navigator.clipboard.writeText(snippetPre.textContent).then(() => {
-            showToast('Config snippet copiato!', 'success');
+            showToast('Config snippet copied!', 'success');
         });
     }
 }
 window.copyFivemConfigSnippet = copyFivemConfigSnippet;
 
 async function regenerateFivemKey() {
-    if (!confirm('Sei sicuro di voler rigenerare la Secret API Key? Dovrai aggiornare il file config.lua sul tuo server FiveM.')) return;
+    if (!confirm('Are you sure you want to regenerate the Secret API Key? You will need to update your config.lua on your FiveM server.')) return;
     try {
         const res = await fetch(`${API_URL}/server/api-key/regenerate`, { method: 'POST' });
         const data = await res.json();
@@ -451,9 +451,9 @@ async function regenerateFivemKey() {
         const snippetPre = document.getElementById('fivem-config-preview');
         if (snippetPre) snippetPre.textContent = snippet;
 
-        showToast('Secret Key rigenerata con successo!', 'success');
+        showToast('Secret Key successfully regenerated!', 'success');
     } catch (e) {
-        showToast('Errore durante la rigenerazione della chiave', 'error');
+        showToast('Failed to regenerate Secret Key', 'error');
     }
 }
 window.regenerateFivemKey = regenerateFivemKey;
@@ -483,7 +483,7 @@ window.setAuthUser = setAuthUser;
 
 function logoutWatchdogUser() {
     localStorage.removeItem('watchdog_auth_user');
-    showToast('Disconnessione effettuata.', 'info');
+    showToast('Logged out successfully.', 'info');
     setTimeout(() => {
         location.reload();
     }, 400);
@@ -517,9 +517,9 @@ function renderTopbarUser() {
             ? `<img src="${user.avatarUrl}" alt="${escapeHtml(user.name)}" class="topbar-user-avatar" onerror="this.outerHTML='<div class=\\'topbar-user-avatar\\' style=\\'display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;\\'>${initial}</div>'" />`
             : `<div class="topbar-user-avatar" style="display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;">${initial}</div>`
         }
-        <span class="topbar-user-name">${escapeHtml(user.name || user.username || 'Utente')}</span>
+        <span class="topbar-user-name">${escapeHtml(user.name || user.username || 'User')}</span>
         <span class="topbar-user-role ${roleClass}">${roleText}</span>
-        <button type="button" class="btn-topbar-logout" onclick="event.stopPropagation(); logoutWatchdogUser();" title="Disconnetti account">
+        <button type="button" class="btn-topbar-logout" onclick="event.stopPropagation(); logoutWatchdogUser();" title="Log out">
             <i data-lucide="log-out" style="width: 14px; height: 14px;"></i>
         </button>
     `;
@@ -550,24 +550,24 @@ function initDiscordAuthGate() {
         <div class="auth-gate-card">
             <img src="logo.png" alt="Watchdog" class="auth-gate-logo" />
             <h2 class="auth-gate-title">Watchdog Access Gate</h2>
-            <p class="auth-gate-subtitle">Identificati con il tuo account Discord per sbloccare la Dashboard di Moderazione.</p>
+            <p class="auth-gate-subtitle">Identify with your Discord account to unlock the Moderation Dashboard.</p>
 
             <div id="auth-gate-error" class="auth-error-msg"></div>
 
             <form id="auth-gate-form" onsubmit="handleAuthGateSubmit(event)">
                 <div class="auth-input-group">
-                    <label>Discord ID Utente</label>
-                    <input type="text" id="auth-discord-id" class="auth-input" placeholder="es. 320110089727901697" required autofocus autocomplete="off" />
+                    <label>Discord User ID</label>
+                    <input type="text" id="auth-discord-id" class="auth-input" placeholder="e.g. 320110089727901697" required autofocus autocomplete="off" />
                 </div>
                 <button type="submit" id="auth-gate-btn" class="btn-auth-submit">
                     <i data-lucide="shield-check" style="width: 17px; height: 17px;"></i>
-                    <span>Verifica ed Entra</span>
+                    <span>Verify & Enter</span>
                 </button>
             </form>
 
             <div style="margin-top: 20px; font-size: 11.5px; color: #64748b; line-height: 1.4;">
                 <i data-lucide="lock" style="width: 12px; height: 12px; display: inline-block; vertical-align: middle; margin-right: 3px;"></i>
-                Accesso crittografato riservato all'Owner e agli Staffer registrati.
+                Encrypted access restricted to registered Server Owner & Staff members.
             </div>
         </div>
     `;
@@ -589,7 +589,7 @@ async function handleAuthGateSubmit(e) {
     if (errorEl) errorEl.style.display = 'none';
     if (submitBtn) {
         submitBtn.disabled = true;
-        submitBtn.innerHTML = `<span>Verifica in corso...</span>`;
+        submitBtn.innerHTML = `<span>Verifying...</span>`;
     }
 
     try {
@@ -602,7 +602,7 @@ async function handleAuthGateSubmit(e) {
         const data = await res.json();
         if (res.ok && data.authorized) {
             setAuthUser(data);
-            showToast(`Bentornato, ${data.name}! Accesso consentito come ${data.role === 'owner' ? 'Owner' : 'Staffer'}.`, 'success');
+            showToast(`Welcome back, ${data.name}! Logged in as ${data.role === 'owner' ? 'Owner' : 'Staffer'}.`, 'success');
 
             const overlay = document.getElementById('discord-auth-gate-overlay');
             if (overlay) {
@@ -612,20 +612,20 @@ async function handleAuthGateSubmit(e) {
             }
         } else {
             if (errorEl) {
-                errorEl.textContent = data.error || 'Accesso non autorizzato: account Discord non abilitato.';
+                errorEl.textContent = data.error || 'Unauthorized: Discord account is not enabled.';
                 errorEl.style.display = 'block';
             }
-            if (idInput) highlightInvalidInput(idInput, 'Discord ID non autorizzato');
+            if (idInput) highlightInvalidInput(idInput, 'Unauthorized Discord ID');
         }
     } catch (err) {
         if (errorEl) {
-            errorEl.textContent = 'Errore di connessione con il server. Riprova.';
+            errorEl.textContent = 'Server connection error. Please try again.';
             errorEl.style.display = 'block';
         }
     } finally {
         if (submitBtn) {
             submitBtn.disabled = false;
-            submitBtn.innerHTML = `<i data-lucide="shield-check" style="width: 17px; height: 17px;"></i> <span>Verifica ed Entra</span>`;
+            submitBtn.innerHTML = `<i data-lucide="shield-check" style="width: 17px; height: 17px;"></i> <span>Verify & Enter</span>`;
             if (window.lucide && lucide.createIcons) lucide.createIcons();
         }
     }

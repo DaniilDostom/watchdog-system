@@ -130,7 +130,7 @@ app.post('/api/auth/verify-staff', async (req, res) => {
     if (!isOwner && (!mod || mod.isFormer)) {
         return res.status(403).json({
             authorized: false,
-            error: 'Non sei autorizzato: il tuo account Discord non è registrato come Staffer o Owner per questo server Watchdog.'
+            error: 'Unauthorized: Your Discord account is not registered as a Staffer or Owner for this Watchdog server.'
         });
     }
 
