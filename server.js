@@ -149,6 +149,46 @@ function resolveServerId(req) {
     return 'default_server';
 }
 
+// Staff verification & Discord Login endpoint
+app.post('/api/auth/verify-staff', async (req, res) => {
+    const rawId = req.body?.discordId;
+    if (!rawId) return res.status(400).json({ authorized: false, error: 'Discord ID is required' });
+    
+    const discordId = String(rawId).trim();
+    const isMaster = db.isOwner(discordId);
+    const customerServer = db.getServerByOwner(discordId);
+    const serverId = resolveServerId(req);
+    const mod = db.getModeratorByDiscordId(discordId, serverId) || db.getModeratorByDiscordId(discordId, 'default_server');
+
+    if (!isMaster && !customerServer && (!mod || mod.isFormer)) {
+        return res.status(403).json({
+            authorized: false,
+            error: 'Unauthorized: Your Discord account is not registered as a Staffer or Owner for this Watchdog server.'
+        });
+    }
+
+    // Resolve real live Discord profile (avatar, display name)
+    const profile = await resolveDiscordProfile(discordId);
+    const isOwnerUser = isMaster || !!customerServer;
+
+    return res.json({
+        authorized: true,
+        role: isOwnerUser ? 'owner' : 'staffer',
+        isOwner: isOwnerUser,
+        isMaster: isMaster,
+        serverId: customerServer ? customerServer.id : (isMaster ? 'default_server' : serverId),
+        serverName: customerServer ? customerServer.name : (isMaster ? 'Main Watchdog Server' : null),
+        name: profile.globalName || profile.username || mod?.name || (isOwnerUser ? 'Owner' : 'Staffer'),
+        username: profile.username || mod?.name || 'User',
+        discordId,
+        avatarUrl: profile.url || mod?.avatarUrl || null
+    });
+});
+
+app.get('/api/auth/current-owner', (req, res) => {
+    res.json({ ownerDiscordId: db.getOwnerDiscordId() });
+});
+
 // REST API Endpoints (Direct L1 Memory Cache with sub-millisecond dispatch)
 app.get('/api/players', (req, res) => {
     res.setHeader('Cache-Control', 'no-cache');

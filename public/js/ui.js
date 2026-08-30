@@ -732,13 +732,20 @@ async function handleAuthGateSubmit(e) {
         const data = await res.json();
         if (res.ok && data.authorized) {
             setAuthUser(data);
+            if (data.serverId) {
+                localStorage.setItem('watchdog_active_server_id', data.serverId);
+                if (typeof clearClientApiCache === 'function') clearClientApiCache();
+            }
             showToast(`Welcome back, ${data.name}! Logged in as ${data.role === 'owner' ? 'Owner' : 'Staffer'}.`, 'success');
 
             const overlay = document.getElementById('discord-auth-gate-overlay');
             if (overlay) {
                 overlay.style.transition = 'opacity 0.3s ease';
                 overlay.style.opacity = '0';
-                setTimeout(() => overlay.remove(), 300);
+                setTimeout(() => {
+                    overlay.remove();
+                    location.reload();
+                }, 350);
             }
         } else {
             if (errorEl) {
