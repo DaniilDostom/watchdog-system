@@ -313,11 +313,12 @@ function initWatchdogTopbar() {
     const actionsDiv = document.createElement('div');
     actionsDiv.className = 'topbar-actions';
     actionsDiv.innerHTML = `
-        <div class="topbar-server-badge" id="topbar-server-badge" ${isMaster ? 'onclick="openServerSwitcherModal()" style="cursor:pointer;" title="Switch Active Server Database"' : 'style="cursor:default;" title="Active Server Database"'}>
+        ${isMaster ? `
+        <div class="topbar-server-badge" id="topbar-server-badge" onclick="openServerSwitcherModal()" style="cursor:pointer;" title="Switch Active Server Database">
             <i data-lucide="server" style="width: 14px; height: 14px; color: #38bdf8;"></i>
-            <span id="topbar-server-name-label">${user?.serverName || 'Main Server'}</span>
-            ${isMaster ? '<i data-lucide="chevron-down" style="width: 12px; height: 12px; color: #94a3b8;"></i>' : ''}
-        </div>
+            <span id="topbar-server-name-label">Main Server</span>
+            <i data-lucide="chevron-down" style="width: 12px; height: 12px; color: #94a3b8;"></i>
+        </div>` : ''}
         <button class="btn-fivem-sync" title="FiveM Server Integration & Secret Key" onclick="openFivemSyncModal()">
             <i data-lucide="key-round"></i>
             <span>FiveM Sync</span>
@@ -329,7 +330,7 @@ function initWatchdogTopbar() {
     `;
     topbar.appendChild(actionsDiv);
     if (window.lucide && lucide.createIcons) lucide.createIcons();
-    updateTopbarServerName();
+    if (isMaster) updateTopbarServerName();
 }
 
 window.initWatchdogTopbar = initWatchdogTopbar;
