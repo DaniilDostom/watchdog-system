@@ -328,11 +328,31 @@ app.get('/api/server/current', (req, res) => {
         name: srv.name,
         ownerDiscordId: srv.ownerDiscordId,
         apiKey: srv.apiKey,
+        guildId: srv.guildId || null,
         hasPassword: !!srv.password,
         status: srv.status,
         expiresAt: srv.expiresAt,
         createdAt: srv.createdAt
     });
+});
+
+// Update Discord Guild ID for Server
+app.post('/api/server/update-guild', (req, res) => {
+    const serverId = resolveServerId(req);
+    const { guildId, discordId } = req.body || {};
+    const srv = db.getServerById(serverId);
+    if (!srv) return res.status(404).json({ error: 'Server not found.' });
+
+    const adminId = discordId || req.headers['x-discord-id'];
+    const isMasterAdmin = adminId && db.isOwner(adminId);
+    const isServerOwner = adminId && srv.ownerDiscordId === String(adminId).trim();
+
+    if (!isMasterAdmin && !isServerOwner) {
+        return res.status(403).json({ error: 'Unauthorized: Only the Server Owner can configure Discord Guild ID.' });
+    }
+
+    db.setServerGuildId(srv.id, guildId);
+    return res.json({ success: true, message: 'Discord Guild ID updated successfully.' });
 });
 
 // Update Database Password
@@ -660,8 +680,10 @@ const discordMembersCacheTtl = 60 * 60 * 1000; // 1 hour
 
 app.get('/api/discord-members', async (req, res) => {
     const botToken = process.env.DISCORD_BOT_TOKEN;
-    const guildId = process.env.DISCORD_GUILD_ID;
-    if (!botToken || !/^d{17,20}$/.test(guildId || '')) return res.json([]);
+    const serverId = resolveServerId(req);
+    const srv = db.getServerById(serverId);
+    const guildId = srv?.guildId || process.env.DISCORD_GUILD_ID;
+    if (!botToken || !/^\d{17,20}$/.test(guildId || '')) return res.json([]);
 
     if (discordMembersCache && discordMembersCacheExpiresAt > Date.now()) {
         return res.json(discordMembersCache);

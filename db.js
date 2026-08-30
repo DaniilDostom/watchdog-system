@@ -61,6 +61,7 @@ db.exec(`
 
 // Migrations for existing columns
 try { db.exec("ALTER TABLE servers ADD COLUMN password TEXT DEFAULT NULL;"); } catch (e) {}
+try { db.exec("ALTER TABLE servers ADD COLUMN guildId TEXT DEFAULT NULL;"); } catch (e) {}
 try { db.exec("ALTER TABLE players ADD COLUMN serverId TEXT DEFAULT 'default_server';"); } catch (e) {}
 try { db.exec("ALTER TABLE actions ADD COLUMN serverId TEXT DEFAULT 'default_server';"); } catch (e) {}
 try { db.exec("ALTER TABLE moderators ADD COLUMN serverId TEXT DEFAULT 'default_server';"); } catch (e) {}
@@ -486,6 +487,13 @@ function getServerPassword(serverId) {
     return row?.password || null;
 }
 
+function setServerGuildId(serverId, guildId) {
+    if (!serverId) throw new Error('Server ID is required');
+    const gid = guildId ? String(guildId).trim() : null;
+    db.prepare('UPDATE servers SET guildId = ? WHERE id = ?').run(gid, serverId);
+    return true;
+}
+
 module.exports = {
     getAll,
     replaceAll,
@@ -513,5 +521,6 @@ module.exports = {
     deleteServer,
     setServerPassword,
     verifyServerPassword,
-    getServerPassword
+    getServerPassword,
+    setServerGuildId
 };

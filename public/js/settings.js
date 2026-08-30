@@ -54,6 +54,10 @@ function renderServerSettings(data, user) {
     const keyInput = document.getElementById('settings-api-key-val');
     if (keyInput) keyInput.value = data.apiKey || '';
 
+    // Discord Guild ID Input
+    const guildInput = document.getElementById('settings-guild-id-input');
+    if (guildInput) guildInput.value = data.guildId || '';
+
     // Lua Preview
     const luaBox = document.getElementById('lua-code-preview');
     if (luaBox) {
@@ -65,6 +69,52 @@ Config.SyncInterval = 60`;
     }
     if (window.lucide && lucide.createIcons) lucide.createIcons();
 }
+
+async function handleUpdateGuildId(e) {
+    e.preventDefault();
+    const user = getAuthUser();
+    const activeServerId = (typeof getActiveServerId === 'function') ? getActiveServerId() : 'default_server';
+    const guildInput = document.getElementById('settings-guild-id-input');
+    const submitBtn = document.getElementById('btn-save-guild-id');
+
+    const guildId = (guildInput?.value || '').trim();
+
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span>Saving...</span>';
+    }
+
+    try {
+        const res = await fetch(`${API_URL}/server/update-guild`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-server-id': activeServerId,
+                'x-discord-id': user?.discordId || ''
+            },
+            body: JSON.stringify({
+                serverId: activeServerId,
+                guildId: guildId || null,
+                discordId: user?.discordId
+            })
+        });
+
+        const data = await res.json();
+        if (res.ok && data.success) {
+            showToast('Discord Guild ID saved successfully!', 'success');
+        } else {
+            showToast(data.error || 'Failed to save Guild ID', 'error');
+        }
+    } catch (err) {
+        showToast('Server connection error', 'error');
+    } finally {
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<span>Save ID</span>';
+        }
+    }
+}
+window.handleUpdateGuildId = handleUpdateGuildId;
 
 async function handleUpdateDbPassword(e) {
     e.preventDefault();
