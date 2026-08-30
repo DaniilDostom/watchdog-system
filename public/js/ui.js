@@ -272,32 +272,10 @@ function initSidebarPlayerNavigation() {
 
     const isPlayerPage = window.location.pathname.endsWith('player.html') || window.location.href.includes('player.html');
     const isPlayersListPage = window.location.pathname.endsWith('players.html') || window.location.href.includes('players.html');
-    const urlParams = new URLSearchParams(window.location.search);
-    const currentPagePlayerId = urlParams.get('id');
 
-    // If we are currently on a player page with an ID, save this URL as the active player
-    if (isPlayerPage && currentPagePlayerId) {
-        try {
-            sessionStorage.setItem('active_player_url', `player.html?id=${encodeURIComponent(currentPagePlayerId)}`);
-        } catch {}
-    } else if (isPlayersListPage) {
-        // If user is explicitly on players.html list, clear active player so clicking Players stays on list
-        try {
-            sessionStorage.removeItem('active_player_url');
-        } catch {}
-    }
-
-    const activePlayerUrl = sessionStorage.getItem('active_player_url');
     const playersLink = nav.querySelector('a[href*="players.html"], a[href*="player.html"]');
-
     if (playersLink) {
-        if (activePlayerUrl && !isPlayersListPage) {
-            // When navigating from dashboard, stats, etc., keep the active player open
-            playersLink.href = activePlayerUrl;
-        } else {
-            playersLink.href = 'players.html';
-        }
-
+        playersLink.href = 'players.html';
         if (isPlayerPage || isPlayersListPage) {
             playersLink.classList.add('active');
         }
