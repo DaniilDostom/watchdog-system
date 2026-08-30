@@ -213,132 +213,140 @@
             <div class="breadcrumb"><a href="index.html">Dashboard</a><span class="breadcrumb-separator">/</span><a href="settings.html">Server Settings</a></div>
         </header>
 
-        <!-- Top Server Profile Banner -->
-        <div class="settings-hero-card">
-            <div style="display: flex; align-items: center; gap: 16px;">
-                <div style="width: 52px; height: 52px; border-radius: 14px; background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(56, 189, 248, 0.15)); border: 1px solid rgba(129, 140, 248, 0.35); display: flex; align-items: center; justify-content: center; color: #818cf8;">
-                    <i data-lucide="server" style="width: 26px; height: 26px;"></i>
-                </div>
-                <div>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <h1 style="font-size: 22px; font-weight: 800; color: #fff; margin: 0;" id="hero-server-name">Loading Server...</h1>
-                        <span class="server-status-pill active" id="hero-status-pill">ACTIVE</span>
+        <section class="settings-content-wrapper" style="padding: 28px 36px; max-width: 1400px; box-sizing: border-box; width: 100%;">
+            <!-- Header Title Row -->
+            <div style="margin-bottom: 24px;">
+                <h1 style="font-size: 26px; font-weight: 800; color: #ffffff; margin: 0 0 6px 0; letter-spacing: -0.3px;">Server Settings & Security</h1>
+                <p style="color: #94a3b8; font-size: 13.5px; margin: 0;">Configure your Database Access Password, FiveM live integration key, and server preferences.</p>
+            </div>
+
+            <!-- Top Server Profile Banner -->
+            <div class="settings-hero-card">
+                <div style="display: flex; align-items: center; gap: 16px;">
+                    <div style="width: 52px; height: 52px; border-radius: 14px; background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(56, 189, 248, 0.15)); border: 1px solid rgba(129, 140, 248, 0.35); display: flex; align-items: center; justify-content: center; color: #818cf8;">
+                        <i data-lucide="server" style="width: 26px; height: 26px;"></i>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 12px; margin-top: 5px;">
-                        <span style="font-size: 12px; color: #94a3b8; font-family: monospace;" id="hero-server-id">ID: ---</span>
-                        <span style="font-size: 12px; color: #64748b;">•</span>
-                        <span style="font-size: 12px; color: #38bdf8; font-weight: 600;" id="hero-expiry-label">Lifetime License</span>
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <h2 style="font-size: 22px; font-weight: 800; color: #fff; margin: 0;" id="hero-server-name">Loading Server...</h2>
+                            <span class="server-status-pill active" id="hero-status-pill">ACTIVE</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 12px; margin-top: 5px;">
+                            <span style="font-size: 12px; color: #94a3b8; font-family: monospace;" id="hero-server-id">ID: ---</span>
+                            <span style="font-size: 12px; color: #64748b;">•</span>
+                            <span style="font-size: 12px; color: #38bdf8; font-weight: 600;" id="hero-expiry-label">Lifetime License</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Owner Discord Badge -->
+                <div id="hero-owner-badge" style="display: flex; align-items: center; gap: 12px; background: rgba(3, 7, 18, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; padding: 8px 16px;">
+                    <img id="hero-owner-avatar" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Owner" style="width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.15); object-fit: cover;" />
+                    <div style="display: flex; flex-direction: column;">
+                        <span style="font-size: 13.5px; font-weight: 700; color: #fff;" id="hero-owner-name">Server Owner</span>
+                        <span style="font-size: 11px; color: #94a3b8; font-family: monospace;" id="hero-owner-sub">@owner • Owner</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Owner Discord Badge -->
-            <div id="hero-owner-badge" style="display: flex; align-items: center; gap: 12px; background: rgba(3, 7, 18, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; padding: 8px 16px;">
-                <img id="hero-owner-avatar" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Owner" style="width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.15); object-fit: cover;" />
-                <div style="display: flex; flex-direction: column;">
-                    <span style="font-size: 13.5px; font-weight: 700; color: #fff;" id="hero-owner-name">Server Owner</span>
-                    <span style="font-size: 11px; color: #94a3b8; font-family: monospace;" id="hero-owner-sub">@owner • Owner</span>
-                </div>
-            </div>
-        </div>
+            <div class="settings-grid">
+                <!-- 1. DATABASE PASSWORD SECURITY CARD -->
+                <div class="settings-card">
+                    <div>
+                        <div class="settings-card-header">
+                            <div class="settings-card-icon" style="background: rgba(99, 102, 241, 0.15); color: #818cf8; border: 1px solid rgba(129, 140, 248, 0.25);">
+                                <i data-lucide="lock"></i>
+                            </div>
+                            <div>
+                                <h3 class="settings-card-title">Database Access Password</h3>
+                                <div class="settings-card-sub">Staff Security Redundancy</div>
+                            </div>
+                        </div>
 
-        <div class="settings-grid">
-            <!-- 1. DATABASE PASSWORD SECURITY CARD -->
-            <div class="settings-card">
-                <div>
-                    <div class="settings-card-header">
-                        <div class="settings-card-icon" style="background: rgba(99, 102, 241, 0.15); color: #818cf8; border: 1px solid rgba(129, 140, 248, 0.25);">
-                            <i data-lucide="lock"></i>
-                        </div>
-                        <div>
-                            <h2 class="settings-card-title">Database Access Password</h2>
-                            <div class="settings-card-sub">Staff Security Redundancy</div>
-                        </div>
+                        <p style="font-size: 13px; color: #cbd5e1; line-height: 1.5; margin-bottom: 16px;">
+                            Your staff members enter their Discord ID and then unlock this server's dashboard using this security password.
+                        </p>
+
+                        <div id="pwd-change-msg" class="auth-error-msg" style="display: none;"></div>
+
+                        <form id="change-db-pwd-form" onsubmit="handleUpdateDbPassword(event)">
+                            <div class="form-group">
+                                <label>New Database Password</label>
+                                <input type="password" id="settings-new-pwd" class="auth-input" placeholder="Create new password (min 4 chars)" required minlength="4" />
+                            </div>
+                            <div class="form-group">
+                                <label>Confirm New Password</label>
+                                <input type="password" id="settings-confirm-pwd" class="auth-input" placeholder="Re-type new password" required minlength="4" />
+                            </div>
+                            <button type="submit" id="btn-save-settings-pwd" class="btn-auth-submit" style="margin-top: 14px;">
+                                <i data-lucide="shield-check" style="width: 17px; height: 17px;"></i>
+                                <span>Update Security Password</span>
+                            </button>
+                        </form>
                     </div>
 
-                    <p style="font-size: 13px; color: #cbd5e1; line-height: 1.5; margin-bottom: 16px;">
-                        Your staff members enter their Discord ID and then unlock this server's dashboard using this security password.
-                    </p>
-
-                    <div id="pwd-change-msg" class="auth-error-msg" style="display: none;"></div>
-
-                    <form id="change-db-pwd-form" onsubmit="handleUpdateDbPassword(event)">
-                        <div class="form-group">
-                            <label>New Database Password</label>
-                            <input type="password" id="settings-new-pwd" class="auth-input" placeholder="Create new password (min 4 chars)" required minlength="4" />
-                        </div>
-                        <div class="form-group">
-                            <label>Confirm New Password</label>
-                            <input type="password" id="settings-confirm-pwd" class="auth-input" placeholder="Re-type new password" required minlength="4" />
-                        </div>
-                        <button type="submit" id="btn-save-settings-pwd" class="btn-auth-submit" style="margin-top: 14px;">
-                            <i data-lucide="shield-check" style="width: 17px; height: 17px;"></i>
-                            <span>Update Security Password</span>
-                        </button>
-                    </form>
-                </div>
-
-                <div style="margin-top: 20px; padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.06); font-size: 11.5px; color: #64748b; display: flex; align-items: center; gap: 6px;">
-                    <i data-lucide="shield" style="width: 13px; height: 13px; color: #818cf8;"></i>
-                    <span>Passwords are hashed and securely isolated per tenant.</span>
-                </div>
-            </div>
-
-            <!-- 2. FIVEM INTEGRATION & API KEY CARD -->
-            <div class="settings-card">
-                <div>
-                    <div class="settings-card-header">
-                        <div class="settings-card-icon" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.25);">
-                            <i data-lucide="key-round"></i>
-                        </div>
-                        <div>
-                            <h2 class="settings-card-title">FiveM Live Sync Key</h2>
-                            <div class="settings-card-sub">Resource Authentication</div>
-                        </div>
-                    </div>
-
-                    <p style="font-size: 13px; color: #cbd5e1; line-height: 1.5; margin-bottom: 12px;">
-                        This Secret API Key authorizes your FiveM server resource to stream live player logs and sanction bans directly into this database.
-                    </p>
-
-                    <div class="server-key-box" style="margin-bottom: 16px;">
-                        <i data-lucide="key" style="width: 14px; height: 14px; color: #38bdf8; flex-shrink: 0;"></i>
-                        <input type="password" id="settings-api-key-val" value="" readonly class="server-key-input" />
-                        <button type="button" class="key-action-btn" onclick="toggleSettingsKeyVisibility()" title="Toggle Visibility">
-                            <i data-lucide="eye" id="settings-eye-icon" style="width: 13px; height: 13px;"></i>
-                        </button>
-                        <button type="button" class="key-action-btn" onclick="copySettingsApiKey()" title="Copy Key">
-                            <i data-lucide="copy" style="width: 13px; height: 13px;"></i>
-                        </button>
-                        <button type="button" class="key-action-btn" onclick="regenerateSettingsApiKey()" title="Regenerate Key">
-                            <i data-lucide="refresh-cw" style="width: 13px; height: 13px;"></i>
-                        </button>
-                    </div>
-
-                    <div style="font-size: 11.5px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px;">
-                        config.lua configuration snippet
-                    </div>
-
-                    <div class="code-box">
-                        <button type="button" class="copy-code-btn" onclick="copyLuaSnippet()">
-                            <i data-lucide="copy" style="width: 12px; height: 12px;"></i> <span id="lua-copy-label">Copy</span>
-                        </button>
-                        <pre style="margin: 0;" id="lua-code-preview">-- Loading configuration...</pre>
+                    <div style="margin-top: 20px; padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.06); font-size: 11.5px; color: #64748b; display: flex; align-items: center; gap: 6px;">
+                        <i data-lucide="shield" style="width: 13px; height: 13px; color: #818cf8;"></i>
+                        <span>Passwords are hashed and securely isolated per tenant.</span>
                     </div>
                 </div>
 
-                <div style="margin-top: 18px;">
-                    <div class="instruction-item">
-                        <div class="instruction-dot">1</div>
-                        <span>Paste the Secret Key into your <code>watchdog-system/config.lua</code> file.</span>
+                <!-- 2. FIVEM INTEGRATION & API KEY CARD -->
+                <div class="settings-card">
+                    <div>
+                        <div class="settings-card-header">
+                            <div class="settings-card-icon" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.25);">
+                                <i data-lucide="key-round"></i>
+                            </div>
+                            <div>
+                                <h3 class="settings-card-title">FiveM Live Sync Key</h3>
+                                <div class="settings-card-sub">Resource Authentication</div>
+                            </div>
+                        </div>
+
+                        <p style="font-size: 13px; color: #cbd5e1; line-height: 1.5; margin-bottom: 12px;">
+                            This Secret API Key authorizes your FiveM server resource to stream live player logs and sanction bans directly into this database.
+                        </p>
+
+                        <div class="server-key-box" style="margin-bottom: 16px;">
+                            <i data-lucide="key" style="width: 14px; height: 14px; color: #38bdf8; flex-shrink: 0;"></i>
+                            <input type="password" id="settings-api-key-val" value="" readonly class="server-key-input" />
+                            <button type="button" class="key-action-btn" onclick="toggleSettingsKeyVisibility()" title="Toggle Visibility">
+                                <i data-lucide="eye" id="settings-eye-icon" style="width: 13px; height: 13px;"></i>
+                            </button>
+                            <button type="button" class="key-action-btn" onclick="copySettingsApiKey()" title="Copy Key">
+                                <i data-lucide="copy" style="width: 13px; height: 13px;"></i>
+                            </button>
+                            <button type="button" class="key-action-btn" onclick="regenerateSettingsApiKey()" title="Regenerate Key">
+                                <i data-lucide="refresh-cw" style="width: 13px; height: 13px;"></i>
+                            </button>
+                        </div>
+
+                        <div style="font-size: 11.5px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px;">
+                            config.lua configuration snippet
+                        </div>
+
+                        <div class="code-box">
+                            <button type="button" class="copy-code-btn" onclick="copyLuaSnippet()">
+                                <i data-lucide="copy" style="width: 12px; height: 12px;"></i> <span id="lua-copy-label">Copy</span>
+                            </button>
+                            <pre style="margin: 0;" id="lua-code-preview">-- Loading configuration...</pre>
+                        </div>
                     </div>
-                    <div class="instruction-item">
-                        <div class="instruction-dot">2</div>
-                        <span>Ensure <code>ensure watchdog-system</code> is added in your <code>server.cfg</code>.</span>
+
+                    <div style="margin-top: 18px;">
+                        <div class="instruction-item">
+                            <div class="instruction-dot">1</div>
+                            <span>Paste the Secret Key into your <code>watchdog-system/config.lua</code> file.</span>
+                        </div>
+                        <div class="instruction-item">
+                            <div class="instruction-dot">2</div>
+                            <span>Ensure <code>ensure watchdog-system</code> is added in your <code>server.cfg</code>.</span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     </main>
 
     <!-- Toast Notifications -->
