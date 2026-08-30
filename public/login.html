@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | Watchdog Systems</title>
     <link rel="icon" type="image/png" href="logo.png">
-    <link rel="stylesheet" href="css/style.css?v=23">
-    <link rel="stylesheet" href="css/layout.css?v=23">
+    <link rel="stylesheet" href="css/style.css?v=24">
+    <link rel="stylesheet" href="css/layout.css?v=24">
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
         // If already logged in, redirect directly
         try {
             const u = JSON.parse(localStorage.getItem('watchdog_auth_user') || 'null');
-            if (u && u.authorized) {
+            if (u && u.authorized && !u.requiresDbPassword) {
                 window.location.replace(u.isMaster ? 'select-server.html' : 'index.html');
             }
         } catch(e) {}
@@ -41,8 +41,8 @@
             border-radius: 22px;
             box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(99, 102, 241, 0.18);
             width: 100%;
-            max-width: 460px;
-            padding: 34px 30px;
+            max-width: 450px;
+            padding: 36px 32px;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -65,9 +65,9 @@
         }
 
         .login-logo {
-            width: 68px;
-            height: 68px;
-            margin: 0 auto 14px auto;
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 16px auto;
             display: block;
             filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.45));
         }
@@ -76,50 +76,15 @@
             font-size: 24px;
             font-weight: 800;
             color: #ffffff;
-            margin: 0 0 4px 0;
+            margin: 0 0 6px 0;
             letter-spacing: -0.4px;
         }
 
         .login-subtitle {
             font-size: 13px;
             color: #94a3b8;
-            line-height: 1.45;
-            margin-bottom: 20px;
-        }
-
-        /* Mode Switcher Tabs */
-        .auth-tabs {
-            display: flex;
-            background: rgba(3, 7, 18, 0.65);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-            padding: 4px;
-            margin-bottom: 22px;
-            gap: 4px;
-        }
-
-        .auth-tab-btn {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: #94a3b8;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            transition: all 0.2s ease;
-        }
-
-        .auth-tab-btn.active {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(56, 189, 248, 0.2));
-            color: #ffffff;
-            border: 1px solid rgba(129, 140, 248, 0.35);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            line-height: 1.5;
+            margin-bottom: 24px;
         }
 
         .btn-oauth-discord {
@@ -127,9 +92,9 @@
             background: linear-gradient(135deg, #5865F2 0%, #4752C4 100%);
             border: 1px solid rgba(255, 255, 255, 0.2);
             color: #ffffff;
-            padding: 12px 16px;
+            padding: 13px 18px;
             border-radius: 12px;
-            font-size: 14px;
+            font-size: 14.5px;
             font-weight: 700;
             cursor: pointer;
             display: flex;
@@ -138,7 +103,7 @@
             gap: 10px;
             transition: all 0.2s ease;
             box-shadow: 0 4px 18px rgba(88, 101, 242, 0.4);
-            margin-bottom: 18px;
+            margin-bottom: 20px;
             text-decoration: none;
             box-sizing: border-box;
         }
@@ -154,7 +119,7 @@
             display: flex;
             align-items: center;
             text-align: center;
-            margin: 18px 0;
+            margin: 20px 0;
             color: #64748b;
             font-size: 11px;
             font-weight: 700;
@@ -169,7 +134,18 @@
         }
 
         .login-divider span {
-            padding: 0 10px;
+            padding: 0 12px;
+        }
+
+        .login-footer {
+            margin-top: 24px;
+            font-size: 11.5px;
+            color: #64748b;
+            line-height: 1.4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
         }
 
         .modal-overlay {
@@ -194,69 +170,86 @@
     <div class="login-card">
         <img src="logo.png" alt="Watchdog" class="login-logo" />
         <h1 class="login-title">Watchdog Systems</h1>
-        <p class="login-subtitle">Multi-tenant FiveM sanction & moderation forensics.</p>
-
-        <!-- Mode Switcher Tabs -->
-        <div class="auth-tabs">
-            <button type="button" class="auth-tab-btn active" id="tab-owner" onclick="switchLoginTab('owner')">
-                <i data-lucide="crown" style="width: 14px; height: 14px;"></i>
-                <span>Owner / Master</span>
-            </button>
-            <button type="button" class="auth-tab-btn" id="tab-staff" onclick="switchLoginTab('staff')">
-                <i data-lucide="key" style="width: 14px; height: 14px;"></i>
-                <span>Staff Password</span>
-            </button>
-        </div>
+        <p class="login-subtitle">Multi-tenant FiveM sanction & moderation forensics. Authenticate with Discord to access your server database.</p>
 
         <div id="login-error-msg" class="auth-error-msg"></div>
 
-        <!-- OWNER / DISCORD TAB CONTENT -->
-        <div id="owner-login-section">
-            <a href="/api/auth/discord/login" id="btn-discord-oauth" class="btn-oauth-discord">
-                <svg style="width: 19px; height: 19px;" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.893.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
-                </svg>
-                <span>Login with Discord</span>
-            </a>
+        <!-- 1-Click Discord OAuth2 Button -->
+        <a href="/api/auth/discord/login" id="btn-discord-oauth" class="btn-oauth-discord">
+            <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.893.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+            </svg>
+            <span>Login with Discord</span>
+        </a>
 
-            <div class="login-divider">
-                <span>Or Direct Discord ID</span>
+        <div class="login-divider">
+            <span>Or Direct Discord ID</span>
+        </div>
+
+        <form id="login-form" onsubmit="handleDirectLogin(event)">
+            <div class="auth-input-group">
+                <label>Discord User ID</label>
+                <input type="text" id="login-discord-id" class="auth-input" placeholder="e.g. 320110089727901697" required autofocus autocomplete="off" />
             </div>
-
-            <form id="login-form" onsubmit="handleDirectLogin(event)">
-                <div class="auth-input-group">
-                    <label>Discord User ID</label>
-                    <input type="text" id="login-discord-id" class="auth-input" placeholder="e.g. 320110089727901697" required autofocus autocomplete="off" />
-                </div>
-                <button type="submit" id="btn-login-submit" class="btn-auth-submit">
-                    <i data-lucide="shield-check" style="width: 17px; height: 17px;"></i>
-                    <span>Verify & Enter</span>
-                </button>
-            </form>
-        </div>
-
-        <!-- STAFF PASSWORD TAB CONTENT -->
-        <div id="staff-login-section" style="display: none;">
-            <p style="font-size: 12.5px; color: #94a3b8; margin: 0 0 18px 0;">Enter the access password provided by your Server Owner.</p>
-            <form id="staff-password-form" onsubmit="handleStaffPasswordLogin(event)">
-                <div class="auth-input-group">
-                    <label>Server Access Password</label>
-                    <input type="password" id="staff-server-password" class="auth-input" placeholder="••••••••••••" required autocomplete="current-password" />
-                </div>
-                <button type="submit" id="btn-staff-submit" class="btn-auth-submit" style="background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);">
-                    <i data-lucide="lock" style="width: 17px; height: 17px;"></i>
-                    <span>Unlock Dashboard</span>
-                </button>
-            </form>
-        </div>
+            <button type="submit" id="btn-login-submit" class="btn-auth-submit">
+                <i data-lucide="shield-check" style="width: 17px; height: 17px;"></i>
+                <span>Verify & Enter</span>
+            </button>
+        </form>
 
         <div class="login-footer">
-            <i data-lucide="shield" style="width: 13px; height: 13px; color: #818cf8;"></i>
+            <i data-lucide="lock" style="width: 13px; height: 13px; color: #818cf8;"></i>
             <span>Encrypted access restricted to registered Server Owners & Staffers.</span>
         </div>
     </div>
 
-    <!-- First-Time Owner Password Setup Modal -->
+    <!-- STAFF DATABASE PASSWORD MODAL -->
+    <div class="modal-overlay" id="staff-pwd-prompt-modal" style="display: none;">
+        <div class="modal modal-pro modal-anim" style="max-width: 460px; padding: 28px; text-align: left;">
+            <div class="modal-hero-header" style="margin-bottom: 16px;">
+                <div class="modal-title-box">
+                    <div class="modal-icon-badge" style="background: rgba(56, 189, 248, 0.2); color: #38bdf8;">
+                        <i data-lucide="key"></i>
+                    </div>
+                    <div>
+                        <h2 style="font-size: 19px; font-weight: 800; color: #fff; margin: 0;">Database Access Password</h2>
+                        <span style="font-size: 12px; color: #94a3b8;">Staff Security Verification</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Staff Discord Profile Pill -->
+            <div id="staff-user-preview" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 10px 14px; margin-bottom: 18px; display: flex; align-items: center; gap: 12px;">
+                <img id="staff-preview-avatar" src="" alt="" style="width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.15); object-fit: cover;" />
+                <div style="display: flex; flex-direction: column; overflow: hidden;">
+                    <span id="staff-preview-name" style="font-weight: 700; color: #ffffff; font-size: 14px;"></span>
+                    <span id="staff-preview-sub" style="font-size: 11.5px; color: #94a3b8; font-family: monospace;"></span>
+                </div>
+            </div>
+
+            <p style="font-size: 12.5px; color: #cbd5e1; line-height: 1.45; margin-bottom: 18px;">
+                Enter the security access password provided by your Server Owner to unlock this database.
+            </p>
+
+            <div id="staff-pwd-error" class="auth-error-msg"></div>
+
+            <form id="staff-pwd-submit-form" onsubmit="handleStaffDbPasswordSubmit(event)">
+                <div class="form-group">
+                    <label>Server Password</label>
+                    <input type="password" id="staff-input-db-pwd" class="auth-input" placeholder="••••••••••••" required autocomplete="current-password" />
+                </div>
+                <div class="modal-actions" style="margin-top: 20px; display: flex; gap: 10px;">
+                    <button type="button" class="cta" style="width: auto; background: transparent; border: 1px solid rgba(255, 255, 255, 0.15);" onclick="closeStaffPwdModal()">Back</button>
+                    <button type="submit" id="btn-unlock-staff-db" class="btn-auth-submit" style="margin: 0; flex: 1; background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);">
+                        <i data-lucide="lock" style="width: 16px; height: 16px;"></i>
+                        <span>Unlock Dashboard</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- OWNER FIRST-TIME PASSWORD CREATION MODAL -->
     <div class="modal-overlay" id="owner-pwd-setup-modal" style="display: none;">
         <div class="modal modal-pro modal-anim" style="max-width: 480px; padding: 28px; text-align: left;">
             <div class="modal-hero-header" style="margin-bottom: 16px;">
@@ -297,8 +290,8 @@
     <!-- Toast Notifications -->
     <div id="toast-container"></div>
 
-    <script src="js/api.js?v=23"></script>
-    <script src="js/ui.js?v=23"></script>
-    <script src="js/login.js?v=23"></script>
+    <script src="js/api.js?v=24"></script>
+    <script src="js/ui.js?v=24"></script>
+    <script src="js/login.js?v=24"></script>
 </body>
 </html>

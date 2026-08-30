@@ -170,18 +170,30 @@ app.post('/api/auth/verify-staff', async (req, res) => {
     const discordId = String(rawId).trim();
     const isMaster = db.isOwner(discordId);
     const customerServer = db.getServerByOwner(discordId);
-    const serverId = resolveServerId(req);
-    const mod = db.getModeratorByDiscordId(discordId, serverId) || db.getModeratorByDiscordId(discordId, 'default_server');
 
-    if (!isMaster && !customerServer && (!mod || mod.isFormer)) {
-        return res.status(403).json({
-            authorized: false,
-            error: 'Unauthorized: Your Discord account is not registered as a Staffer or Owner.'
+    // Resolve real live Discord profile (avatar, display name)
+    const profile = await resolveDiscordProfile(discordId);
+
+    // 1. MASTER CREATOR
+    if (isMaster) {
+        return res.json({
+            authorized: true,
+            role: 'owner',
+            isOwner: true,
+            isMaster: true,
+            requiresDbPassword: false,
+            requiresPasswordSetup: false,
+            serverId: 'default_server',
+            serverName: 'Main Watchdog Server',
+            name: profile.globalName || profile.username || 'Dos',
+            username: profile.username || 'dosfpsss',
+            discordId,
+            avatarUrl: profile.url || null
         });
     }
 
-    // Check if customer server is suspended or expired (Master Admin is exempt)
-    if (!isMaster && customerServer) {
+    // 2. CUSTOMER SERVER OWNER
+    if (customerServer) {
         if (customerServer.status === 'SUSPENDED') {
             return res.status(403).json({
                 authorized: false,
@@ -194,26 +206,89 @@ app.post('/api/auth/verify-staff', async (req, res) => {
                 error: 'License Expired: Your server subscription has expired. Please contact the administrator.'
             });
         }
+
+        const requiresPasswordSetup = !customerServer.password;
+        return res.json({
+            authorized: true,
+            role: 'owner',
+            isOwner: true,
+            isMaster: false,
+            requiresDbPassword: false,
+            requiresPasswordSetup,
+            serverId: customerServer.id,
+            serverName: customerServer.name,
+            name: profile.globalName || profile.username || 'Owner',
+            username: profile.username || 'User',
+            discordId,
+            avatarUrl: profile.url || null
+        });
     }
 
-    // Resolve real live Discord profile (avatar, display name)
+    // 3. STAFFER / NON-OWNER: Authenticated with Discord, now requires DB Password
+    return res.json({
+        authorized: true,
+        role: 'staffer',
+        isOwner: false,
+        isMaster: false,
+        requiresDbPassword: true,
+        requiresPasswordSetup: false,
+        name: profile.globalName || profile.username || 'Staffer',
+        username: profile.username || 'User',
+        discordId,
+        avatarUrl: profile.url || null
+    });
+});
+
+// Staff DB Password Verification (Submits Discord ID + Database Password)
+app.post('/api/auth/verify-staff-db-password', async (req, res) => {
+    const { discordId, password } = req.body || {};
+    if (!discordId || !password) {
+        return res.status(400).json({ authorized: false, error: 'Discord ID and Database Password are required.' });
+    }
+
+    const srv = db.verifyServerPassword(password);
+    if (!srv) {
+        return res.status(401).json({ authorized: false, error: 'Invalid Database Access Password.' });
+    }
+
+    if (srv.status === 'SUSPENDED') {
+        return res.status(403).json({ authorized: false, error: 'License Suspended: Access to this server database is suspended.' });
+    }
+
+    if (srv.expiresAt && Date.now() > srv.expiresAt) {
+        return res.status(403).json({ authorized: false, error: 'License Expired: This server license has expired.' });
+    }
+
     const profile = await resolveDiscordProfile(discordId);
-    const isOwnerUser = isMaster || !!customerServer;
-    const hasPassword = customerServer ? !!customerServer.password : true;
-    const requiresPasswordSetup = !isMaster && !!customerServer && !hasPassword;
+
+    // Auto-register staff member into moderators list for this server
+    try {
+        const mods = db.getModerators(srv.id) || [];
+        const exists = mods.some(m => String(m.discordId) === String(discordId));
+        if (!exists) {
+            mods.push({
+                name: profile.globalName || profile.username || 'Staffer',
+                discordId: String(discordId),
+                avatarUrl: profile.url || null,
+                bannerUrl: profile.bannerUrl || null,
+                isFormer: false
+            });
+            db.saveModerators(mods, srv.id);
+        }
+    } catch (e) {}
 
     return res.json({
         authorized: true,
-        role: isOwnerUser ? 'owner' : 'staffer',
-        isOwner: isOwnerUser,
-        isMaster: isMaster,
-        requiresPasswordSetup,
-        serverId: customerServer ? customerServer.id : (isMaster ? 'default_server' : serverId),
-        serverName: customerServer ? customerServer.name : (isMaster ? 'Main Watchdog Server' : null),
-        name: profile.globalName || profile.username || mod?.name || (isOwnerUser ? 'Owner' : 'Staffer'),
-        username: profile.username || mod?.name || 'User',
+        role: 'staffer',
+        isOwner: false,
+        isMaster: false,
+        requiresDbPassword: false,
+        serverId: srv.id,
+        serverName: srv.name,
+        name: profile.globalName || profile.username || 'Staffer',
+        username: profile.username || 'User',
         discordId,
-        avatarUrl: profile.url || mod?.avatarUrl || null
+        avatarUrl: profile.url || null
     });
 });
 
@@ -239,40 +314,6 @@ app.post('/api/auth/server/set-password', (req, res) => {
 
     db.setServerPassword(serverId, password);
     res.json({ success: true, message: 'Server access password set successfully.' });
-});
-
-// Staff Password Login
-app.post('/api/auth/staff-password-login', (req, res) => {
-    const { password } = req.body || {};
-    if (!password || !String(password).trim()) {
-        return res.status(400).json({ authorized: false, error: 'Password is required.' });
-    }
-
-    const srv = db.verifyServerPassword(password);
-    if (!srv) {
-        return res.status(401).json({ authorized: false, error: 'Invalid Server Access Password.' });
-    }
-
-    if (srv.status === 'SUSPENDED') {
-        return res.status(403).json({ authorized: false, error: 'License Suspended: Access to this server database is suspended.' });
-    }
-
-    if (srv.expiresAt && Date.now() > srv.expiresAt) {
-        return res.status(403).json({ authorized: false, error: 'License Expired: This server license has expired.' });
-    }
-
-    return res.json({
-        authorized: true,
-        role: 'staffer',
-        isOwner: false,
-        isMaster: false,
-        serverId: srv.id,
-        serverName: srv.name,
-        name: `${srv.name} Staff`,
-        username: 'staff',
-        discordId: null,
-        avatarUrl: null
-    });
 });
 
 app.get('/api/auth/current-owner', (req, res) => {
@@ -338,41 +379,70 @@ app.get('/api/auth/discord/callback', async (req, res) => {
 
         const isMaster = db.isOwner(discordId);
         const customerServer = db.getServerByOwner(discordId);
-        const mod = db.getModeratorByDiscordId(discordId, 'default_server');
-
-        if (!isMaster && !customerServer && (!mod || mod.isFormer)) {
-            return res.redirect('/login.html?error=unauthorized');
-        }
-
-        // Check if customer server is suspended or expired (Master Admin is exempt)
-        if (!isMaster && customerServer) {
-            if (customerServer.status === 'SUSPENDED') {
-                return res.redirect('/login.html?error=' + encodeURIComponent('License Suspended: Access to this server database has been suspended by the Master Administrator.'));
-            }
-            if (customerServer.expiresAt && Date.now() > customerServer.expiresAt) {
-                return res.redirect('/login.html?error=' + encodeURIComponent('License Expired: Your server subscription has expired. Please contact the administrator.'));
-            }
-        }
 
         const avatarExt = discordUser.avatar?.startsWith('a_') ? 'gif' : 'png';
         const avatarUrl = discordUser.avatar
             ? `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.${avatarExt}?size=128`
             : `https://cdn.discordapp.com/embed/avatars/${Number((BigInt(discordId) >> 22n) % 6n)}.png`;
 
-        const isOwnerUser = isMaster || !!customerServer;
+        // 1. MASTER ADMIN
+        if (isMaster) {
+            const payload = {
+                authorized: true,
+                role: 'owner',
+                isOwner: true,
+                isMaster: true,
+                requiresDbPassword: false,
+                requiresPasswordSetup: false,
+                serverId: 'default_server',
+                serverName: 'Main Watchdog Server',
+                name: discordUser.global_name || discordUser.username || 'Dos',
+                username: discordUser.username || 'user',
+                discordId,
+                avatarUrl
+            };
+            return res.redirect(`/login.html?auth_payload=${encodeURIComponent(JSON.stringify(payload))}`);
+        }
+
+        // 2. CUSTOMER OWNER
+        if (customerServer) {
+            if (customerServer.status === 'SUSPENDED') {
+                return res.redirect('/login.html?error=' + encodeURIComponent('License Suspended: Access to this server database has been suspended by the Master Administrator.'));
+            }
+            if (customerServer.expiresAt && Date.now() > customerServer.expiresAt) {
+                return res.redirect('/login.html?error=' + encodeURIComponent('License Expired: Your server subscription has expired. Please contact the administrator.'));
+            }
+
+            const payload = {
+                authorized: true,
+                role: 'owner',
+                isOwner: true,
+                isMaster: false,
+                requiresDbPassword: false,
+                requiresPasswordSetup: !customerServer.password,
+                serverId: customerServer.id,
+                serverName: customerServer.name,
+                name: discordUser.global_name || discordUser.username || 'Owner',
+                username: discordUser.username || 'user',
+                discordId,
+                avatarUrl
+            };
+            return res.redirect(`/login.html?auth_payload=${encodeURIComponent(JSON.stringify(payload))}`);
+        }
+
+        // 3. STAFF / NON-OWNER
         const payload = {
             authorized: true,
-            role: isOwnerUser ? 'owner' : 'staffer',
-            isOwner: isOwnerUser,
-            isMaster: isMaster,
-            serverId: customerServer ? customerServer.id : (isMaster ? 'default_server' : 'default_server'),
-            serverName: customerServer ? customerServer.name : (isMaster ? 'Main Watchdog Server' : null),
-            name: discordUser.global_name || discordUser.username || (isOwnerUser ? 'Owner' : 'Staffer'),
+            role: 'staffer',
+            isOwner: false,
+            isMaster: false,
+            requiresDbPassword: true,
+            requiresPasswordSetup: false,
+            name: discordUser.global_name || discordUser.username || 'Staffer',
             username: discordUser.username || 'user',
             discordId,
             avatarUrl
         };
-
         return res.redirect(`/login.html?auth_payload=${encodeURIComponent(JSON.stringify(payload))}`);
     } catch (err) {
         return res.redirect('/login.html?error=oauth_failed');

@@ -32,44 +32,43 @@ function initLoginPage() {
     }
 }
 
-function switchLoginTab(tab) {
-    const ownerSection = document.getElementById('owner-login-section');
-    const staffSection = document.getElementById('staff-login-section');
-    const tabOwner = document.getElementById('tab-owner');
-    const tabStaff = document.getElementById('tab-staff');
-    const errEl = document.getElementById('login-error-msg');
-    if (errEl) errEl.style.display = 'none';
-
-    if (tab === 'staff') {
-        if (ownerSection) ownerSection.style.display = 'none';
-        if (staffSection) staffSection.style.display = 'block';
-        if (tabOwner) tabOwner.classList.remove('active');
-        if (tabStaff) tabStaff.classList.add('active');
-        document.getElementById('staff-server-password')?.focus();
-    } else {
-        if (ownerSection) ownerSection.style.display = 'block';
-        if (staffSection) staffSection.style.display = 'none';
-        if (tabOwner) tabOwner.classList.add('active');
-        if (tabStaff) tabStaff.classList.remove('active');
-        document.getElementById('login-discord-id')?.focus();
-    }
-    if (window.lucide && lucide.createIcons) lucide.createIcons();
-}
-window.switchLoginTab = switchLoginTab;
-
 function handleLoginSuccess(data) {
+    pendingAuthUser = data;
+
+    // 1. Staffer (non-owner) -> Needs Database Security Password
+    if (data.requiresDbPassword) {
+        const staffModal = document.getElementById('staff-pwd-prompt-modal');
+        const nameEl = document.getElementById('staff-preview-name');
+        const subEl = document.getElementById('staff-preview-sub');
+        const avatarEl = document.getElementById('staff-preview-avatar');
+
+        if (nameEl) nameEl.textContent = data.name || data.username || 'Staffer';
+        if (subEl) subEl.textContent = `@${data.username || 'user'} • ${data.discordId}`;
+        if (avatarEl) {
+            avatarEl.src = data.avatarUrl || 'https://cdn.discordapp.com/embed/avatars/0.png';
+            avatarEl.onerror = () => { avatarEl.src = 'https://cdn.discordapp.com/embed/avatars/0.png'; };
+        }
+
+        if (staffModal) {
+            staffModal.style.display = 'flex';
+            document.getElementById('staff-input-db-pwd')?.focus();
+            if (window.lucide && lucide.createIcons) lucide.createIcons();
+        }
+        return;
+    }
+
+    // 2. Owner first time password setup
     if (data.requiresPasswordSetup) {
-        // Show First-Time Password Creation Modal
-        pendingAuthUser = data;
-        const modal = document.getElementById('owner-pwd-setup-modal');
-        if (modal) {
-            modal.style.display = 'flex';
+        const ownerModal = document.getElementById('owner-pwd-setup-modal');
+        if (ownerModal) {
+            ownerModal.style.display = 'flex';
             document.getElementById('new-server-pwd')?.focus();
             if (window.lucide && lucide.createIcons) lucide.createIcons();
         }
         return;
     }
 
+    // 3. Authorized Session (Master Admin or Configured Owner)
     setAuthUser(data);
     if (data.serverId) {
         localStorage.setItem('watchdog_active_server_id', data.serverId);
@@ -129,11 +128,13 @@ async function handleDirectLogin(e) {
 }
 window.handleDirectLogin = handleDirectLogin;
 
-async function handleStaffPasswordLogin(e) {
+async function handleStaffDbPasswordSubmit(e) {
     e.preventDefault();
-    const pwdInput = document.getElementById('staff-server-password');
-    const submitBtn = document.getElementById('btn-staff-submit');
-    const errEl = document.getElementById('login-error-msg');
+    if (!pendingAuthUser) return;
+
+    const pwdInput = document.getElementById('staff-input-db-pwd');
+    const submitBtn = document.getElementById('btn-unlock-staff-db');
+    const errEl = document.getElementById('staff-pwd-error');
 
     const password = (pwdInput?.value || '').trim();
     if (!password) return;
@@ -141,14 +142,17 @@ async function handleStaffPasswordLogin(e) {
     if (errEl) errEl.style.display = 'none';
     if (submitBtn) {
         submitBtn.disabled = true;
-        submitBtn.innerHTML = '<span>Authenticating...</span>';
+        submitBtn.innerHTML = '<span>Verifying Password...</span>';
     }
 
     try {
-        const res = await fetch(`${API_URL}/auth/staff-password-login`, {
+        const res = await fetch(`${API_URL}/auth/verify-staff-db-password`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ password })
+            body: JSON.stringify({
+                discordId: pendingAuthUser.discordId,
+                password
+            })
         });
 
         const data = await res.json();
@@ -158,13 +162,13 @@ async function handleStaffPasswordLogin(e) {
                 localStorage.setItem('watchdog_active_server_id', data.serverId);
                 if (typeof clearClientApiCache === 'function') clearClientApiCache();
             }
-            showToast(`Logged in successfully into ${data.serverName}!`, 'success');
+            showToast(`Unlocked database for ${data.serverName}!`, 'success');
             setTimeout(() => {
                 location.href = 'index.html';
             }, 350);
         } else {
             if (errEl) {
-                errEl.textContent = data.error || 'Invalid Server Access Password.';
+                errEl.textContent = data.error || 'Incorrect Database Password.';
                 errEl.style.display = 'block';
             }
             if (pwdInput) highlightInvalidInput(pwdInput, 'Incorrect password');
@@ -177,12 +181,19 @@ async function handleStaffPasswordLogin(e) {
     } finally {
         if (submitBtn) {
             submitBtn.disabled = false;
-            submitBtn.innerHTML = `<i data-lucide="lock" style="width: 17px; height: 17px;"></i> <span>Unlock Dashboard</span>`;
+            submitBtn.innerHTML = `<i data-lucide="lock" style="width: 16px; height: 16px;"></i> <span>Unlock Dashboard</span>`;
             if (window.lucide && lucide.createIcons) lucide.createIcons();
         }
     }
 }
-window.handleStaffPasswordLogin = handleStaffPasswordLogin;
+window.handleStaffDbPasswordSubmit = handleStaffDbPasswordSubmit;
+
+function closeStaffPwdModal() {
+    const modal = document.getElementById('staff-pwd-prompt-modal');
+    if (modal) modal.style.display = 'none';
+    pendingAuthUser = null;
+}
+window.closeStaffPwdModal = closeStaffPwdModal;
 
 async function handleOwnerPasswordSetup(e) {
     e.preventDefault();
