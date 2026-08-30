@@ -74,12 +74,7 @@ async function initPlayerProfile() {
     }
     
     if(!currentPlayer) {
-        console.warn('Player not found in database:', playerId);
-        const usernameEl = document.getElementById('player-username');
-        if (usernameEl) usernameEl.innerText = 'Player not found in this server';
-        const mainContent = document.querySelector('main.main-content');
-        if (mainContent) mainContent.style.visibility = 'visible';
-        setTimeout(() => { location.href = 'players.html'; }, 1000);
+        location.replace('players.html');
         return;
     }
 
