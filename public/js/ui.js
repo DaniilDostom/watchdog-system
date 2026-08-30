@@ -729,7 +729,7 @@ async function handleAuthGateSubmit(e) {
                 localStorage.setItem('watchdog_active_server_id', data.serverId);
                 if (typeof clearClientApiCache === 'function') clearClientApiCache();
             }
-            showToast(`Welcome back, ${data.name}! Logged in as ${data.role === 'owner' ? 'Owner' : 'Staffer'}.`, 'success');
+            showToast(`Welcome back, ${data.name}! Logged in as ${data.isMaster ? 'Master Creator' : (data.role === 'owner' ? 'Server Owner' : 'Staffer')}.`, 'success');
 
             const overlay = document.getElementById('discord-auth-gate-overlay');
             if (overlay) {
@@ -737,7 +737,11 @@ async function handleAuthGateSubmit(e) {
                 overlay.style.opacity = '0';
                 setTimeout(() => {
                     overlay.remove();
-                    location.reload();
+                    if (data.isMaster) {
+                        location.href = 'select-server.html';
+                    } else {
+                        location.reload();
+                    }
                 }, 350);
             }
         } else {

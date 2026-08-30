@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Server Database | Watchdog SaaS</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="stylesheet" href="css/style.css?v=20">
+    <link rel="stylesheet" href="css/layout.css?v=20">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            background: #030712;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(56, 189, 248, 0.1) 0px, transparent 50%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: #f1f5f9;
+        }
+
+        .select-hub-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+        }
+
+        .select-hub-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 24px;
+            width: 100%;
+            flex: 1;
+        }
+
+        .select-hero-text {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .select-hero-logo {
+            width: 68px;
+            height: 68px;
+            margin-bottom: 14px;
+            filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.45));
+        }
+
+        .select-hero-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: #ffffff;
+            margin: 0 0 8px 0;
+            letter-spacing: -0.5px;
+        }
+
+        .select-hero-sub {
+            font-size: 15px;
+            color: #94a3b8;
+            max-width: 580px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        .servers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 22px;
+        }
+
+        .server-tenant-card {
+            background: linear-gradient(145deg, rgba(15, 23, 42, 0.85), rgba(7, 14, 27, 0.95));
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 24px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .server-tenant-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #6366f1, #38bdf8);
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        .server-tenant-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(129, 140, 248, 0.4);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 25px rgba(99, 102, 241, 0.15);
+        }
+
+        .server-tenant-card:hover::before {
+            opacity: 1;
+        }
+
+        .server-tenant-card.master-server {
+            border-color: rgba(245, 158, 11, 0.3);
+        }
+        .server-tenant-card.master-server::before {
+            background: linear-gradient(90deg, #fbbf24, #f59e0b);
+            opacity: 1;
+        }
+
+        .card-top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 14px;
+        }
+
+        .server-card-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: rgba(99, 102, 241, 0.15);
+            color: #818cf8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(129, 140, 248, 0.25);
+        }
+        .server-card-icon.gold {
+            background: rgba(245, 158, 11, 0.15);
+            color: #fbbf24;
+            border-color: rgba(245, 158, 11, 0.35);
+        }
+
+        .server-card-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #ffffff;
+            margin: 0 0 4px 0;
+        }
+
+        .server-card-id {
+            font-size: 11px;
+            color: #64748b;
+            font-family: monospace;
+        }
+
+        .server-card-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            background: rgba(3, 7, 18, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 12px;
+            margin: 18px 0;
+        }
+
+        .server-stat-box {
+            text-align: center;
+        }
+        .server-stat-val {
+            font-size: 18px;
+            font-weight: 800;
+            color: #ffffff;
+        }
+        .server-stat-label {
+            font-size: 11px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+        }
+
+        .btn-launch-server {
+            width: 100%;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(56, 189, 248, 0.15));
+            border: 1px solid rgba(129, 140, 248, 0.35);
+            color: #ffffff;
+            padding: 11px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .server-tenant-card:hover .btn-launch-server {
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 16px rgba(79, 70, 229, 0.4);
+        }
+
+        .add-new-server-card {
+            background: rgba(15, 23, 42, 0.4);
+            border: 2px dashed rgba(255, 255, 255, 0.12);
+            border-radius: 18px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-height: 240px;
+        }
+
+        .add-new-server-card:hover {
+            background: rgba(99, 102, 241, 0.08);
+            border-color: #818cf8;
+            transform: translateY(-4px);
+        }
+    </style>
+</head>
+<body class="dark-theme">
+    <header class="select-hub-header">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <img src="logo.png" alt="Watchdog" style="width: 32px; height: 32px;" />
+            <span style="font-size: 17px; font-weight: 800; color: #fff; letter-spacing: -0.2px;">Watchdog Cloud Hub</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 14px;">
+            <a href="admin.html" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.18), rgba(217, 119, 6, 0.15)); border: 1px solid rgba(245, 158, 11, 0.35); color: #fbbf24; text-decoration: none; padding: 7px 14px; border-radius: 10px; font-size: 12.5px; font-weight: 700; display: flex; align-items: center; gap: 6px;">
+                <i data-lucide="crown" style="width: 14px; height: 14px;"></i>
+                <span>Master Hub</span>
+            </a>
+            <button type="button" onclick="logoutWatchdogUser()" style="background: transparent; border: 1px solid rgba(255, 255, 255, 0.12); color: #94a3b8; padding: 7px 12px; border-radius: 10px; font-size: 12.5px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                <i data-lucide="log-out" style="width: 14px; height: 14px;"></i>
+                <span>Log Out</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="select-hub-container">
+        <div class="select-hero-text">
+            <img src="logo.png" alt="Watchdog" class="select-hero-logo" />
+            <h1 class="select-hero-title">Select Database Workspace</h1>
+            <p class="select-hero-sub" id="select-hero-subtitle">Welcome back, Master Creator! Select which server environment you want to access.</p>
+        </div>
+
+        <div class="servers-grid" id="servers-select-grid">
+            <div style="grid-column: 1 / -1; text-align: center; color: #64748b; padding: 40px;">
+                Loading server environments...
+            </div>
+        </div>
+    </main>
+
+    <!-- Create Server Modal -->
+    <div class="modal-overlay" id="create-server-modal">
+        <div class="modal modal-pro modal-anim" style="max-width: 520px; padding: 26px;">
+            <div class="modal-hero-header" style="margin-bottom: 20px;">
+                <div class="modal-title-box">
+                    <div class="modal-icon-badge" style="background: rgba(245, 158, 11, 0.2); color: #fbbf24;">
+                        <i data-lucide="plus-circle"></i>
+                    </div>
+                    <div>
+                        <h2 style="font-size: 20px; font-weight: 800; color: #fff; margin: 0;">Create Server License</h2>
+                        <span style="font-size: 12.5px; color: #94a3b8;">Generate a new FiveM tenant with an isolated database</span>
+                    </div>
+                </div>
+                <button type="button" class="modal-close" onclick="closeCreateServerModal()"><i data-lucide="x"></i></button>
+            </div>
+
+            <form id="create-server-form" onsubmit="handleCreateServerSubmit(event)">
+                <div class="form-group">
+                    <label>Server Name</label>
+                    <input type="text" id="srv-name" placeholder="e.g. Imperium Roleplay" required class="auth-input" />
+                </div>
+                <div class="form-group">
+                    <label>Owner Discord ID</label>
+                    <input type="text" id="srv-owner-id" placeholder="e.g. 847350974069997568" required class="auth-input" />
+                </div>
+                <div class="form-group">
+                    <label>License Duration</label>
+                    <select id="srv-duration" class="auth-input" style="background: #070e1b;">
+                        <option value="30">30 Days (Monthly)</option>
+                        <option value="90">90 Days (Quarterly)</option>
+                        <option value="365">1 Year (Annual)</option>
+                        <option value="0">Lifetime (No Expiry)</option>
+                    </select>
+                </div>
+                <div class="modal-actions" style="margin-top: 24px;">
+                    <button type="button" class="cta" style="width: auto; background: transparent; border: 1px solid rgba(255, 255, 255, 0.15);" onclick="closeCreateServerModal()">Cancel</button>
+                    <button type="submit" class="cta" style="width: auto; background: #4f46e5; border-radius: 8px;">Create License</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
+    <script src="js/api.js?v=20"></script>
+    <script src="js/ui.js?v=20"></script>
+    <script src="js/select-server.js?v=20"></script>
+</body>
+</html>
