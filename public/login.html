@@ -9,11 +9,15 @@
     <link rel="stylesheet" href="css/layout.css?v=24">
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
-        // If already logged in, redirect directly
+        // If already logged in with valid token & cookie, redirect directly
         try {
             const u = JSON.parse(localStorage.getItem('watchdog_auth_user') || 'null');
-            if (u && u.authorized && !u.requiresDbPassword) {
+            const hasCookie = document.cookie.includes('watchdog_auth_token=');
+            if (u && u.authorized && !u.requiresDbPassword && u.token && hasCookie) {
                 window.location.replace(u.isMaster ? 'select-server.html' : 'index.html');
+            } else if (u && (!u.token || !hasCookie)) {
+                // Clear stale session
+                localStorage.removeItem('watchdog_auth_user');
             }
         } catch(e) {}
     </script>

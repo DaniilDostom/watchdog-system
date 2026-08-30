@@ -70,6 +70,9 @@ function handleLoginSuccess(data) {
 
     // 3. Authorized Session (Master Admin or Configured Owner)
     setAuthUser(data);
+    if (data.token) {
+        document.cookie = "watchdog_auth_token=" + encodeURIComponent(data.token) + "; path=/; max-age=604800; SameSite=Lax";
+    }
     if (data.serverId) {
         localStorage.setItem('watchdog_active_server_id', data.serverId);
         if (typeof clearClientApiCache === 'function') clearClientApiCache();
@@ -158,6 +161,9 @@ async function handleStaffDbPasswordSubmit(e) {
         const data = await res.json();
         if (res.ok && data.authorized) {
             setAuthUser(data);
+    if (data.token) {
+        document.cookie = "watchdog_auth_token=" + encodeURIComponent(data.token) + "; path=/; max-age=604800; SameSite=Lax";
+    }
             if (data.serverId) {
                 localStorage.setItem('watchdog_active_server_id', data.serverId);
                 if (typeof clearClientApiCache === 'function') clearClientApiCache();
