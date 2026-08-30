@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const cookieParser = require('cookie-parser');
 const path = require('path');
 const cors = require('cors');
 const compression = require('compression');
@@ -30,6 +31,7 @@ app.use((req, res, next) => {
 app.use(cors());
 app.use(compression({ level: 6, threshold: 512 }));
 app.use(express.json({ limit: '2mb' }));
+app.use(cookieParser());
 
 // 2. Cryptographic Session Token Engine (HMAC-SHA256)
 const AUTH_SECRET = process.env.AUTH_SECRET || 'wd_super_secret_auth_key_2026_' + (process.env.DISCORD_BOT_TOKEN || 'seed_key').substring(0, 16);
@@ -62,6 +64,9 @@ function verifyAuthToken(token) {
 }
 
 function extractToken(req) {
+    if (req.cookies && req.cookies.watchdog_auth_token) {
+        return req.cookies.watchdog_auth_token;
+    }
     const authHeader = req.headers['authorization'];
     if (authHeader && authHeader.startsWith('Bearer ')) {
         return authHeader.substring(7).trim();
@@ -88,6 +93,48 @@ const globalApiLimiter = rateLimit({
 
 app.use('/api/', globalApiLimiter);
 app.use('/api/auth/', authLimiter);
+
+// 4. Server-Side Guard for Protected HTML Pages (Zero Leakage via URL typing)
+const PROTECTED_HTML_PAGES = new Set([
+    'index.html',
+    'players.html',
+    'player.html',
+    'moderators.html',
+    'reasons.html',
+    'statistics.html',
+    'activity.html',
+    'settings.html',
+    'admin.html',
+    'select-server.html'
+]);
+
+app.use((req, res, next) => {
+    let reqPage = req.path.replace(/^\//, '').toLowerCase();
+    if (!reqPage || reqPage === 'login' || reqPage === 'login.html' || reqPage === 'home.html') {
+        return next();
+    }
+
+    if (PROTECTED_HTML_PAGES.has(reqPage)) {
+        const token = extractToken(req);
+        const user = verifyAuthToken(token);
+
+        // If unauthenticated at the server level, immediately 302 Redirect to /login.html
+        if (!user) {
+            return res.redirect('/login.html');
+        }
+
+        // Server-Side Role Authorization
+        if ((reqPage === 'admin.html' || reqPage === 'select-server.html') && !user.isMaster) {
+            return res.redirect('/index.html');
+        }
+        if (reqPage === 'settings.html' && !user.isOwner && !user.isMaster) {
+            return res.redirect('/index.html');
+        }
+
+        req.user = user;
+    }
+    next();
+});
 
 // Serve root directly to the Watchdog Login Portal
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public', 'login.html')));
@@ -231,6 +278,7 @@ app.post('/api/auth/verify-staff', async (req, res) => {
     if (isMaster) {
         const tokenPayload = { discordId, role: 'owner', isOwner: true, isMaster: true, serverId: 'default_server' };
         const token = generateAuthToken(tokenPayload);
+        res.cookie('watchdog_auth_token', token, { path: '/', maxAge: 7 * 24 * 60 * 60 * 1000, sameSite: 'lax' });
         return res.json({
             authorized: true,
             token,
@@ -266,6 +314,7 @@ app.post('/api/auth/verify-staff', async (req, res) => {
         const requiresPasswordSetup = !customerServer.password;
         const tokenPayload = { discordId, role: 'owner', isOwner: true, isMaster: false, serverId: customerServer.id };
         const token = generateAuthToken(tokenPayload);
+        res.cookie('watchdog_auth_token', token, { path: '/', maxAge: 7 * 24 * 60 * 60 * 1000, sameSite: 'lax' });
         return res.json({
             authorized: true,
             token,
@@ -286,6 +335,7 @@ app.post('/api/auth/verify-staff', async (req, res) => {
     // 3. STAFFER / NON-OWNER: Authenticated with Discord, now requires DB Password
     const tokenPayload = { discordId, role: 'staffer', isOwner: false, isMaster: false, serverId: srv.id };
     const token = generateAuthToken(tokenPayload);
+    res.cookie('watchdog_auth_token', token, { path: '/', maxAge: 7 * 24 * 60 * 60 * 1000, sameSite: 'lax' });
     return res.json({
         authorized: true,
         token,

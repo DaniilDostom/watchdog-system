@@ -616,8 +616,12 @@ window.getAuthUser = getAuthUser;
 function setAuthUser(user) {
     if (user) {
         localStorage.setItem('watchdog_auth_user', JSON.stringify(user));
+    if (user && user.token) {
+        document.cookie = "watchdog_auth_token=" + encodeURIComponent(user.token) + "; path=/; max-age=604800; SameSite=Lax";
+    }
     } else {
         localStorage.removeItem('watchdog_auth_user');
+    document.cookie = "watchdog_auth_token=; path=/; max-age=0; SameSite=Lax";
     }
     renderTopbarUser();
 }
