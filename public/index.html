@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Moderation System</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="stylesheet" href="css/style.css?v=18">
+    <link rel="stylesheet" href="css/layout.css?v=18">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="dark-theme">
+    <aside class="sidebar">
+        <div class="logo">
+            <img src="logo.png" alt="Watchdog Logo" class="sidebar-logo-img">
+            <span>SanctionAnalyser</span>
+        </div>
+        <nav>
+            <a href="index.html" class="active"><i data-lucide="layout-dashboard"></i> Dashboard</a>
+            <a href="players.html"><i data-lucide="users"></i> Players</a>
+            <a href="moderators.html" class="sub-link"><i data-lucide="user-cog"></i> Staffers</a>
+            <a href="reasons.html" class="sub-link"><i data-lucide="list-checks"></i> Reasons</a>
+            <a href="statistics.html"><i data-lucide="bar-chart-2"></i> Statistics</a>
+            <a href="activity.html"><i data-lucide="activity"></i> Activity</a>
+        </nav>
+        <div class="sidebar-footer">
+            Made by Watchdog, purely for statistics forensis investigation
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <div class="breadcrumb"><a href="index.html">Dashboard</a><span class="breadcrumb-separator">/</span><a href="index.html">Overview</a></div>
+        </header>
+
+        <section class="dashboard-grid">
+            <!-- 1. Total Players Card -->
+            <div class="dash-card" id="card-players">
+                <div class="dash-card-header">
+                    <div class="dash-card-title-wrap">
+                        <div class="dash-header-icon blue">
+                            <i data-lucide="users"></i>
+                        </div>
+                        <div>
+                            <h3>Total Players</h3>
+                            <span>Registered in the database</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="kpi-main-number" id="total-players-count">
+                    -- <span class="kpi-sub">players</span>
+                </div>
+                <div class="avatar-preview-stack" id="recent-players-preview"></div>
+                <a href="players.html" class="btn-dash-cta">
+                    <span>View all players</span>
+                    <i data-lucide="arrow-right"></i>
+                </a>
+            </div>
+
+            <!-- 2. Warn & Ban Statistics Card -->
+            <div class="dash-card" id="card-stats">
+                <div class="dash-card-header">
+                    <div class="dash-card-title-wrap">
+                        <div class="dash-header-icon purple">
+                            <i data-lucide="bar-chart-2"></i>
+                        </div>
+                        <div>
+                            <h3>Sanctions Overview</h3>
+                            <span>Active disciplinary metrics</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="dashboard-stats-grid">
+                    <div class="dash-stat-tile tile-warn">
+                        <div class="stat-tile-icon"><i data-lucide="alert-triangle"></i></div>
+                        <div class="stat-tile-info">
+                            <span class="stat-tile-num" id="total-warns">--</span>
+                            <span class="stat-tile-label">Active Warns</span>
+                        </div>
+                    </div>
+                    <div class="dash-stat-tile tile-ban">
+                        <div class="stat-tile-icon"><i data-lucide="clock"></i></div>
+                        <div class="stat-tile-info">
+                            <span class="stat-tile-num" id="total-bans">--</span>
+                            <span class="stat-tile-label">Temp Bans</span>
+                        </div>
+                    </div>
+                    <div class="dash-stat-tile tile-permaban">
+                        <div class="stat-tile-icon"><i data-lucide="flame"></i></div>
+                        <div class="stat-tile-info">
+                            <span class="stat-tile-num" id="total-permabans">--</span>
+                            <span class="stat-tile-label">Permabans</span>
+                        </div>
+                    </div>
+                    <div class="dash-stat-tile tile-lastchance">
+                        <div class="stat-tile-icon"><i data-lucide="alert-octagon"></i></div>
+                        <div class="stat-tile-info">
+                            <span class="stat-tile-num" id="total-lastchance">--</span>
+                            <span class="stat-tile-label">Last Chance</span>
+                        </div>
+                    </div>
+                </div>
+                <a href="statistics.html" class="btn-dash-cta">
+                    <span>Detailed analytics</span>
+                    <i data-lucide="arrow-right"></i>
+                </a>
+            </div>
+
+            <!-- 3. Recent Sanctions Card -->
+            <div class="dash-card" id="card-recent-moderation">
+                <div class="dash-card-header">
+                    <div class="dash-card-title-wrap">
+                        <div class="dash-header-icon rose">
+                            <i data-lucide="gavel"></i>
+                        </div>
+                        <div>
+                            <h3>Recent Sanctions</h3>
+                            <span>Latest disciplinary actions</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="recent-sanctions-wrap">
+                    <table class="recent-sanctions-table">
+                        <thead>
+                            <tr>
+                                <th>Player</th>
+                                <th>Action</th>
+                                <th>Reason</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recent-sanctions-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 4. Action Feed Card -->
+            <div class="dash-card" id="card-recent-actions">
+                <div class="dash-card-header">
+                    <div class="dash-card-title-wrap">
+                        <div class="dash-header-icon amber">
+                            <i data-lucide="activity"></i>
+                        </div>
+                        <div>
+                            <h3>Live Action Feed</h3>
+                            <span>Real-time moderation audit stream</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="dash-feed-container" id="action-feed-list"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal Base -->
+    <div class="modal-overlay" id="action-modal">
+        <div class="modal">
+            <div class="modal-title-row">
+                <h2 id="modal-title">Take Action</h2>
+                <button type="button" class="modal-close" aria-label="Close" title="Close" onclick="closeModal()"><i data-lucide="x"></i></button>
+            </div>
+            <form id="action-form">
+                <input type="hidden" id="modal-player-id">
+                <div class="form-group">
+                    <label>Action Type</label>
+                    <select id="action-type" required>
+                        <option value="WARN">Warn</option>
+                        <option value="BAN">Ban</option>
+                    </select>
+                </div>
+                <div class="form-group" id="ban-type-group" style="display: none;">
+                    <label>Ban Type</label>
+                    <select id="ban-type">
+                        <option value="TEMPORARY">Temporary</option>
+                        <option value="PERMANENT">Permanent</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Issuer</label>
+                    <input type="text" id="action-issuer" list="action-issuer-options" required>
+                    <datalist id="action-issuer-options"></datalist>
+                </div>
+                <div class="form-group">
+                    <div class="reason-heading">
+                        <label>Reason</label>
+                        <select id="reason-sort" aria-label="Sort reasons">
+                            <option value="common">Commonly used</option>
+                            <option value="az">A-Z</option>
+                            <option value="za">Z-A</option>
+                        </select>
+                    </div>
+                    <input id="reason-filter" class="reason-filter" type="search" placeholder="Search reason..." aria-label="Search reason" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+                    <div id="action-reason" class="reason-checkboxes" aria-label="Select one or more reasons"></div>
+                </div>
+                <div class="form-group last-chance-group" id="last-chance-group" style="display: none;">
+                    <label class="last-chance-label"><input type="checkbox" id="last-chance"> <span>Last Chance</span></label>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn-submit">Confirm Action</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
+    <script src="js/api.js?v=18"></script>
+    <script src="js/ui.js?v=18"></script>
+    <script src="js/dashboard.js?v=18"></script>
+</body>
+</html>

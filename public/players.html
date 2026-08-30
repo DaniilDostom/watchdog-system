@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Players | Moderation System</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Discord avatar in player row */
+        .player-avatar-badge {
+            position: relative;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            overflow: hidden;
+            flex-shrink: 0;
+            background: rgba(99,102,241,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .player-avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            display: block;
+        }
+        .player-avatar-fallback {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            font-size: 14px;
+            font-weight: 700;
+            color: #818cf8;
+            background: rgba(99,102,241,0.18);
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body class="dark-theme">
+    <aside class="sidebar">
+        <div class="logo">
+            <img src="logo.png" alt="Watchdog Logo" class="sidebar-logo-img">
+            <span>SanctionAnalyser</span>
+        </div>
+        <nav>
+            <a href="index.html"><i data-lucide="layout-dashboard"></i> Dashboard</a>
+            <a href="players.html" class="active"><i data-lucide="users"></i> Players</a>
+            <a href="moderators.html" class="sub-link"><i data-lucide="user-cog"></i> Staffers</a>
+            <a href="reasons.html" class="sub-link"><i data-lucide="list-checks"></i> Reasons</a>
+            <a href="statistics.html"><i data-lucide="bar-chart-2"></i> Statistics</a>
+            <a href="activity.html"><i data-lucide="activity"></i> Activity</a>
+        </nav>
+        <div class="sidebar-footer">
+            Made by Watchdog, purely for statistics forensis investigation
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <div class="breadcrumb"><a href="index.html">Dashboard</a><span class="breadcrumb-separator">/</span><a href="players.html">Players</a></div>
+        </header>
+
+        <section style="padding: 24px;">
+            <!-- Header Title Row -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
+                <div>
+                    <h2 style="font-size: 26px; font-weight: 700; color: #ffffff; margin: 0 0 4px 0;">Players Database</h2>
+                    <p style="color: #94a3b8; font-size: 13.5px; margin: 0;">Comprehensive directory of all tracked players and their disciplinary status.</p>
+                </div>
+                <button type="button" class="cta" style="width: auto; margin: 0; padding: 10px 18px; display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4); font-weight: 600;" onclick="openAddPlayerModal()">
+                    <i data-lucide="user-plus" style="width: 16px; height: 16px;"></i> Add Player
+                </button>
+            </div>
+
+            <!-- Metric Overview Cards -->
+            <div class="page-overview-stats">
+                <div class="stat-glass-card theme-accent-indigo">
+                    <div class="stat-glass-icon"><i data-lucide="users"></i></div>
+                    <div class="stat-glass-body">
+                        <span class="stat-glass-label">Total Players</span>
+                        <span class="stat-glass-val" id="stat-total-players">0</span>
+                    </div>
+                </div>
+                <div class="stat-glass-card theme-accent-emerald">
+                    <div class="stat-glass-icon"><i data-lucide="shield-check"></i></div>
+                    <div class="stat-glass-body">
+                        <span class="stat-glass-label">Clean Record</span>
+                        <span class="stat-glass-val" id="stat-clean-players">0</span>
+                    </div>
+                </div>
+                <div class="stat-glass-card theme-accent-amber">
+                    <div class="stat-glass-icon"><i data-lucide="alert-triangle"></i></div>
+                    <div class="stat-glass-body">
+                        <span class="stat-glass-label">Warned</span>
+                        <span class="stat-glass-val" id="stat-warned-players">0</span>
+                    </div>
+                </div>
+                <div class="stat-glass-card theme-accent-orange">
+                    <div class="stat-glass-icon"><i data-lucide="flame"></i></div>
+                    <div class="stat-glass-body">
+                        <span class="stat-glass-label">Last Chance</span>
+                        <span class="stat-glass-val" id="stat-lastchance-players">0</span>
+                    </div>
+                </div>
+                <div class="stat-glass-card theme-accent-rose">
+                    <div class="stat-glass-icon"><i data-lucide="ban"></i></div>
+                    <div class="stat-glass-body">
+                        <span class="stat-glass-label">Active Bans</span>
+                        <span class="stat-glass-val" id="stat-banned-players">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Glass Toolbar Filters -->
+            <div class="glass-toolbar">
+                <div class="search-input-wrap">
+                    <span class="search-input-icon"><i data-lucide="search" style="width: 16px; height: 16px;"></i></span>
+                    <input type="text" id="search-input" placeholder="Search by player username or Discord ID..." autocomplete="off" spellcheck="false">
+                    <button type="button" id="search-clear-btn" class="search-clear-btn" title="Clear search"><i data-lucide="x" style="width: 14px; height: 14px;"></i></button>
+                </div>
+
+                <div class="filter-pill-group" id="status-pill-filter">
+                    <button type="button" class="filter-pill-btn active" data-status="ALL">All</button>
+                    <button type="button" class="filter-pill-btn" data-status="Clean">Clean</button>
+                    <button type="button" class="filter-pill-btn" data-status="Warned">Warned</button>
+                    <button type="button" class="filter-pill-btn" data-status="Last Chance">Last Chance</button>
+                    <button type="button" class="filter-pill-btn" data-status="Banned">Banned</button>
+                    <button type="button" class="filter-pill-btn" data-status="Permanently Banned">Permanently Banned</button>
+                </div>
+                <input type="hidden" id="filter-status" value="ALL">
+
+                <div style="display: flex; gap: 10px; align-items: center; margin-left: auto;">
+                    <select id="sort-select" class="select-dark-glass">
+                        <option value="AZ">Alphabetical (A - Z)</option>
+                        <option value="ZA">Alphabetical (Z - A)</option>
+                        <option value="WARNS">Most Warnings</option>
+                        <option value="BANS">Most Bans</option>
+                        <option value="RECENT">Recently Added</option>
+                        <option value="VIEWED">Recently Viewed</option>
+                    </select>
+                    <select id="limit-select" class="select-dark-glass">
+                        <option value="25">25 per page</option>
+                        <option value="50">50 per page</option>
+                        <option value="100">100 per page</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Table Card -->
+            <div class="card pro-analytics-card list-card" style="padding: 22px;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Player</th>
+                            <th>Discord ID</th>
+                            <th style="text-align: center;">Warns</th>
+                            <th style="text-align: center;">Bans</th>
+                            <th>Status</th>
+                            <th>Last Sanction</th>
+                            <th style="text-align: right;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="players-list-tbody"></tbody>
+                </table>
+
+                <div id="empty-state" style="display: none; text-align: center; padding: 48px 24px; color: #94a3b8;">
+                    <i data-lucide="users" style="width: 48px; height: 48px; margin-bottom: 12px; opacity: 0.4;"></i>
+                    <h4 style="color: #f1f5f9; margin-bottom: 4px;">No players found</h4>
+                    <p style="font-size: 13px; margin: 0;">Try adjusting your search criteria or filter options.</p>
+                </div>
+
+                <!-- Pagination Footer -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px; padding: 14px 4px 4px 4px; border-top: 1px solid rgba(255, 255, 255, 0.08); flex-wrap: wrap; gap: 12px;">
+                    <span id="pagination-info" style="color: #94a3b8; font-size: 13px; font-weight: 500;"></span>
+                    <div style="display: flex; gap: 8px;">
+                        <button type="button" id="btn-prev" class="btn-staff-link" style="padding: 7px 14px;"><i data-lucide="chevron-left" style="width: 14px; height: 14px;"></i> Previous</button>
+                        <button type="button" id="btn-next" class="btn-staff-link" style="padding: 7px 14px;">Next <i data-lucide="chevron-right" style="width: 14px; height: 14px;"></i></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Add Player Modal -->
+    <div class="modal-overlay" id="add-player-modal">
+        <div class="modal modal-pro modal-anim" style="max-width: 520px;">
+            <div class="modal-hero-header">
+                <div class="modal-title-box">
+                    <div class="modal-icon-badge" style="background: rgba(99, 102, 241, 0.2); color: #818cf8;">
+                        <i data-lucide="user-plus"></i>
+                    </div>
+                    <div>
+                        <h2 id="add-modal-title">Add New Player</h2>
+                        <span style="font-size: 12px; color: var(--text-secondary);">Register a new player profile into the database</span>
+                    </div>
+                </div>
+                <button type="button" class="modal-close" aria-label="Close" title="Close" onclick="closeAddPlayerModal()"><i data-lucide="x"></i></button>
+            </div>
+            <form id="add-player-form" novalidate>
+                <div class="form-group">
+                    <label>Player Username</label>
+                    <input type="text" id="add-username" placeholder="e.g. ShadowHunter99" autocomplete="off" required>
+                    <div id="err-username" class="error-msg"></div>
+                </div>
+                <div class="form-group">
+                    <label>Discord ID</label>
+                    <input type="text" id="add-discord" placeholder="e.g. 123456789012345678" autocomplete="off" required>
+                    <div id="err-discord" class="error-msg"></div>
+                </div>
+                <div class="form-group">
+                    <label>FiveM License <span style="color:#64748b;font-size:11px;font-weight:400;">(Optional — format: license:xxxxxxxx)</span></label>
+                    <input type="text" id="add-license" placeholder="e.g. license:a1b2c3d4e5f6..." autocomplete="off">
+                    <div id="err-license" class="error-msg"></div>
+                </div>
+                <div class="modal-actions" style="margin-top: 24px; display: flex; gap: 12px; justify-content: flex-end;">
+                    <button type="button" class="cta" style="background: transparent; border: 1px solid var(--border); width: auto;" onclick="closeAddPlayerModal()">Cancel</button>
+                    <button type="submit" class="cta" id="btn-submit-player" style="width: auto; background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); color: white; box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);">Register Player</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Player Modal -->
+    <div class="modal-overlay" id="edit-player-modal">
+        <div class="modal modal-pro modal-anim" style="max-width: 520px;">
+            <div class="modal-hero-header">
+                <div class="modal-title-box">
+                    <div class="modal-icon-badge" style="background: rgba(129, 140, 248, 0.2); color: #818cf8;">
+                        <i data-lucide="edit-2"></i>
+                    </div>
+                    <div>
+                        <h2>Edit Player</h2>
+                        <span style="font-size: 12px; color: var(--text-secondary);">Update username and Discord ID for this player</span>
+                    </div>
+                </div>
+                <button type="button" class="modal-close" aria-label="Close" title="Close" onclick="closeEditPlayerModal()"><i data-lucide="x"></i></button>
+            </div>
+            <form id="edit-player-form" novalidate>
+                <div class="form-group">
+                    <label>Player Username</label>
+                    <input type="text" id="edit-username" placeholder="e.g. ShadowHunter99" autocomplete="off" required>
+                    <div id="err-edit-username" class="error-msg"></div>
+                </div>
+                <div class="form-group">
+                    <label>Discord ID</label>
+                    <input type="text" id="edit-discord" placeholder="e.g. 123456789012345678" autocomplete="off">
+                    <div id="err-edit-discord" class="error-msg"></div>
+                </div>
+                <div class="form-group">
+                    <label>FiveM License <span style="color:#64748b;font-size:11px;font-weight:400;">(Optional — format: license:xxxxxxxx)</span></label>
+                    <input type="text" id="edit-license" placeholder="e.g. license:a1b2c3d4e5f6..." autocomplete="off">
+                    <div id="err-edit-license" class="error-msg"></div>
+                </div>
+                <div class="modal-actions" style="margin-top: 24px; display: flex; gap: 12px; justify-content: flex-end;">
+                    <button type="button" class="cta" style="background: transparent; border: 1px solid var(--border); width: auto;" onclick="closeEditPlayerModal()">Cancel</button>
+                    <button type="submit" class="cta" id="btn-save-edit-player" style="width: auto; background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); color: white; box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+    <script src="js/api.js?v=11"></script>
+    <script src="js/ui.js?v=14"></script>
+    <script src="js/players.js?v=20"></script>
+</body>
+</html>

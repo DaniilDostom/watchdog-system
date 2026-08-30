@@ -1,0 +1,4653 @@
+[
+  {
+    "id": "log_1787756812789",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to merlinx8. Reason: Slog in azione",
+    "moderator": "sononight",
+    "timestamp": "2026-08-26T15:06:52.789Z"
+  },
+  {
+    "id": "log_1787756822720",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: keelzin. (579593341306404864)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:07:02.720Z"
+  },
+  {
+    "id": "a1787756861454",
+    "playerId": "p1787756822716",
+    "type": "BAN",
+    "reason": "Slog in azione",
+    "reasonKey": "Slog in azione",
+    "reasonKeys": [
+      "Slog in azione"
+    ],
+    "reasonRaw": "Slog in azione",
+    "reasonCount": 5,
+    "moderator": "Karbaa_",
+    "timestamp": "2026-08-12T00:09:00.000Z",
+    "permanent": false,
+    "duration": "6",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": "Al termine del ban dovrà farsi arrestare dalla polizia"
+  },
+  {
+    "id": "log_1787756861458",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to keelzin.. Reason: Slog in azione",
+    "moderator": "Karbaa_",
+    "timestamp": "2026-08-26T15:07:41.458Z"
+  },
+  {
+    "id": "log_1787756874881",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: 0ms5 (1515458644945404135)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:07:54.881Z"
+  },
+  {
+    "id": "a1787756890944",
+    "playerId": "p1787756874878",
+    "type": "BAN",
+    "reason": "Quit in azione",
+    "reasonKey": "Quit in azione",
+    "reasonKeys": [
+      "Quit in azione"
+    ],
+    "reasonRaw": "Quit in azione",
+    "reasonCount": 3,
+    "moderator": "Sugosa",
+    "timestamp": "2026-08-12T18:49:00.000Z",
+    "permanent": false,
+    "duration": "3",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787756890948",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to 0ms5. Reason: Quit in azione",
+    "moderator": "Sugosa",
+    "timestamp": "2026-08-26T15:08:10.948Z"
+  },
+  {
+    "id": "log_1787756898560",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: _snocan (1225167673391054928)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:08:18.560Z"
+  },
+  {
+    "id": "a1787756910576",
+    "playerId": "p1787756898557",
+    "type": "BAN",
+    "reason": "Slog in azione",
+    "reasonKey": "Slog in azione",
+    "reasonKeys": [
+      "Slog in azione"
+    ],
+    "reasonRaw": "Slog in azione",
+    "reasonCount": 2,
+    "moderator": "Succo2006",
+    "timestamp": "2026-08-12T18:55:00.000Z",
+    "permanent": false,
+    "duration": "3",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": "",
+    "lastChance": false,
+    "updatedAt": "2026-08-26T18:06:50.313Z"
+  },
+  {
+    "id": "log_1787756910580",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to _snocan. Reason: Slog in azione",
+    "moderator": "Succo2006",
+    "timestamp": "2026-08-26T15:08:30.580Z"
+  },
+  {
+    "id": "log_1787756932119",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: deddifw (1077224437893582989)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:08:52.119Z"
+  },
+  {
+    "id": "a1787756954294",
+    "playerId": "p1787756932115",
+    "type": "BAN",
+    "reason": "Comportamento Non Consono",
+    "reasonKey": "Comportamento Non Consono",
+    "reasonKeys": [
+      "Comportamento Non Consono"
+    ],
+    "reasonRaw": "Comportamento Non Consono",
+    "reasonCount": 2,
+    "moderator": "Popina",
+    "timestamp": "2026-08-12T20:27:00.000Z",
+    "permanent": false,
+    "duration": "12",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": ""
+  },
+  {
+    "id": "log_1787756954298",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to deddifw. Reason: Comportamento Non Consono",
+    "moderator": "Popina",
+    "timestamp": "2026-08-26T15:09:14.298Z"
+  },
+  {
+    "id": "log_1787756966163",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: clqq. (1125539900708618372)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:09:26.163Z"
+  },
+  {
+    "id": "a1787756986699",
+    "playerId": "p1787756966159",
+    "type": "BAN",
+    "reason": "Spawnkill",
+    "reasonKey": "Spawnkill",
+    "reasonKeys": [
+      "Spawnkill"
+    ],
+    "reasonRaw": "Spawnkill",
+    "reasonCount": 2,
+    "moderator": "Itsantux",
+    "timestamp": "2026-08-12T21:02:00.000Z",
+    "permanent": false,
+    "duration": "4",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": "",
+    "updatedAt": "2026-08-26T15:09:58.272Z"
+  },
+  {
+    "id": "log_1787756986703",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to clqq.. Reason: Spawnkill",
+    "moderator": "Itsantux",
+    "timestamp": "2026-08-26T15:09:46.703Z"
+  },
+  {
+    "id": "log_1787756998276",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Edited BAN for player clqq.. From [BAN, reason: Spawnkill, issuer: Itsantux, duration: - Days] to [BAN, reason: Spawnkill, issuer: Itsantux, duration: 4 Hours]",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:09:58.276Z"
+  },
+  {
+    "id": "a1787757032668",
+    "playerId": "p1787754083337",
+    "type": "BAN",
+    "reason": "Insulti allo staff, Player non idoneo",
+    "reasonKey": "Insulti allo staff",
+    "reasonKeys": [
+      "Insulti allo staff",
+      "Player non idoneo"
+    ],
+    "reasonRaw": "Insulti allo staff, Player non idoneo",
+    "reasonCount": 3,
+    "moderator": "Leoisbello",
+    "timestamp": "2026-08-12T21:35:00.000Z",
+    "permanent": true,
+    "duration": null,
+    "durationUnit": null,
+    "banCategory": "traditional",
+    "note": "",
+    "updatedAt": "2026-08-26T15:10:41.434Z"
+  },
+  {
+    "id": "log_1787757032672",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to juan.sc. Reason: Player non idoneo",
+    "moderator": "Leoisbello",
+    "timestamp": "2026-08-26T15:10:32.672Z"
+  },
+  {
+    "id": "log_1787757041438",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Edited BAN for player juan.sc. From [BAN, reason: Player non idoneo, issuer: Leoisbello, duration: Permanent] to [BAN, reason: Insulti allo staff, Player non idoneo, issuer: Leoisbello, duration: Permanent]",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:10:41.438Z"
+  },
+  {
+    "id": "log_1787757054276",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: sauzzin (738320549410766919)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:10:54.276Z"
+  },
+  {
+    "id": "a1787757071132",
+    "playerId": "p1787757054272",
+    "type": "BAN",
+    "reason": "Cheating",
+    "reasonKey": "Cheating",
+    "reasonKeys": [
+      "Cheating"
+    ],
+    "reasonRaw": "Cheating",
+    "reasonCount": 5,
+    "moderator": "Leoisbello",
+    "timestamp": "2026-08-12T21:42:00.000Z",
+    "permanent": true,
+    "duration": null,
+    "durationUnit": null,
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787757071136",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to sauzzin. Reason: Cheating",
+    "moderator": "Leoisbello",
+    "timestamp": "2026-08-26T15:11:11.136Z"
+  },
+  {
+    "id": "a1787757111230",
+    "playerId": "p1787754924961",
+    "type": "BAN",
+    "reason": "Bug Abuse, Mancanza clip",
+    "reasonKey": "Bug Abuse",
+    "reasonKeys": [
+      "Bug Abuse",
+      "Mancanza clip"
+    ],
+    "reasonRaw": "Bug Abuse, Mancanza clip",
+    "reasonCount": 2,
+    "moderator": "Bindend0",
+    "timestamp": "2026-08-12T21:52:00.000Z",
+    "permanent": false,
+    "duration": "7",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787757111234",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to lloowww. Reason: Bug Abuse, Mancanza clip",
+    "moderator": "Bindend0",
+    "timestamp": "2026-08-26T15:11:51.234Z"
+  },
+  {
+    "id": "log_1787757126879",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: youssefinhoo (1060633499901628487)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:12:06.879Z"
+  },
+  {
+    "id": "a1787757140992",
+    "playerId": "p1787757126876",
+    "type": "BAN",
+    "reason": "FailRP",
+    "reasonKey": "FailRP",
+    "reasonKeys": [
+      "FailRP"
+    ],
+    "reasonRaw": "FailRP",
+    "reasonCount": 2,
+    "moderator": "Hi.happy",
+    "timestamp": "2026-08-12T22:41:00.000Z",
+    "permanent": false,
+    "duration": "4",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": ""
+  },
+  {
+    "id": "log_1787757140996",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to youssefinhoo. Reason: FailRP",
+    "moderator": "Hi.happy",
+    "timestamp": "2026-08-26T15:12:20.996Z"
+  },
+  {
+    "id": "log_1787757158779",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: dmitriybn (526404418027913217)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:12:38.779Z"
+  },
+  {
+    "id": "a1787757176399",
+    "playerId": "p1787757158776",
+    "type": "BAN",
+    "reason": "Powergame, Spawnkill",
+    "reasonKey": "Powergame",
+    "reasonKeys": [
+      "Powergame",
+      "Spawnkill"
+    ],
+    "reasonRaw": "Powergame, Spawnkill",
+    "reasonCount": 6,
+    "moderator": "Hi.happy",
+    "timestamp": "2026-08-26T15:12:00.000Z",
+    "permanent": false,
+    "duration": "8",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": ""
+  },
+  {
+    "id": "log_1787757176403",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to dmitriybn. Reason: Powergame, Spawnkill",
+    "moderator": "Hi.happy",
+    "timestamp": "2026-08-26T15:12:56.403Z"
+  },
+  {
+    "id": "log_1787757189946",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: zade2489 (1007734850532417647)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:13:09.946Z"
+  },
+  {
+    "id": "a1787757230567",
+    "playerId": "p1787757189942",
+    "type": "BAN",
+    "reason": "Clip Non Conforme, Comportamento Non Consono",
+    "reasonKey": "Clip Non Conforme",
+    "reasonKeys": [
+      "Clip Non Conforme",
+      "Comportamento Non Consono"
+    ],
+    "reasonRaw": "Clip Non Conforme, Comportamento Non Consono",
+    "reasonCount": 3,
+    "moderator": "Leoisbello",
+    "timestamp": "2026-08-12T23:16:00.000Z",
+    "permanent": false,
+    "duration": "3",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787757230571",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to zade2489. Reason: Clip Non Conforme, Comportamento Non Consono",
+    "moderator": "Leoisbello",
+    "timestamp": "2026-08-26T15:13:50.571Z"
+  },
+  {
+    "id": "log_1787757245500",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: fvmnagii (1451571432650834063)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:14:05.500Z"
+  },
+  {
+    "id": "a1787757270184",
+    "playerId": "p1787757245496",
+    "type": "BAN",
+    "reason": "Infrazione regolamento AC",
+    "reasonKey": "Infrazione regolamento AC",
+    "reasonKeys": [
+      "Infrazione regolamento AC"
+    ],
+    "reasonRaw": "Infrazione regolamento AC",
+    "reasonCount": 3,
+    "moderator": "Thestellix",
+    "timestamp": "2026-08-13T12:25:00.000Z",
+    "permanent": false,
+    "duration": "7",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787757270188",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to fvmnagii. Reason: Infrazione regolamento AC",
+    "moderator": "Thestellix",
+    "timestamp": "2026-08-26T15:14:30.188Z"
+  },
+  {
+    "id": "log_1787757279189",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: yarinmvp_ (836974379253628978)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:14:39.189Z"
+  },
+  {
+    "id": "a1787757293984",
+    "playerId": "p1787757279185",
+    "type": "BAN",
+    "reason": "Cheating, Infrazione regolamento AC",
+    "reasonKey": "Cheating",
+    "reasonKeys": [
+      "Cheating",
+      "Infrazione regolamento AC"
+    ],
+    "reasonRaw": "Cheating, Infrazione regolamento AC",
+    "reasonCount": 4,
+    "moderator": "Thestellix",
+    "timestamp": "2026-08-13T12:57:00.000Z",
+    "permanent": true,
+    "duration": null,
+    "durationUnit": null,
+    "banCategory": "traditional",
+    "note": "",
+    "updatedAt": "2026-08-26T15:30:05.598Z"
+  },
+  {
+    "id": "log_1787757293988",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to yarinmvp_. Reason: Cheating, Infrazione regolamento AC",
+    "moderator": "Thestellix",
+    "timestamp": "2026-08-26T15:14:53.988Z"
+  },
+  {
+    "id": "log_1787757307554",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: usb.wnl (1521622914116616254)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:15:07.554Z"
+  },
+  {
+    "id": "a1787757339513",
+    "playerId": "p1787757307550",
+    "type": "BAN",
+    "reason": "Cheating",
+    "reasonKey": "Cheating",
+    "reasonKeys": [
+      "Cheating"
+    ],
+    "reasonRaw": "Cheating",
+    "reasonCount": 7,
+    "moderator": "17wraith",
+    "timestamp": "2026-08-13T17:37:00.000Z",
+    "permanent": true,
+    "duration": null,
+    "durationUnit": null,
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787757339518",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to usb.wnl. Reason: Cheating",
+    "moderator": "17wraith",
+    "timestamp": "2026-08-26T15:15:39.518Z"
+  },
+  {
+    "id": "log_1787757353015",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: smxxxxxxxx (1502844046497021983)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:15:53.015Z"
+  },
+  {
+    "id": "a1787757368801",
+    "playerId": "p1787757353011",
+    "type": "BAN",
+    "reason": "Mancanza clip",
+    "reasonKey": "Mancanza clip",
+    "reasonKeys": [
+      "Mancanza clip"
+    ],
+    "reasonRaw": "Mancanza clip",
+    "reasonCount": 2,
+    "moderator": "Hi.happy",
+    "timestamp": "2026-08-14T15:15:00.000Z",
+    "permanent": false,
+    "duration": "14",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": "",
+    "updatedAt": "2026-08-26T15:16:14.817Z"
+  },
+  {
+    "id": "log_1787757368805",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to smxxxxxxxx. Reason: Mancanza clip",
+    "moderator": "Hi.happy",
+    "timestamp": "2026-08-26T15:16:08.805Z"
+  },
+  {
+    "id": "log_1787757374821",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Edited BAN for player smxxxxxxxx. From [BAN, reason: Mancanza clip, issuer: Hi.happy, duration: 14 Days] to [BAN, reason: Mancanza clip, issuer: Hi.happy, duration: 14 Days]",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:16:14.821Z"
+  },
+  {
+    "id": "log_1787757390610",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: lourek17 (1107739660047896609)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:16:30.610Z"
+  },
+  {
+    "id": "a1787757408781",
+    "playerId": "p1787757390606",
+    "type": "BAN",
+    "reason": "Player non idoneo",
+    "reasonKey": "Player non idoneo",
+    "reasonKeys": [
+      "Player non idoneo"
+    ],
+    "reasonRaw": "Player non idoneo",
+    "reasonCount": 4,
+    "moderator": "imgiova",
+    "timestamp": "2026-08-14T00:44:00.000Z",
+    "permanent": true,
+    "duration": null,
+    "durationUnit": null,
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787757408786",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to lourek17. Reason: Player non idoneo",
+    "moderator": "imgiova",
+    "timestamp": "2026-08-26T15:16:48.786Z"
+  },
+  {
+    "id": "log_1787757418530",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: tramezzino_pvp (1173320681824452618)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:16:58.530Z"
+  },
+  {
+    "id": "a1787757440526",
+    "playerId": "p1787757418526",
+    "type": "BAN",
+    "reason": "Player non idoneo",
+    "reasonKey": "Player non idoneo",
+    "reasonKeys": [
+      "Player non idoneo"
+    ],
+    "reasonRaw": "Player non idoneo",
+    "reasonCount": 5,
+    "moderator": "imgiova",
+    "timestamp": "2026-08-14T00:44:00.000Z",
+    "permanent": true,
+    "duration": null,
+    "durationUnit": null,
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787757440531",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to tramezzino_pvp. Reason: Player non idoneo",
+    "moderator": "imgiova",
+    "timestamp": "2026-08-26T15:17:20.531Z"
+  },
+  {
+    "id": "log_1787757451495",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: p7yz. (1201368037144658050)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:17:31.495Z"
+  },
+  {
+    "id": "a1787757473664",
+    "playerId": "p1787757451491",
+    "type": "BAN",
+    "reason": "Mancanza clip, Tossicità",
+    "reasonKey": "Mancanza clip",
+    "reasonKeys": [
+      "Mancanza clip",
+      "Tossicità"
+    ],
+    "reasonRaw": "Mancanza clip, Tossicità",
+    "reasonCount": 5,
+    "moderator": "Karbaa_",
+    "timestamp": "2026-08-14T15:17:00.000Z",
+    "permanent": false,
+    "duration": "50",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": "",
+    "updatedAt": "2026-08-26T15:18:00.544Z"
+  },
+  {
+    "id": "log_1787757473669",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to p7yz.. Reason: Mancanza clip, Tossicità",
+    "moderator": "Karbaa_",
+    "timestamp": "2026-08-26T15:17:53.669Z"
+  },
+  {
+    "id": "log_1787757480548",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Edited BAN for player p7yz.. From [BAN, reason: Mancanza clip, Tossicità, issuer: Karbaa_, duration: 50 Hours] to [BAN, reason: Mancanza clip, Tossicità, issuer: Karbaa_, duration: 50 Hours]",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:18:00.548Z"
+  },
+  {
+    "id": "log_1787757491269",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: campaniacontroll (1467520188193837210)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:18:11.269Z"
+  },
+  {
+    "id": "a1787757511203",
+    "playerId": "p1787757491265",
+    "type": "BAN",
+    "reason": "Respawn in Azione",
+    "reasonKey": "Respawn in Azione",
+    "reasonKeys": [
+      "Respawn in Azione"
+    ],
+    "reasonRaw": "Respawn in Azione",
+    "reasonCount": 2,
+    "moderator": "Karbaa_",
+    "timestamp": "2026-08-14T14:54:00.000Z",
+    "permanent": false,
+    "duration": "3",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787757511207",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to campaniacontroll. Reason: Respawn in Azione",
+    "moderator": "Karbaa_",
+    "timestamp": "2026-08-26T15:18:31.207Z"
+  },
+  {
+    "id": "log_1787757521201",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: demon_0405_ (1014192978396450887)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:18:41.201Z"
+  },
+  {
+    "id": "a1787757570494",
+    "playerId": "p1787757521197",
+    "type": "BAN",
+    "reason": "FailRP, Scarso RP",
+    "reasonKey": "FailRP",
+    "reasonKeys": [
+      "FailRP",
+      "Scarso RP"
+    ],
+    "reasonRaw": "FailRP, Scarso RP",
+    "reasonCount": 4,
+    "moderator": "Abemus_tio",
+    "timestamp": "2026-08-14T16:59:00.000Z",
+    "permanent": false,
+    "duration": "6",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": "",
+    "updatedAt": "2026-08-26T15:20:41.687Z"
+  },
+  {
+    "id": "log_1787757570498",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to demon_0405_. Reason: FailRP, Scarso RP",
+    "moderator": "Abemus_tio",
+    "timestamp": "2026-08-26T15:19:30.498Z"
+  },
+  {
+    "id": "log_1787757591238",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: oxycodoone (1282874085306662953)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:19:51.238Z"
+  },
+  {
+    "id": "a1787757620082",
+    "playerId": "p1787757591234",
+    "type": "BAN",
+    "reason": "FailRP, Scarso RP",
+    "reasonKey": "FailRP",
+    "reasonKeys": [
+      "FailRP",
+      "Scarso RP"
+    ],
+    "reasonRaw": "FailRP, Scarso RP",
+    "reasonCount": 4,
+    "moderator": "Abemus_tio",
+    "timestamp": "2026-08-14T16:59:00.000Z",
+    "permanent": false,
+    "duration": "6",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": ""
+  },
+  {
+    "id": "log_1787757620086",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to oxycodoone. Reason: FailRP, Scarso RP",
+    "moderator": "Abemus_tio",
+    "timestamp": "2026-08-26T15:20:20.086Z"
+  },
+  {
+    "id": "log_1787757634963",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Edited BAN for player demon_0405_. From [BAN, reason: FailRP, Scarso RP, issuer: Abemus_tio, duration: 6 Hours] to [BAN, reason: FailRP, Scarso RP, issuer: Abemus_tio, duration: 6 Hours]",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:20:34.963Z"
+  },
+  {
+    "id": "log_1787757641691",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Edited BAN for player demon_0405_. From [BAN, reason: FailRP, Scarso RP, issuer: Abemus_tio, duration: 6 Hours] to [BAN, reason: FailRP, Scarso RP, issuer: Abemus_tio, duration: 6 Hours]",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:20:41.691Z"
+  },
+  {
+    "id": "a1787757695252",
+    "playerId": "p1787757591234",
+    "type": "BAN",
+    "reason": "Player non idoneo",
+    "reasonKey": "Player non idoneo",
+    "reasonKeys": [
+      "Player non idoneo"
+    ],
+    "reasonRaw": "Player non idoneo",
+    "reasonCount": 4,
+    "moderator": "Owentv",
+    "timestamp": "2026-08-14T17:07:00.000Z",
+    "permanent": true,
+    "duration": null,
+    "durationUnit": null,
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787757695262",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to oxycodoone. Reason: Player non idoneo",
+    "moderator": "Owentv",
+    "timestamp": "2026-08-26T15:21:35.262Z"
+  },
+  {
+    "id": "a1787757724999",
+    "playerId": "p1787757126876",
+    "type": "BAN",
+    "reason": "Soft Flame",
+    "reasonKey": "Soft Flame",
+    "reasonKeys": [
+      "Soft Flame"
+    ],
+    "reasonRaw": "Soft Flame",
+    "reasonCount": 1,
+    "moderator": "Karbaa_",
+    "timestamp": "2026-08-14T22:04:00.000Z",
+    "permanent": false,
+    "duration": "4",
+    "durationUnit": "Days",
+    "banCategory": "weapon",
+    "note": "",
+    "updatedAt": "2026-08-26T15:22:11.874Z"
+  },
+  {
+    "id": "log_1787757725003",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to youssefinhoo. Reason: FailRP",
+    "moderator": "Karbaa_",
+    "timestamp": "2026-08-26T15:22:05.003Z"
+  },
+  {
+    "id": "log_1787757731878",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Edited BAN for player youssefinhoo. From [BAN, reason: FailRP, issuer: Karbaa_, duration: 4 Days] to [BAN, reason: Soft Flame, issuer: Karbaa_, duration: 4 Days]",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:22:11.878Z"
+  },
+  {
+    "id": "log_1787757750926",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: safari_._._ (986426089943486504)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:22:30.926Z"
+  },
+  {
+    "id": "a1787757769613",
+    "playerId": "p1787757750922",
+    "type": "BAN",
+    "reason": "Respawn in Azione, Rientro In Azione",
+    "reasonKey": "Respawn in Azione",
+    "reasonKeys": [
+      "Respawn in Azione",
+      "Rientro In Azione"
+    ],
+    "reasonRaw": "Respawn in Azione, Rientro In Azione",
+    "reasonCount": 2,
+    "moderator": "Leoisbello",
+    "timestamp": "2026-08-15T15:22:00.000Z",
+    "permanent": false,
+    "duration": "3",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787757769617",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to safari_._._. Reason: Respawn in Azione, Rientro In Azione",
+    "moderator": "Leoisbello",
+    "timestamp": "2026-08-26T15:22:49.617Z"
+  },
+  {
+    "id": "log_1787757810364",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: 17.nico. (1175360120096559105)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:23:30.364Z"
+  },
+  {
+    "id": "a1787757840860",
+    "playerId": "p1787757810360",
+    "type": "BAN",
+    "reason": "Respawn in Azione",
+    "reasonKey": "Respawn in Azione",
+    "reasonKeys": [
+      "Respawn in Azione"
+    ],
+    "reasonRaw": "Respawn in Azione",
+    "reasonCount": 3,
+    "moderator": "Leoisbello",
+    "timestamp": "2026-08-14T22:33:00.000Z",
+    "permanent": false,
+    "duration": "14",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": "Recidivo"
+  },
+  {
+    "id": "log_1787757840864",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to 17.nico.. Reason: Respawn in Azione",
+    "moderator": "Leoisbello",
+    "timestamp": "2026-08-26T15:24:00.864Z"
+  },
+  {
+    "id": "log_1787757863776",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: mikfps (1099747716235534478)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:24:23.776Z"
+  },
+  {
+    "id": "a1787757896565",
+    "playerId": "p1787757863773",
+    "type": "BAN",
+    "reason": "Mancanza clip, Respawn in Azione",
+    "reasonKey": "Mancanza clip",
+    "reasonKeys": [
+      "Mancanza clip",
+      "Respawn in Azione"
+    ],
+    "reasonRaw": "Mancanza clip, Respawn in Azione",
+    "reasonCount": 7,
+    "moderator": "Leoisbello",
+    "timestamp": "2026-08-14T22:36:00.000Z",
+    "permanent": false,
+    "duration": "14",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787757896569",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to mikfps. Reason: Mancanza clip, Respawn in Azione",
+    "moderator": "Leoisbello",
+    "timestamp": "2026-08-26T15:24:56.569Z"
+  },
+  {
+    "id": "log_1787757927441",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: gianni4701 (772422673216569364)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:25:27.441Z"
+  },
+  {
+    "id": "a1787757965698",
+    "playerId": "p1787757927437",
+    "type": "BAN",
+    "reason": "Account Sharing",
+    "reasonKey": "Account Sharing",
+    "reasonKeys": [
+      "Account Sharing"
+    ],
+    "reasonRaw": "Account Sharing",
+    "reasonCount": 1,
+    "moderator": "Owentv",
+    "timestamp": "2026-08-14T23:09:00.000Z",
+    "permanent": true,
+    "duration": null,
+    "durationUnit": null,
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787757965702",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to gianni4701. Reason: Account Sharing",
+    "moderator": "Owentv",
+    "timestamp": "2026-08-26T15:26:05.702Z"
+  },
+  {
+    "id": "log_1787757977055",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: forgotagain (294676964596252674)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:26:17.055Z"
+  },
+  {
+    "id": "a1787757989939",
+    "playerId": "p1787757977052",
+    "type": "BAN",
+    "reason": "Omofobia",
+    "reasonKey": "Omofobia",
+    "reasonKeys": [
+      "Omofobia"
+    ],
+    "reasonRaw": "Omofobia",
+    "reasonCount": 2,
+    "moderator": "Popina",
+    "timestamp": "2026-08-15T12:22:00.000Z",
+    "permanent": true,
+    "duration": null,
+    "durationUnit": null,
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787757989942",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to forgotagain. Reason: Omofobia",
+    "moderator": "Popina",
+    "timestamp": "2026-08-26T15:26:29.942Z"
+  },
+  {
+    "id": "log_1787758005134",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: pinguina__. (1296569071181107272)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:26:45.134Z"
+  },
+  {
+    "id": "a1787758018681",
+    "playerId": "p1787758005130",
+    "type": "BAN",
+    "reason": "FailRP",
+    "reasonKey": "FailRP",
+    "reasonKeys": [
+      "FailRP"
+    ],
+    "reasonRaw": "FailRP",
+    "reasonCount": 4,
+    "moderator": "Owentv",
+    "timestamp": "2026-08-15T15:51:00.000Z",
+    "permanent": false,
+    "duration": "6",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": ""
+  },
+  {
+    "id": "log_1787758018684",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to pinguina__.. Reason: FailRP",
+    "moderator": "Owentv",
+    "timestamp": "2026-08-26T15:26:58.684Z"
+  },
+  {
+    "id": "log_1787758030594",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: nickarmo09_ (1511474165431931102)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:27:10.594Z"
+  },
+  {
+    "id": "a1787758047044",
+    "playerId": "p1787758030590",
+    "type": "BAN",
+    "reason": "FailRP",
+    "reasonKey": "FailRP",
+    "reasonKeys": [
+      "FailRP"
+    ],
+    "reasonRaw": "FailRP",
+    "reasonCount": 5,
+    "moderator": "Owentv",
+    "timestamp": "2026-08-15T15:51:00.000Z",
+    "permanent": false,
+    "duration": "6",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": ""
+  },
+  {
+    "id": "log_1787758047048",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to nickarmo09_. Reason: FailRP",
+    "moderator": "Owentv",
+    "timestamp": "2026-08-26T15:27:27.048Z"
+  },
+  {
+    "id": "log_1787758061855",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: cronopotenziamento. (1327714888411385861)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:27:41.855Z"
+  },
+  {
+    "id": "a1787758085783",
+    "playerId": "p1787758061851",
+    "type": "BAN",
+    "reason": "Spawnkill, Clip Non Conforme",
+    "reasonKey": "Spawnkill",
+    "reasonKeys": [
+      "Spawnkill",
+      "Clip Non Conforme"
+    ],
+    "reasonRaw": "Spawnkill, Clip Non Conforme",
+    "reasonCount": 5,
+    "moderator": "Bindend0",
+    "timestamp": "2026-08-15T22:22:00.000Z",
+    "permanent": false,
+    "duration": "5",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787758085787",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to cronopotenziamento.. Reason: Spawnkill, Clip Non Conforme",
+    "moderator": "Bindend0",
+    "timestamp": "2026-08-26T15:28:05.787Z"
+  },
+  {
+    "id": "log_1787758097851",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: andrea058146 (1482672508699410670)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:28:17.851Z"
+  },
+  {
+    "id": "a1787758135616",
+    "playerId": "p1787758097847",
+    "type": "BAN",
+    "reason": "Comportamento Non Consono",
+    "reasonKey": "Comportamento Non Consono",
+    "reasonKeys": [
+      "Comportamento Non Consono"
+    ],
+    "reasonRaw": "Comportamento Non Consono",
+    "reasonCount": 3,
+    "moderator": "Nicosembra",
+    "timestamp": "2026-08-15T22:41:00.000Z",
+    "permanent": false,
+    "duration": "2",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787758135620",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to andrea058146. Reason: Comportamento Non Consono",
+    "moderator": "Nicosembra",
+    "timestamp": "2026-08-26T15:28:55.620Z"
+  },
+  {
+    "id": "log_1787758205602",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Edited BAN for player yarinmvp_. From [BAN, reason: Cheating, Infrazione regolamento AC, issuer: Thestellix, duration: Permanent] to [BAN, reason: Cheating, Infrazione regolamento AC, issuer: Thestellix, duration: Permanent]",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:30:05.602Z"
+  },
+  {
+    "id": "log_1787758326110",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: ssmoky7 (723575244656214176)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:32:06.110Z"
+  },
+  {
+    "id": "a1787758389688",
+    "playerId": "p1787758326107",
+    "type": "BAN",
+    "reason": "RDM",
+    "reasonKey": "RDM",
+    "reasonKeys": [
+      "RDM"
+    ],
+    "reasonRaw": "RDM",
+    "reasonCount": 1,
+    "moderator": "Karbaa_",
+    "timestamp": "2026-08-15T23:14:00.000Z",
+    "permanent": false,
+    "duration": "4",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": ""
+  },
+  {
+    "id": "log_1787758389692",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to ssmoky7. Reason: RDM",
+    "moderator": "Karbaa_",
+    "timestamp": "2026-08-26T15:33:09.692Z"
+  },
+  {
+    "id": "log_1787758397942",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: rxkfps (615943289040011284)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:33:17.942Z"
+  },
+  {
+    "id": "a1787758420791",
+    "playerId": "p1787758397939",
+    "type": "BAN",
+    "reason": "Mancanza clip",
+    "reasonKey": "Mancanza clip",
+    "reasonKeys": [
+      "Mancanza clip"
+    ],
+    "reasonRaw": "Mancanza clip",
+    "reasonCount": 5,
+    "moderator": "Karbaa_",
+    "timestamp": "2026-08-15T23:14:00.000Z",
+    "permanent": false,
+    "duration": "3",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787758420795",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to rxkfps. Reason: Mancanza clip",
+    "moderator": "Karbaa_",
+    "timestamp": "2026-08-26T15:33:40.795Z"
+  },
+  {
+    "id": "log_1787758433725",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: 21kaneki. (706234974684184586)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:33:53.725Z"
+  },
+  {
+    "id": "a1787758455066",
+    "playerId": "p1787758433721",
+    "type": "BAN",
+    "reason": "Spawnkill",
+    "reasonKey": "Spawnkill",
+    "reasonKeys": [
+      "Spawnkill"
+    ],
+    "reasonRaw": "Spawnkill",
+    "reasonCount": 4,
+    "moderator": "Karbaa_",
+    "timestamp": "2026-08-15T23:30:00.000Z",
+    "permanent": false,
+    "duration": "4",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": ""
+  },
+  {
+    "id": "log_1787758455070",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to 21kaneki.. Reason: Spawnkill",
+    "moderator": "Karbaa_",
+    "timestamp": "2026-08-26T15:34:15.070Z"
+  },
+  {
+    "id": "log_1787758489511",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: pikassomvp (1039528327444189225)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:34:49.511Z"
+  },
+  {
+    "id": "a1787758504755",
+    "playerId": "p1787758489507",
+    "type": "BAN",
+    "reason": "Insulti allo staff",
+    "reasonKey": "Insulti allo staff",
+    "reasonKeys": [
+      "Insulti allo staff"
+    ],
+    "reasonRaw": "Insulti allo staff",
+    "reasonCount": 2,
+    "moderator": "Bruni3383",
+    "timestamp": "2026-08-16T15:46:00.000Z",
+    "permanent": false,
+    "duration": "7",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787758504760",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to pikassomvp. Reason: Insulti allo staff",
+    "moderator": "Bruni3383",
+    "timestamp": "2026-08-26T15:35:04.760Z"
+  },
+  {
+    "id": "a1787758634015",
+    "playerId": "p1787754450376",
+    "type": "BAN",
+    "reason": "Spawnkill",
+    "reasonKey": "Spawnkill",
+    "reasonKeys": [
+      "Spawnkill"
+    ],
+    "reasonRaw": "Spawnkill",
+    "reasonCount": 10,
+    "moderator": "Karbaa_",
+    "timestamp": "2026-08-16T20:31:00.000Z",
+    "permanent": false,
+    "duration": "4",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": "",
+    "lastChance": false,
+    "updatedAt": "2026-08-26T18:05:07.904Z"
+  },
+  {
+    "id": "log_1787758634019",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to _ogshot_. Reason: Spawnkill",
+    "moderator": "Leoisbello",
+    "timestamp": "2026-08-26T15:37:14.019Z"
+  },
+  {
+    "id": "log_1787758655243",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: manu.1122 (719622281416147046)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:37:35.243Z"
+  },
+  {
+    "id": "a1787758686150",
+    "playerId": "p1787758655239",
+    "type": "BAN",
+    "reason": "Spawnkill",
+    "reasonKey": "Spawnkill",
+    "reasonKeys": [
+      "Spawnkill"
+    ],
+    "reasonRaw": "Spawnkill",
+    "reasonCount": 6,
+    "moderator": "Karbaa_",
+    "timestamp": "2026-08-16T20:53:00.000Z",
+    "permanent": false,
+    "duration": "4",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": ""
+  },
+  {
+    "id": "log_1787758686154",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to manu.1122. Reason: Spawnkill",
+    "moderator": "Karbaa_",
+    "timestamp": "2026-08-26T15:38:06.154Z"
+  },
+  {
+    "id": "log_1787758698914",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: 7gallox (1515496509737664553)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:38:18.914Z"
+  },
+  {
+    "id": "a1787758719189",
+    "playerId": "p1787758698911",
+    "type": "BAN",
+    "reason": "Spawnkill",
+    "reasonKey": "Spawnkill",
+    "reasonKeys": [
+      "Spawnkill"
+    ],
+    "reasonRaw": "Spawnkill",
+    "reasonCount": 7,
+    "moderator": "Karbaa_",
+    "timestamp": "2026-08-16T21:13:00.000Z",
+    "permanent": false,
+    "duration": "4",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": ""
+  },
+  {
+    "id": "log_1787758719193",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to 7gallox. Reason: Spawnkill",
+    "moderator": "Karbaa_",
+    "timestamp": "2026-08-26T15:38:39.193Z"
+  },
+  {
+    "id": "a1787758769615",
+    "playerId": "p1787758433721",
+    "type": "BAN",
+    "reason": "Cheating, Infrazione regolamento AC",
+    "reasonKey": "Cheating",
+    "reasonKeys": [
+      "Cheating",
+      "Infrazione regolamento AC"
+    ],
+    "reasonRaw": "Cheating, Infrazione regolamento AC",
+    "reasonCount": 5,
+    "moderator": "Leoisbello",
+    "timestamp": "2026-08-16T22:32:00.000Z",
+    "permanent": true,
+    "duration": null,
+    "durationUnit": null,
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787758769619",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to 21kaneki.. Reason: Cheating, Infrazione regolamento AC",
+    "moderator": "Leoisbello",
+    "timestamp": "2026-08-26T15:39:29.619Z"
+  },
+  {
+    "id": "log_1787758784493",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: gandalfilgrigio1688 (307193210449428490)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:39:44.493Z"
+  },
+  {
+    "id": "a1787758831106",
+    "playerId": "p1787758784489",
+    "type": "BAN",
+    "reason": "Metagame OOC",
+    "reasonKey": "Metagame OOC",
+    "reasonKeys": [
+      "Metagame OOC"
+    ],
+    "reasonRaw": "Metagame OOC",
+    "reasonCount": 1,
+    "moderator": "sononight",
+    "timestamp": "2026-08-16T23:05:00.000Z",
+    "permanent": false,
+    "duration": "5",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787758831110",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to gandalfilgrigio1688. Reason: Metagame OOC",
+    "moderator": "sononight",
+    "timestamp": "2026-08-26T15:40:31.110Z"
+  },
+  {
+    "id": "log_1787758846492",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: zshocco (819242348269142027)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:40:46.492Z"
+  },
+  {
+    "id": "a1787758925311",
+    "playerId": "p1787758846488",
+    "type": "BAN",
+    "reason": "Azioni Senza Modulo Azioni",
+    "reasonKey": "Azioni Senza Modulo Azioni",
+    "reasonKeys": [
+      "Azioni Senza Modulo Azioni"
+    ],
+    "reasonRaw": "Azioni Senza Modulo Azioni",
+    "reasonCount": 1,
+    "moderator": "sononight",
+    "timestamp": "2026-08-17T16:13:00.000Z",
+    "permanent": false,
+    "duration": "10",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": ""
+  },
+  {
+    "id": "log_1787758925315",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to zshocco. Reason: Azioni Senza Modulo Azioni",
+    "moderator": "sononight",
+    "timestamp": "2026-08-26T15:42:05.315Z"
+  },
+  {
+    "id": "log_1787758950356",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: .27ale (1491773633540915280)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:42:30.356Z"
+  },
+  {
+    "id": "a1787758970500",
+    "playerId": "p1787758950352",
+    "type": "BAN",
+    "reason": "Modding",
+    "reasonKey": "Modding",
+    "reasonKeys": [
+      "Modding"
+    ],
+    "reasonRaw": "Modding",
+    "reasonCount": 1,
+    "moderator": "Criobits",
+    "timestamp": "2026-08-17T17:19:00.000Z",
+    "permanent": true,
+    "duration": null,
+    "durationUnit": null,
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787758970506",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to .27ale. Reason: Modding",
+    "moderator": "Criobits",
+    "timestamp": "2026-08-26T15:42:50.506Z"
+  },
+  {
+    "id": "log_1787758988568",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: gmluiginho. (965399901318037564)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:43:08.568Z"
+  },
+  {
+    "id": "a1787759009691",
+    "playerId": "p1787758988564",
+    "type": "BAN",
+    "reason": "Infrazione regolamento AC",
+    "reasonKey": "Infrazione regolamento AC",
+    "reasonKeys": [
+      "Infrazione regolamento AC"
+    ],
+    "reasonRaw": "Infrazione regolamento AC",
+    "reasonCount": 4,
+    "moderator": "17wraith",
+    "timestamp": "2026-08-17T17:49:00.000Z",
+    "permanent": true,
+    "duration": null,
+    "durationUnit": null,
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787759009695",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to gmluiginho.. Reason: Infrazione regolamento AC",
+    "moderator": "17wraith",
+    "timestamp": "2026-08-26T15:43:29.695Z"
+  },
+  {
+    "id": "log_1787759023089",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: zebzabzabb (1501651019082367136)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:43:43.089Z"
+  },
+  {
+    "id": "a1787759074264",
+    "playerId": "p1787759023086",
+    "type": "BAN",
+    "reason": "Spawnkill, Mancanza clip",
+    "reasonKey": "Spawnkill",
+    "reasonKeys": [
+      "Spawnkill",
+      "Mancanza clip"
+    ],
+    "reasonRaw": "Spawnkill, Mancanza clip",
+    "reasonCount": 13,
+    "moderator": "Karbaa_",
+    "timestamp": "2026-08-17T19:35:00.000Z",
+    "permanent": false,
+    "duration": "3",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787759074269",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to zebzabzabb. Reason: Spawnkill, Mancanza clip",
+    "moderator": "Karbaa_",
+    "timestamp": "2026-08-26T15:44:34.269Z"
+  },
+  {
+    "id": "log_1787759135321",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: prm2016 (993229054847234068)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:45:35.321Z"
+  },
+  {
+    "id": "a1787759160447",
+    "playerId": "p1787759135317",
+    "type": "BAN",
+    "reason": "Mancanza clip, Utilizzo Tetti",
+    "reasonKey": "Mancanza clip",
+    "reasonKeys": [
+      "Mancanza clip",
+      "Utilizzo Tetti"
+    ],
+    "reasonRaw": "Mancanza clip, Utilizzo Tetti",
+    "reasonCount": 7,
+    "moderator": "Bindend0",
+    "timestamp": "2026-08-17T20:02:00.000Z",
+    "permanent": false,
+    "duration": "5",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787759160451",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to prm2016. Reason: Mancanza clip, Utilizzo Tetti",
+    "moderator": "Bindend0",
+    "timestamp": "2026-08-26T15:46:00.451Z"
+  },
+  {
+    "id": "log_1787759184510",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: kichta00 (1223026574211678212)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:46:24.510Z"
+  },
+  {
+    "id": "a1787759207295",
+    "playerId": "p1787759184505",
+    "type": "BAN",
+    "reason": "Tossicità",
+    "reasonKey": "Tossicità",
+    "reasonKeys": [
+      "Tossicità"
+    ],
+    "reasonRaw": "Tossicità",
+    "reasonCount": 2,
+    "moderator": "Karbaa_",
+    "timestamp": "2026-08-17T20:15:00.000Z",
+    "permanent": false,
+    "duration": "7",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787759207299",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to kichta00. Reason: Tossicità",
+    "moderator": "Karbaa_",
+    "timestamp": "2026-08-26T15:46:47.299Z"
+  },
+  {
+    "id": "a1787759236141",
+    "playerId": "p1787754450376",
+    "type": "BAN",
+    "reason": "Mancanza clip",
+    "reasonKey": "Mancanza clip",
+    "reasonKeys": [
+      "Mancanza clip"
+    ],
+    "reasonRaw": "Mancanza clip",
+    "reasonCount": 8,
+    "moderator": "sononight",
+    "timestamp": "2026-08-17T20:45:00.000Z",
+    "permanent": false,
+    "duration": "7",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787759236146",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to _ogshot_. Reason: Mancanza clip",
+    "moderator": "sononight",
+    "timestamp": "2026-08-26T15:47:16.146Z"
+  },
+  {
+    "id": "log_1787759248814",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: wackaii (1111278232340287618)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:47:28.814Z"
+  },
+  {
+    "id": "a1787759278984",
+    "playerId": "p1787759248809",
+    "type": "BAN",
+    "reason": "Spawnkill",
+    "reasonKey": "Spawnkill",
+    "reasonKeys": [
+      "Spawnkill"
+    ],
+    "reasonRaw": "Spawnkill",
+    "reasonCount": 9,
+    "moderator": "Michaelg98",
+    "timestamp": "2026-08-17T21:17:00.000Z",
+    "permanent": false,
+    "duration": "4",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": ""
+  },
+  {
+    "id": "log_1787759278989",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to wackaii. Reason: Spawnkill",
+    "moderator": "Michaelg98",
+    "timestamp": "2026-08-26T15:47:58.989Z"
+  },
+  {
+    "id": "log_1787759418813",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: g0lia1 (501627655658012683)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:50:18.813Z"
+  },
+  {
+    "id": "a1787759434722",
+    "playerId": "p1787759418809",
+    "type": "WARN",
+    "reason": "Infrazione Regolamento",
+    "reasonKey": "Infrazione Regolamento",
+    "reasonKeys": [
+      "Infrazione Regolamento"
+    ],
+    "reasonRaw": "Infrazione Regolamento",
+    "reasonCount": 1,
+    "moderator": "Hi.happy",
+    "timestamp": "2026-08-17T23:02:00.000Z",
+    "permanent": false,
+    "duration": null,
+    "durationUnit": null,
+    "banCategory": null,
+    "note": ""
+  },
+  {
+    "id": "log_1787759434726",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued WARN to g0lia1. Reason: Infrazione Regolamento",
+    "moderator": "Hi.happy",
+    "timestamp": "2026-08-26T15:50:34.726Z"
+  },
+  {
+    "id": "log_1787759497127",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: nicomvp (839242015288066098)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:51:37.127Z"
+  },
+  {
+    "id": "a1787759510207",
+    "playerId": "p1787759497123",
+    "type": "BAN",
+    "reason": "Infrazione regolamento AC",
+    "reasonKey": "Infrazione regolamento AC",
+    "reasonKeys": [
+      "Infrazione regolamento AC"
+    ],
+    "reasonRaw": "Infrazione regolamento AC",
+    "reasonCount": 5,
+    "moderator": "Thestellix",
+    "timestamp": "2026-08-18T12:05:00.000Z",
+    "permanent": false,
+    "duration": "7",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787759510212",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to nicomvp. Reason: Infrazione regolamento AC",
+    "moderator": "Thestellix",
+    "timestamp": "2026-08-26T15:51:50.212Z"
+  },
+  {
+    "id": "log_1787759524486",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: aim_shacky (594456832240517150)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:52:04.486Z"
+  },
+  {
+    "id": "a1787759543649",
+    "playerId": "p1787759524482",
+    "type": "BAN",
+    "reason": "Infrazione regolamento AC",
+    "reasonKey": "Infrazione regolamento AC",
+    "reasonKeys": [
+      "Infrazione regolamento AC"
+    ],
+    "reasonRaw": "Infrazione regolamento AC",
+    "reasonCount": 6,
+    "moderator": "Official.zen",
+    "timestamp": "2026-08-18T15:59:00.000Z",
+    "permanent": false,
+    "duration": "7",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787759543654",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to aim_shacky. Reason: Infrazione regolamento AC",
+    "moderator": "Official.zen",
+    "timestamp": "2026-08-26T15:52:23.654Z"
+  },
+  {
+    "id": "log_1787759562010",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: ciccio85cs (873989050976047146)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:52:42.010Z"
+  },
+  {
+    "id": "a1787759587400",
+    "playerId": "p1787759562006",
+    "type": "BAN",
+    "reason": "Player non idoneo",
+    "reasonKey": "Player non idoneo",
+    "reasonKeys": [
+      "Player non idoneo"
+    ],
+    "reasonRaw": "Player non idoneo",
+    "reasonCount": 5,
+    "moderator": "Criobits",
+    "timestamp": "2026-08-18T16:26:00.000Z",
+    "permanent": true,
+    "duration": null,
+    "durationUnit": null,
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787759587405",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to ciccio85cs. Reason: Player non idoneo",
+    "moderator": "Criobits",
+    "timestamp": "2026-08-26T15:53:07.405Z"
+  },
+  {
+    "id": "log_1787759601955",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: tetrov7. (660261798208864269)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:53:21.955Z"
+  },
+  {
+    "id": "a1787759622432",
+    "playerId": "p1787759601951",
+    "type": "BAN",
+    "reason": "Tossicità",
+    "reasonKey": "Tossicità",
+    "reasonKeys": [
+      "Tossicità"
+    ],
+    "reasonRaw": "Tossicità",
+    "reasonCount": 3,
+    "moderator": "imgiova",
+    "timestamp": "2026-08-18T17:29:00.000Z",
+    "permanent": false,
+    "duration": "20",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": ""
+  },
+  {
+    "id": "log_1787759622437",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to tetrov7.. Reason: Tossicità",
+    "moderator": "imgiova",
+    "timestamp": "2026-08-26T15:53:42.437Z"
+  },
+  {
+    "id": "log_1787759658541",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: frisaapomodoro23 (1242166202219102323)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:54:18.541Z"
+  },
+  {
+    "id": "log_1787759674918",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: mqnxj (1320436860459286550)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:54:34.918Z"
+  },
+  {
+    "id": "a1787759693144",
+    "playerId": "p1787759674914",
+    "type": "BAN",
+    "reason": "Uso Scorretto Chat Anon",
+    "reasonKey": "Uso Scorretto Chat Anon",
+    "reasonKeys": [
+      "Uso Scorretto Chat Anon"
+    ],
+    "reasonRaw": "Uso Scorretto Chat Anon",
+    "reasonCount": 1,
+    "moderator": "Karbaa_",
+    "timestamp": "2026-08-18T21:24:00.000Z",
+    "permanent": false,
+    "duration": "1",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": "",
+    "updatedAt": "2026-08-26T15:55:23.647Z"
+  },
+  {
+    "id": "log_1787759693150",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to mqnxj. Reason: Spawnkill",
+    "moderator": "Karbaa_",
+    "timestamp": "2026-08-26T15:54:53.150Z"
+  },
+  {
+    "id": "log_1787759723652",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Edited BAN for player mqnxj. From [BAN, reason: Spawnkill, issuer: Karbaa_, duration: 1 Hours] to [BAN, reason: Uso Scorretto Chat Anon, issuer: Karbaa_, duration: 1 Hours]",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:55:23.652Z"
+  },
+  {
+    "id": "log_1787759759197",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: gabri433 (929082210869469214)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:55:59.197Z"
+  },
+  {
+    "id": "a1787759796922",
+    "playerId": "p1787759759193",
+    "type": "BAN",
+    "reason": "Azioni Senza Modulo Fazione",
+    "reasonKey": "Azioni Senza Modulo Fazione",
+    "reasonKeys": [
+      "Azioni Senza Modulo Fazione"
+    ],
+    "reasonRaw": "Azioni Senza Modulo Fazione",
+    "reasonCount": 1,
+    "moderator": ".antooo_",
+    "timestamp": "2026-08-18T22:30:00.000Z",
+    "permanent": false,
+    "duration": "10",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": "",
+    "updatedAt": "2026-08-26T15:56:54.310Z"
+  },
+  {
+    "id": "log_1787759796927",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to gabri433. Reason: Azioni Senza Modulo Azioni",
+    "moderator": ".antooo_",
+    "timestamp": "2026-08-26T15:56:36.927Z"
+  },
+  {
+    "id": "log_1787759814315",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Edited BAN for player gabri433. From [BAN, reason: Azioni Senza Modulo Azioni, issuer: .antooo_, duration: 10 Hours] to [BAN, reason: Azioni Senza Modulo Fazione, issuer: .antooo_, duration: 10 Hours]",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:56:54.315Z"
+  },
+  {
+    "id": "log_1787759847422",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: vjaklk (1461616826386481223)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:57:27.422Z"
+  },
+  {
+    "id": "a1787759863509",
+    "playerId": "p1787759847418",
+    "type": "BAN",
+    "reason": "Spawnkill",
+    "reasonKey": "Spawnkill",
+    "reasonKeys": [
+      "Spawnkill"
+    ],
+    "reasonRaw": "Spawnkill",
+    "reasonCount": 10,
+    "moderator": ".antooo_",
+    "timestamp": "2026-08-18T22:30:00.000Z",
+    "permanent": false,
+    "duration": "4",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": ""
+  },
+  {
+    "id": "log_1787759863514",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to vjaklk. Reason: Spawnkill",
+    "moderator": ".antooo_",
+    "timestamp": "2026-08-26T15:57:43.514Z"
+  },
+  {
+    "id": "log_1787759888826",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: metal_mat51 (501110014707236865)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:58:08.826Z"
+  },
+  {
+    "id": "a1787759915450",
+    "playerId": "p1787759888821",
+    "type": "BAN",
+    "reason": "FailRP, Infrazione Regolamento, MixChat",
+    "reasonKey": "FailRP",
+    "reasonKeys": [
+      "FailRP",
+      "Infrazione Regolamento",
+      "MixChat"
+    ],
+    "reasonRaw": "FailRP, Infrazione Regolamento, MixChat",
+    "reasonCount": 7,
+    "moderator": "Hi.happy",
+    "timestamp": "2026-08-18T23:39:00.000Z",
+    "permanent": false,
+    "duration": "72",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": "",
+    "updatedAt": "2026-08-26T15:58:46.639Z"
+  },
+  {
+    "id": "log_1787759915455",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to metal_mat51. Reason: FailRP, Infrazione Regolamento, MixChat",
+    "moderator": "Hi.happy",
+    "timestamp": "2026-08-26T15:58:35.455Z"
+  },
+  {
+    "id": "log_1787759926644",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Edited BAN for player metal_mat51. From [BAN, reason: FailRP, Infrazione Regolamento, MixChat, issuer: Hi.happy, duration: 72 Hours] to [BAN, reason: FailRP, Infrazione Regolamento, MixChat, issuer: Hi.happy, duration: 72 Hours]",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:58:46.644Z"
+  },
+  {
+    "id": "log_1787759939976",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: kekkomartinez (838173989183684608)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:58:59.976Z"
+  },
+  {
+    "id": "a1787759957523",
+    "playerId": "p1787759939971",
+    "type": "WARN",
+    "reason": "Infrazione Regolamento",
+    "reasonKey": "Infrazione Regolamento",
+    "reasonKeys": [
+      "Infrazione Regolamento"
+    ],
+    "reasonRaw": "Infrazione Regolamento",
+    "reasonCount": 3,
+    "moderator": "17wraith",
+    "timestamp": "2026-08-18T23:52:00.000Z",
+    "permanent": false,
+    "duration": null,
+    "durationUnit": null,
+    "banCategory": null,
+    "note": ""
+  },
+  {
+    "id": "log_1787759957528",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued WARN to kekkomartinez. Reason: Infrazione Regolamento",
+    "moderator": "17wraith",
+    "timestamp": "2026-08-26T15:59:17.528Z"
+  },
+  {
+    "id": "log_1787759994620",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: uavinvolo (1005800347631104040)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T15:59:54.620Z"
+  },
+  {
+    "id": "a1787760023577",
+    "playerId": "p1787759994616",
+    "type": "BAN",
+    "reason": "Scorretto Uso /Ambulanza",
+    "reasonKey": "Scorretto Uso /Ambulanza",
+    "reasonKeys": [
+      "Scorretto Uso /Ambulanza"
+    ],
+    "reasonRaw": "Scorretto Uso /Ambulanza",
+    "reasonCount": 1,
+    "moderator": "Hi.happy",
+    "timestamp": "2026-08-19T00:45:00.000Z",
+    "permanent": false,
+    "duration": "3",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787760023582",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to uavinvolo. Reason: Scorretto Uso /Ambulanza",
+    "moderator": "Hi.happy",
+    "timestamp": "2026-08-26T16:00:23.582Z"
+  },
+  {
+    "id": "log_1787760041328",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: linobanfi (780470612514045992)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T16:00:41.328Z"
+  },
+  {
+    "id": "a1787760059324",
+    "playerId": "p1787760041324",
+    "type": "BAN",
+    "reason": "Call Discord",
+    "reasonKey": "Call Discord",
+    "reasonKeys": [
+      "Call Discord"
+    ],
+    "reasonRaw": "Call Discord",
+    "reasonCount": 1,
+    "moderator": "Hi.happy",
+    "timestamp": "2026-08-19T00:45:00.000Z",
+    "permanent": false,
+    "duration": "3",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787760059329",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to linobanfi. Reason: Call Discord",
+    "moderator": "Hi.happy",
+    "timestamp": "2026-08-26T16:00:59.329Z"
+  },
+  {
+    "id": "log_1787760088651",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: rexxxxxxx9 (708428202133159948)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T16:01:28.651Z"
+  },
+  {
+    "id": "a1787760111472",
+    "playerId": "p1787760088647",
+    "type": "BAN",
+    "reason": "Ricerca ingaggio",
+    "reasonKey": "Ricerca ingaggio",
+    "reasonKeys": [
+      "Ricerca ingaggio"
+    ],
+    "reasonRaw": "Ricerca ingaggio",
+    "reasonCount": 1,
+    "moderator": "Hi.happy",
+    "timestamp": "2026-08-19T00:45:00.000Z",
+    "permanent": false,
+    "duration": "8",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": ""
+  },
+  {
+    "id": "log_1787760111477",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to rexxxxxxx9. Reason: Ricerca ingaggio",
+    "moderator": "Hi.happy",
+    "timestamp": "2026-08-26T16:01:51.477Z"
+  },
+  {
+    "id": "log_1787760139138",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: franz07649 (999664309720326255)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T16:02:19.138Z"
+  },
+  {
+    "id": "a1787760204549",
+    "playerId": "p1787760139133",
+    "type": "BAN",
+    "reason": "Acquisto Whitelist",
+    "reasonKey": "Acquisto Whitelist",
+    "reasonKeys": [
+      "Acquisto Whitelist"
+    ],
+    "reasonRaw": "Acquisto Whitelist",
+    "reasonCount": 1,
+    "moderator": "Andrex99.it",
+    "timestamp": "2026-08-19T13:50:00.000Z",
+    "permanent": true,
+    "duration": null,
+    "durationUnit": null,
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787760204554",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to franz07649. Reason: Acquisto Whitelist",
+    "moderator": "Andrex99.it",
+    "timestamp": "2026-08-26T16:03:24.554Z"
+  },
+  {
+    "id": "log_1787760223988",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: patriziofficial (436130780876505109)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T16:03:43.988Z"
+  },
+  {
+    "id": "a1787760272304",
+    "playerId": "p1787760223984",
+    "type": "BAN",
+    "reason": "Omertà",
+    "reasonKey": "Omertà",
+    "reasonKeys": [
+      "Omertà"
+    ],
+    "reasonRaw": "Omertà",
+    "reasonCount": 1,
+    "moderator": ".dxviidd.",
+    "timestamp": "2026-08-19T21:51:00.000Z",
+    "permanent": false,
+    "duration": "7",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787760272310",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to patriziofficial. Reason: Omertà",
+    "moderator": ".dxviidd.",
+    "timestamp": "2026-08-26T16:04:32.310Z"
+  },
+  {
+    "id": "log_1787760580848",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: ......... (1)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T16:09:40.848Z"
+  },
+  {
+    "id": "log_1787760587653",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued WARN to .......... Reason: Spawnkill",
+    "moderator": "Karbaa_",
+    "timestamp": "2026-08-26T16:09:47.653Z"
+  },
+  {
+    "id": "log_1787760592428",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Deleted WARN for player .........",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T16:09:52.428Z"
+  },
+  {
+    "id": "log_1787760597658",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Deleted player ......... and all associated records",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T16:09:57.658Z"
+  },
+  {
+    "id": "log_1787761801141",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to patriziofficial. Reason: Spawnkill",
+    "moderator": "Andrex99.it",
+    "timestamp": "2026-08-26T16:30:01.141Z"
+  },
+  {
+    "id": "log_1787762338266",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Deleted BAN for player patriziofficial",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T16:38:58.266Z"
+  },
+  {
+    "id": "log_1787762664737",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to _anx_. Reason: Spawnkill",
+    "moderator": "Abemus_tio",
+    "timestamp": "2026-08-26T16:44:24.737Z"
+  },
+  {
+    "id": "log_1787762668809",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Edited BAN for player _anx_. From [BAN, reason: Spawnkill, issuer: Abemus_tio, duration: 1 Days] to [BAN, reason: Spawnkill, issuer: Abemus_tio, duration: 1 Days]",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T16:44:28.809Z"
+  },
+  {
+    "id": "log_1787762672967",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Deleted BAN for player _anx_",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T16:44:32.967Z"
+  },
+  {
+    "id": "a1787762746862",
+    "playerId": "p1787756098765",
+    "type": "BAN",
+    "reason": "Infrazione regolamento AC",
+    "reasonKey": "Infrazione regolamento AC",
+    "reasonKeys": [
+      "Infrazione regolamento AC"
+    ],
+    "reasonRaw": "Infrazione regolamento AC",
+    "reasonCount": 7,
+    "moderator": "Official.zen",
+    "timestamp": "2026-05-29T15:33:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "7",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787762746867",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to _anx_. Reason: Infrazione regolamento AC",
+    "moderator": "Official.zen",
+    "timestamp": "2026-08-26T16:45:46.867Z"
+  },
+  {
+    "id": "a1787767115176",
+    "playerId": "p1787756098765",
+    "type": "BAN",
+    "reason": "Call Discord",
+    "reasonKey": "Call Discord",
+    "reasonKeys": [
+      "Call Discord"
+    ],
+    "reasonRaw": "Call Discord",
+    "reasonCount": 2,
+    "moderator": "Hi.happy",
+    "timestamp": "2026-08-11T20:39:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "3",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787767115314",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to _anx_. Reason: Call Discord",
+    "moderator": "Hi.happy",
+    "timestamp": "2026-08-26T17:58:35.314Z"
+  },
+  {
+    "id": "a1787767177142",
+    "playerId": "p1787754450376",
+    "type": "BAN",
+    "reason": "Comportamento Non Consono",
+    "reasonKey": "Comportamento Non Consono",
+    "reasonKeys": [
+      "Comportamento Non Consono"
+    ],
+    "reasonRaw": "Comportamento Non Consono",
+    "reasonCount": 4,
+    "moderator": "Zero_dvx",
+    "timestamp": "2026-05-25T19:47:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "3",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787767177147",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to _ogshot_. Reason: Comportamento Non Consono",
+    "moderator": "Zero_dvx",
+    "timestamp": "2026-08-26T17:59:37.147Z"
+  },
+  {
+    "id": "a1787767282033",
+    "playerId": "p1787754450376",
+    "type": "BAN",
+    "reason": "No Fear",
+    "reasonKey": "No Fear",
+    "reasonKeys": [
+      "No Fear"
+    ],
+    "reasonRaw": "No Fear",
+    "reasonCount": 1,
+    "moderator": "Sugosa",
+    "timestamp": "2026-07-09T17:41:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "6",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": ""
+  },
+  {
+    "id": "log_1787767282037",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to _ogshot_. Reason: No Fear",
+    "moderator": "Sugosa",
+    "timestamp": "2026-08-26T18:01:22.037Z"
+  },
+  {
+    "id": "a1787767487127",
+    "playerId": "p1787754450376",
+    "type": "BAN",
+    "reason": "Tossicità, Scorretto Uso /Me, Mancanza clip, Omertà",
+    "reasonKey": "Tossicità",
+    "reasonKeys": [
+      "Tossicità",
+      "Scorretto Uso /Me",
+      "Mancanza clip",
+      "Omertà"
+    ],
+    "reasonRaw": "Tossicità, Scorretto Uso /Me, Mancanza clip, Omertà",
+    "reasonCount": 12,
+    "moderator": "Leoisbello",
+    "timestamp": "2026-07-10T00:34:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "7",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": "",
+    "updatedAt": "2026-08-26T18:05:16.788Z"
+  },
+  {
+    "id": "log_1787767487132",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to _ogshot_. Reason: Tossicità, Scorretto Uso /Me, Mancanza clip, Omertà",
+    "moderator": "Leoisbello",
+    "timestamp": "2026-08-26T18:04:47.132Z"
+  },
+  {
+    "id": "log_1787767507909",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Edited BAN for player _ogshot_. From [BAN, reason: Spawnkill, issuer: Leoisbello, duration: 4 Hours] to [BAN, reason: Spawnkill, issuer: Karbaa_, duration: 4 Hours]",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T18:05:07.909Z"
+  },
+  {
+    "id": "log_1787767516793",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Edited BAN for player _ogshot_. From [BAN, reason: Tossicità, Scorretto Uso /Me, Mancanza clip, Omertà, issuer: leo, duration: 7 Days] to [BAN, reason: Tossicità, Scorretto Uso /Me, Mancanza clip, Omertà, issuer: Leoisbello, duration: 7 Days]",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T18:05:16.793Z"
+  },
+  {
+    "id": "a1787767590979",
+    "playerId": "p1787756898557",
+    "type": "BAN",
+    "reason": "Infrazione Regolamento",
+    "reasonKey": "Infrazione Regolamento",
+    "reasonKeys": [
+      "Infrazione Regolamento"
+    ],
+    "reasonRaw": "Infrazione Regolamento",
+    "reasonCount": 4,
+    "moderator": "Skitiee",
+    "timestamp": "2026-01-18T16:07:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "10",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": ""
+  },
+  {
+    "id": "log_1787767590985",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to _snocan. Reason: Infrazione Regolamento",
+    "moderator": "Skitiee",
+    "timestamp": "2026-08-26T18:06:30.985Z"
+  },
+  {
+    "id": "log_1787767610319",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Edited BAN for player _snocan. From [BAN, reason: Slog in azione, issuer: Succo2006, duration: 3 Days] to [BAN, reason: Slog in azione, issuer: Succo2006, duration: 3 Days]",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T18:06:50.319Z"
+  },
+  {
+    "id": "a1787767697162",
+    "playerId": "p1787750210947",
+    "type": "BAN",
+    "reason": "Varie infrazioni",
+    "reasonKey": "Varie infrazioni",
+    "reasonKeys": [
+      "Varie infrazioni"
+    ],
+    "reasonRaw": "Varie infrazioni",
+    "reasonCount": 1,
+    "moderator": "Atterrato",
+    "timestamp": "2026-07-02T17:38:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "30",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": "Tentato di raggirare il sistema criminalità"
+  },
+  {
+    "id": "log_1787767697168",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to .qvyx.. Reason: Varie infrazioni",
+    "moderator": "Atterrato",
+    "timestamp": "2026-08-26T18:08:17.168Z"
+  },
+  {
+    "id": "a1787767722969",
+    "playerId": "p1787750210947",
+    "type": "BAN",
+    "reason": "Call Discord",
+    "reasonKey": "Call Discord",
+    "reasonKeys": [
+      "Call Discord"
+    ],
+    "reasonRaw": "Call Discord",
+    "reasonCount": 3,
+    "moderator": "Leoisbello",
+    "timestamp": "2026-07-10T17:17:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "3",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787767722975",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to .qvyx.. Reason: Call Discord",
+    "moderator": "Leoisbello",
+    "timestamp": "2026-08-26T18:08:42.975Z"
+  },
+  {
+    "id": "a1787767779387",
+    "playerId": "p1787750210947",
+    "type": "BAN",
+    "reason": "No Fear",
+    "reasonKey": "No Fear",
+    "reasonKeys": [
+      "No Fear"
+    ],
+    "reasonRaw": "No Fear",
+    "reasonCount": 2,
+    "moderator": "Succo2006",
+    "timestamp": "2026-08-02T22:33:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "4",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": ""
+  },
+  {
+    "id": "log_1787767779393",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to .qvyx.. Reason: No Fear",
+    "moderator": "Succo2006",
+    "timestamp": "2026-08-26T18:09:39.393Z"
+  },
+  {
+    "id": "a1787767821717",
+    "playerId": "p1787750210947",
+    "type": "BAN",
+    "reason": "Comportamento Non Consono, Grief Fazione",
+    "reasonKey": "Comportamento Non Consono",
+    "reasonKeys": [
+      "Comportamento Non Consono",
+      "Grief Fazione"
+    ],
+    "reasonRaw": "Comportamento Non Consono, Grief Fazione",
+    "reasonCount": 5,
+    "moderator": "Typhlosiion",
+    "timestamp": "2026-08-10T16:36:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "14",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787767821723",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to .qvyx.. Reason: Comportamento Non Consono, Grief Fazione",
+    "moderator": "Typhlosiion",
+    "timestamp": "2026-08-26T18:10:21.723Z"
+  },
+  {
+    "id": "a1787767850810",
+    "playerId": "p1787750210947",
+    "type": "BAN",
+    "reason": "Infrazione regolamento AC",
+    "reasonKey": "Infrazione regolamento AC",
+    "reasonKeys": [
+      "Infrazione regolamento AC"
+    ],
+    "reasonRaw": "Infrazione regolamento AC",
+    "reasonCount": 8,
+    "moderator": "17wraith",
+    "timestamp": "2026-08-21T18:55:00.000Z",
+    "permanent": true,
+    "lastChance": false,
+    "duration": null,
+    "durationUnit": null,
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787767850815",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to .qvyx.. Reason: Infrazione regolamento AC",
+    "moderator": "17wraith",
+    "timestamp": "2026-08-26T18:10:50.815Z"
+  },
+  {
+    "id": "a1787767945235",
+    "playerId": "p1787752532473",
+    "type": "BAN",
+    "reason": "Mancanza modulo",
+    "reasonKey": "Mancanza modulo",
+    "reasonKeys": [
+      "Mancanza modulo"
+    ],
+    "reasonRaw": "Mancanza modulo",
+    "reasonCount": 1,
+    "moderator": "Kath8159",
+    "timestamp": "2025-12-14T21:04:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "10",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": ""
+  },
+  {
+    "id": "log_1787767945240",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to .steeeee.. Reason: Mancanza modulo",
+    "moderator": "Kath8159",
+    "timestamp": "2026-08-26T18:12:25.240Z"
+  },
+  {
+    "id": "a1787767995023",
+    "playerId": "p1787752532473",
+    "type": "BAN",
+    "reason": "Uso Scorretto Chat Anon",
+    "reasonKey": "Uso Scorretto Chat Anon",
+    "reasonKeys": [
+      "Uso Scorretto Chat Anon"
+    ],
+    "reasonRaw": "Uso Scorretto Chat Anon",
+    "reasonCount": 2,
+    "moderator": "Sononight",
+    "timestamp": "2026-01-14T22:22:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "3",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": ""
+  },
+  {
+    "id": "log_1787767995028",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to .steeeee.. Reason: Uso Scorretto Chat Anon",
+    "moderator": "Sononight",
+    "timestamp": "2026-08-26T18:13:15.028Z"
+  },
+  {
+    "id": "a1787768030461",
+    "playerId": "p1787752532473",
+    "type": "BAN",
+    "reason": "Respawn in Azione",
+    "reasonKey": "Respawn in Azione",
+    "reasonKeys": [
+      "Respawn in Azione"
+    ],
+    "reasonRaw": "Respawn in Azione",
+    "reasonCount": 5,
+    "moderator": "Skitiee",
+    "timestamp": "2026-02-01T22:24:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "24",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787768030467",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to .steeeee.. Reason: Respawn in Azione",
+    "moderator": "Skitiee",
+    "timestamp": "2026-08-26T18:13:50.467Z"
+  },
+  {
+    "id": "a1787768080550",
+    "playerId": "p1787752532473",
+    "type": "BAN",
+    "reason": "Varie infrazioni",
+    "reasonKey": "Varie infrazioni",
+    "reasonKeys": [
+      "Varie infrazioni"
+    ],
+    "reasonRaw": "Varie infrazioni",
+    "reasonCount": 2,
+    "moderator": "Oscuritytheale",
+    "timestamp": "2026-04-13T19:07:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "6",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": "Utilizzo emote in azione"
+  },
+  {
+    "id": "log_1787768080555",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to .steeeee.. Reason: Varie infrazioni",
+    "moderator": "Oscuritytheale",
+    "timestamp": "2026-08-26T18:14:40.555Z"
+  },
+  {
+    "id": "a1787768133476",
+    "playerId": "p1787752532473",
+    "type": "BAN",
+    "reason": "Combat Log",
+    "reasonKey": "Combat Log",
+    "reasonKeys": [
+      "Combat Log"
+    ],
+    "reasonRaw": "Combat Log",
+    "reasonCount": 1,
+    "moderator": "Atterrato",
+    "timestamp": "2026-06-04T17:36:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "3",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787768133481",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to .steeeee.. Reason: Combat Log",
+    "moderator": "Atterrato",
+    "timestamp": "2026-08-26T18:15:33.481Z"
+  },
+  {
+    "id": "a1787768164565",
+    "playerId": "p1787752532473",
+    "type": "BAN",
+    "reason": "Quit in azione",
+    "reasonKey": "Quit in azione",
+    "reasonKeys": [
+      "Quit in azione"
+    ],
+    "reasonRaw": "Quit in azione",
+    "reasonCount": 2,
+    "moderator": "Owentv",
+    "timestamp": "2026-08-05T21:11:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "5",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787768164570",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to .steeeee.. Reason: Quit in azione",
+    "moderator": "Owentv",
+    "timestamp": "2026-08-26T18:16:04.570Z"
+  },
+  {
+    "id": "a1787774371192",
+    "playerId": "p1787753535502",
+    "type": "BAN",
+    "reason": "Tossicità",
+    "reasonKey": "Tossicità",
+    "reasonKeys": [
+      "Tossicità"
+    ],
+    "reasonRaw": "Tossicità",
+    "reasonCount": 5,
+    "moderator": "Nicosembra",
+    "timestamp": "2025-11-25T19:20:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "14",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": "Last Chance tolto il 7/30/2026 alle 1:44"
+  },
+  {
+    "id": "log_1787774371197",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to .txraa. Reason: Tossicità",
+    "moderator": "Nicosembra",
+    "timestamp": "2026-08-26T19:59:31.197Z"
+  },
+  {
+    "id": "a1787774397913",
+    "playerId": "p1787753535502",
+    "type": "BAN",
+    "reason": "RDM",
+    "reasonKey": "RDM",
+    "reasonKeys": [
+      "RDM"
+    ],
+    "reasonRaw": "RDM",
+    "reasonCount": 2,
+    "moderator": "Zero_dvx",
+    "timestamp": "2026-07-25T22:38:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "4",
+    "durationUnit": "Days",
+    "banCategory": "weapon",
+    "note": ""
+  },
+  {
+    "id": "log_1787774397919",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to .txraa. Reason: RDM",
+    "moderator": "Zero_dvx",
+    "timestamp": "2026-08-26T19:59:57.919Z"
+  },
+  {
+    "id": "a1787774474364",
+    "playerId": "p1787753535502",
+    "type": "BAN",
+    "reason": "RDM",
+    "reasonKey": "RDM",
+    "reasonKeys": [
+      "RDM"
+    ],
+    "reasonRaw": "RDM",
+    "reasonCount": 3,
+    "moderator": "Typhlosiion",
+    "timestamp": "2026-08-07T20:17:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "8",
+    "durationUnit": "Days",
+    "banCategory": "weapon",
+    "note": ""
+  },
+  {
+    "id": "log_1787774474369",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to .txraa. Reason: RDM",
+    "moderator": "Typhlosiion",
+    "timestamp": "2026-08-26T20:01:14.369Z"
+  },
+  {
+    "id": "log_1787774515041",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: poliks1231 (1310275718122569748)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:01:55.041Z"
+  },
+  {
+    "id": "a1787774539877",
+    "playerId": "p1787774515037",
+    "type": "BAN",
+    "reason": "Cheating, Infrazione regolamento AC",
+    "reasonKey": "Cheating",
+    "reasonKeys": [
+      "Cheating",
+      "Infrazione regolamento AC"
+    ],
+    "reasonRaw": "Cheating, Infrazione regolamento AC",
+    "reasonCount": 11,
+    "moderator": "Official.zen",
+    "timestamp": "2026-08-20T13:08:00.000Z",
+    "permanent": true,
+    "lastChance": false,
+    "duration": null,
+    "durationUnit": null,
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787774539882",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to poliks1231. Reason: Cheating, Infrazione regolamento AC",
+    "moderator": "Official.zen",
+    "timestamp": "2026-08-26T20:02:19.882Z"
+  },
+  {
+    "id": "log_1787774559600",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: ph3nomenalx (716960097837908019)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:02:39.600Z"
+  },
+  {
+    "id": "a1787774581530",
+    "playerId": "p1787774559596",
+    "type": "BAN",
+    "reason": "Cheating",
+    "reasonKey": "Cheating",
+    "reasonKeys": [
+      "Cheating"
+    ],
+    "reasonRaw": "Cheating",
+    "reasonCount": 6,
+    "moderator": "Thestellix",
+    "timestamp": "2026-08-20T16:45:00.000Z",
+    "permanent": true,
+    "lastChance": false,
+    "duration": null,
+    "durationUnit": null,
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787774581536",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to ph3nomenalx. Reason: Cheating",
+    "moderator": "Thestellix",
+    "timestamp": "2026-08-26T20:03:01.536Z"
+  },
+  {
+    "id": "log_1787774679057",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: ugo.789 (917906764970729502)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:04:39.057Z"
+  },
+  {
+    "id": "a1787774697041",
+    "playerId": "p1787774679052",
+    "type": "BAN",
+    "reason": "Infrazione Regolamento",
+    "reasonKey": "Infrazione Regolamento",
+    "reasonKeys": [
+      "Infrazione Regolamento"
+    ],
+    "reasonRaw": "Infrazione Regolamento",
+    "reasonCount": 5,
+    "moderator": "Nicosembra",
+    "timestamp": "2026-08-20T17:07:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "4",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": ""
+  },
+  {
+    "id": "log_1787774697046",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to ugo.789. Reason: Infrazione Regolamento",
+    "moderator": "Nicosembra",
+    "timestamp": "2026-08-26T20:04:57.046Z"
+  },
+  {
+    "id": "log_1787774859378",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to ugo.789. Reason: Infrazione Regolamento",
+    "moderator": "Nicosembra",
+    "timestamp": "2026-08-26T20:07:39.378Z"
+  },
+  {
+    "id": "log_1787774863671",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Deleted BAN for player ugo.789",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:07:43.671Z"
+  },
+  {
+    "id": "log_1787774883611",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: 19shadow78 (375984393078046724)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:08:03.611Z"
+  },
+  {
+    "id": "a1787774902015",
+    "playerId": "p1787774883606",
+    "type": "BAN",
+    "reason": "Mancanza clip",
+    "reasonKey": "Mancanza clip",
+    "reasonKeys": [
+      "Mancanza clip"
+    ],
+    "reasonRaw": "Mancanza clip",
+    "reasonCount": 14,
+    "moderator": "Zero_dvx",
+    "timestamp": "2026-08-20T22:25:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "3",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": "",
+    "updatedAt": "2026-08-26T20:49:08.096Z"
+  },
+  {
+    "id": "log_1787774902021",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to 19shadow78. Reason: Mancanza clip",
+    "moderator": "Zero_dvx",
+    "timestamp": "2026-08-26T20:08:22.021Z"
+  },
+  {
+    "id": "log_1787774916131",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: kapitano_. (855536091586625576)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:08:36.131Z"
+  },
+  {
+    "id": "a1787774957057",
+    "playerId": "p1787774916126",
+    "type": "BAN",
+    "reason": "Respawn in Azione, Rientro In Azione",
+    "reasonKey": "Respawn in Azione",
+    "reasonKeys": [
+      "Respawn in Azione",
+      "Rientro In Azione"
+    ],
+    "reasonRaw": "Respawn in Azione, Rientro In Azione",
+    "reasonCount": 6,
+    "moderator": "Owentv",
+    "timestamp": "2026-08-20T23:23:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "5",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787774957062",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to kapitano_.. Reason: Respawn in Azione, Rientro In Azione",
+    "moderator": "Owentv",
+    "timestamp": "2026-08-26T20:09:17.062Z"
+  },
+  {
+    "id": "log_1787774981463",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: .saamu (474647528290123797)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:09:41.463Z"
+  },
+  {
+    "id": "a1787775000772",
+    "playerId": "p1787774981458",
+    "type": "BAN",
+    "reason": "Player non idoneo",
+    "reasonKey": "Player non idoneo",
+    "reasonKeys": [
+      "Player non idoneo"
+    ],
+    "reasonRaw": "Player non idoneo",
+    "reasonCount": 6,
+    "moderator": "Karbaa_",
+    "timestamp": "2026-08-21T00:30:00.000Z",
+    "permanent": true,
+    "lastChance": false,
+    "duration": null,
+    "durationUnit": null,
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787775000777",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to .saamu. Reason: Player non idoneo",
+    "moderator": "Karbaa_",
+    "timestamp": "2026-08-26T20:10:00.777Z"
+  },
+  {
+    "id": "log_1787775017274",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: tabbonmok_. (703022487738515556)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:10:17.274Z"
+  },
+  {
+    "id": "a1787775047645",
+    "playerId": "p1787775017269",
+    "type": "BAN",
+    "reason": "Player non idoneo",
+    "reasonKey": "Player non idoneo",
+    "reasonKeys": [
+      "Player non idoneo"
+    ],
+    "reasonRaw": "Player non idoneo",
+    "reasonCount": 7,
+    "moderator": "Karbaa_",
+    "timestamp": "2026-08-21T00:30:00.000Z",
+    "permanent": true,
+    "lastChance": false,
+    "duration": null,
+    "durationUnit": null,
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787775047651",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to tabbonmok_.. Reason: Player non idoneo",
+    "moderator": "Karbaa_",
+    "timestamp": "2026-08-26T20:10:47.651Z"
+  },
+  {
+    "id": "log_1787775063113",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: duzega (1468265922857799731)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:11:03.113Z"
+  },
+  {
+    "id": "a1787775084530",
+    "playerId": "p1787775063108",
+    "type": "BAN",
+    "reason": "Infrazione Regolamento",
+    "reasonKey": "Infrazione Regolamento",
+    "reasonKeys": [
+      "Infrazione Regolamento"
+    ],
+    "reasonRaw": "Infrazione Regolamento",
+    "reasonCount": 6,
+    "moderator": "Leoisbello",
+    "timestamp": "2026-08-21T15:39:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "7",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787775084536",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to duzega. Reason: Infrazione Regolamento",
+    "moderator": "Leoisbello",
+    "timestamp": "2026-08-26T20:11:24.536Z"
+  },
+  {
+    "id": "log_1787775098595",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: atsifaks (1533437824387514389)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:11:38.595Z"
+  },
+  {
+    "id": "a1787775149036",
+    "playerId": "p1787775098590",
+    "type": "BAN",
+    "reason": "Doppia Fazione",
+    "reasonKey": "Doppia Fazione",
+    "reasonKeys": [
+      "Doppia Fazione"
+    ],
+    "reasonRaw": "Doppia Fazione",
+    "reasonCount": 1,
+    "moderator": "Ciabattino_",
+    "timestamp": "2026-08-21T15:49:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "10",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": ""
+  },
+  {
+    "id": "log_1787775149058",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to atsifaks. Reason: Doppia Fazione",
+    "moderator": "Ciabattino_",
+    "timestamp": "2026-08-26T20:12:29.058Z"
+  },
+  {
+    "id": "log_1787775209311",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: kekkofvm (770234072504598558)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:13:29.311Z"
+  },
+  {
+    "id": "a1787775235293",
+    "playerId": "p1787775209306",
+    "type": "BAN",
+    "reason": "Slog in azione",
+    "reasonKey": "Slog in azione",
+    "reasonKeys": [
+      "Slog in azione"
+    ],
+    "reasonRaw": "Slog in azione",
+    "reasonCount": 3,
+    "moderator": "Nicosembra",
+    "timestamp": "2026-08-21T16:59:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "3",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787775235298",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to kekkofvm. Reason: Slog in azione",
+    "moderator": "Nicosembra",
+    "timestamp": "2026-08-26T20:13:55.298Z"
+  },
+  {
+    "id": "log_1787775251729",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: whitinho7 (1197233736325017665)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:14:11.729Z"
+  },
+  {
+    "id": "a1787775278600",
+    "playerId": "p1787775251724",
+    "type": "BAN",
+    "reason": "Slog in azione",
+    "reasonKey": "Slog in azione",
+    "reasonKeys": [
+      "Slog in azione"
+    ],
+    "reasonRaw": "Slog in azione",
+    "reasonCount": 4,
+    "moderator": "Nicosembra",
+    "timestamp": "2026-08-21T17:16:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "3",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787775278605",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to whitinho7. Reason: Slog in azione",
+    "moderator": "Nicosembra",
+    "timestamp": "2026-08-26T20:14:38.605Z"
+  },
+  {
+    "id": "log_1787775295785",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: berti.vale00 (666022230437789697)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:14:55.785Z"
+  },
+  {
+    "id": "a1787775327065",
+    "playerId": "p1787775295780",
+    "type": "BAN",
+    "reason": "Blasfemia, No Fear Estremo",
+    "reasonKey": "Blasfemia",
+    "reasonKeys": [
+      "Blasfemia",
+      "No Fear Estremo"
+    ],
+    "reasonRaw": "Blasfemia, No Fear Estremo",
+    "reasonCount": 1,
+    "moderator": "Sugosa",
+    "timestamp": "2026-08-21T19:45:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "5",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787775327071",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to berti.vale00. Reason: Blasfemia, No Fear Estremo",
+    "moderator": "Sugosa",
+    "timestamp": "2026-08-26T20:15:27.071Z"
+  },
+  {
+    "id": "a1787775389005",
+    "playerId": "p1787753125635",
+    "type": "BAN",
+    "reason": "Tossicità",
+    "reasonKey": "Tossicità",
+    "reasonKeys": [
+      "Tossicità"
+    ],
+    "reasonRaw": "Tossicità",
+    "reasonCount": 6,
+    "moderator": "Ciabattino_",
+    "timestamp": "2026-08-21T20:14:00.000Z",
+    "permanent": false,
+    "lastChance": true,
+    "duration": "7",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787775389010",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to rayanfpsss. Reason: Tossicità",
+    "moderator": "Ciabattino_",
+    "timestamp": "2026-08-26T20:16:29.010Z"
+  },
+  {
+    "id": "log_1787775415231",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: actual.cc (919917022232604672)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:16:55.231Z"
+  },
+  {
+    "id": "a1787775438700",
+    "playerId": "p1787775415226",
+    "type": "BAN",
+    "reason": "Powergame",
+    "reasonKey": "Powergame",
+    "reasonKeys": [
+      "Powergame"
+    ],
+    "reasonRaw": "Powergame",
+    "reasonCount": 2,
+    "moderator": "Ciabattino_",
+    "timestamp": "2026-08-21T21:25:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "4",
+    "durationUnit": "Days",
+    "banCategory": "weapon",
+    "note": ""
+  },
+  {
+    "id": "log_1787775438706",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to actual.cc. Reason: Powergame",
+    "moderator": "Ciabattino_",
+    "timestamp": "2026-08-26T20:17:18.706Z"
+  },
+  {
+    "id": "log_1787775529520",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: viik7. (812657290120790026)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:18:49.520Z"
+  },
+  {
+    "id": "a1787775608823",
+    "playerId": "p1787775529515",
+    "type": "BAN",
+    "reason": "Infrazione Regolamento",
+    "reasonKey": "Infrazione Regolamento",
+    "reasonKeys": [
+      "Infrazione Regolamento"
+    ],
+    "reasonRaw": "Infrazione Regolamento",
+    "reasonCount": 7,
+    "moderator": "Nicosembra",
+    "timestamp": "2026-08-21T22:07:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "10",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": ""
+  },
+  {
+    "id": "log_1787775608828",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to viik7.. Reason: Infrazione Regolamento",
+    "moderator": "Nicosembra",
+    "timestamp": "2026-08-26T20:20:08.828Z"
+  },
+  {
+    "id": "log_1787775619165",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: volpescu (421371575808557067)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:20:19.165Z"
+  },
+  {
+    "id": "a1787775651112",
+    "playerId": "p1787775619161",
+    "type": "BAN",
+    "reason": "Player non idoneo, Troll, Mancanza clip",
+    "reasonKey": "Player non idoneo",
+    "reasonKeys": [
+      "Player non idoneo",
+      "Troll",
+      "Mancanza clip"
+    ],
+    "reasonRaw": "Player non idoneo, Troll, Mancanza clip",
+    "reasonCount": 18,
+    "moderator": "Leoisbello",
+    "timestamp": "2026-08-21T22:29:00.000Z",
+    "permanent": true,
+    "lastChance": false,
+    "duration": null,
+    "durationUnit": null,
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787775651118",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to volpescu. Reason: Player non idoneo, Troll, Mancanza clip",
+    "moderator": "Leoisbello",
+    "timestamp": "2026-08-26T20:20:51.118Z"
+  },
+  {
+    "id": "log_1787775668930",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: irzi999 (1528809342110011559)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:21:08.930Z"
+  },
+  {
+    "id": "a1787775708644",
+    "playerId": "p1787775668925",
+    "type": "BAN",
+    "reason": "Ricerca ingaggio, Troll",
+    "reasonKey": "Ricerca ingaggio",
+    "reasonKeys": [
+      "Ricerca ingaggio",
+      "Troll"
+    ],
+    "reasonRaw": "Ricerca ingaggio, Troll",
+    "reasonCount": 3,
+    "moderator": "Leoisbello",
+    "timestamp": "2026-08-21T22:52:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "20",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": ""
+  },
+  {
+    "id": "log_1787775708649",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to irzi999. Reason: Ricerca ingaggio, Troll",
+    "moderator": "Leoisbello",
+    "timestamp": "2026-08-26T20:21:48.649Z"
+  },
+  {
+    "id": "log_1787775720383",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: peakyblinders.02 (807275819411963975)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:22:00.383Z"
+  },
+  {
+    "id": "a1787775758147",
+    "playerId": "p1787775720378",
+    "type": "BAN",
+    "reason": "Mancanza clip, Respawn in Azione, Ricerca ingaggio",
+    "reasonKey": "Mancanza clip",
+    "reasonKeys": [
+      "Mancanza clip",
+      "Respawn in Azione",
+      "Ricerca ingaggio"
+    ],
+    "reasonRaw": "Mancanza clip, Respawn in Azione, Ricerca ingaggio",
+    "reasonCount": 19,
+    "moderator": "Leoisbello",
+    "timestamp": "2026-08-21T22:52:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "7",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787775758153",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to peakyblinders.02. Reason: Mancanza clip, Respawn in Azione, Ricerca ingaggio",
+    "moderator": "Leoisbello",
+    "timestamp": "2026-08-26T20:22:38.153Z"
+  },
+  {
+    "id": "log_1787775782127",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: v.7zx (1020293882614915073)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:23:02.127Z"
+  },
+  {
+    "id": "a1787775800603",
+    "playerId": "p1787775782121",
+    "type": "BAN",
+    "reason": "Spawnkill",
+    "reasonKey": "Spawnkill",
+    "reasonKeys": [
+      "Spawnkill"
+    ],
+    "reasonRaw": "Spawnkill",
+    "reasonCount": 11,
+    "moderator": "Bindend0",
+    "timestamp": "2026-08-21T22:59:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "4",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": ""
+  },
+  {
+    "id": "log_1787775800608",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to v.7zx. Reason: Spawnkill",
+    "moderator": "Bindend0",
+    "timestamp": "2026-08-26T20:23:20.608Z"
+  },
+  {
+    "id": "a1787775835141",
+    "playerId": "p1787760088647",
+    "type": "BAN",
+    "reason": "Ricerca ingaggio",
+    "reasonKey": "Ricerca ingaggio",
+    "reasonKeys": [
+      "Ricerca ingaggio"
+    ],
+    "reasonRaw": "Ricerca ingaggio",
+    "reasonCount": 4,
+    "moderator": "Elkarofficial",
+    "timestamp": "2026-08-21T23:17:00.000Z",
+    "permanent": true,
+    "lastChance": false,
+    "duration": null,
+    "durationUnit": null,
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787775835148",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to rexxxxxxx9. Reason: Ricerca ingaggio",
+    "moderator": "Elkarofficial",
+    "timestamp": "2026-08-26T20:23:55.148Z"
+  },
+  {
+    "id": "log_1787775856029",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: peakyblinders01 (1323832758312636549)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:24:16.029Z"
+  },
+  {
+    "id": "a1787775882548",
+    "playerId": "p1787775856024",
+    "type": "BAN",
+    "reason": "RDM",
+    "reasonKey": "RDM",
+    "reasonKeys": [
+      "RDM"
+    ],
+    "reasonRaw": "RDM",
+    "reasonCount": 4,
+    "moderator": "Nicosembra",
+    "timestamp": "2026-08-22T16:36:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "8",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": ""
+  },
+  {
+    "id": "log_1787775882553",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to peakyblinders01. Reason: RDM",
+    "moderator": "Nicosembra",
+    "timestamp": "2026-08-26T20:24:42.553Z"
+  },
+  {
+    "id": "log_1787775896057",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: farmacia_45869 (1158551190351646830)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:24:56.057Z"
+  },
+  {
+    "id": "a1787775923825",
+    "playerId": "p1787775896052",
+    "type": "BAN",
+    "reason": "Spawnkill",
+    "reasonKey": "Spawnkill",
+    "reasonKeys": [
+      "Spawnkill"
+    ],
+    "reasonRaw": "Spawnkill",
+    "reasonCount": 12,
+    "moderator": "Sugosa",
+    "timestamp": "2026-08-22T16:59:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "4",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": ""
+  },
+  {
+    "id": "log_1787775923830",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to farmacia_45869. Reason: Spawnkill",
+    "moderator": "Sugosa",
+    "timestamp": "2026-08-26T20:25:23.830Z"
+  },
+  {
+    "id": "a1787775957430",
+    "playerId": "p1787775209306",
+    "type": "BAN",
+    "reason": "Infrazione regolamento AC",
+    "reasonKey": "Infrazione regolamento AC",
+    "reasonKeys": [
+      "Infrazione regolamento AC"
+    ],
+    "reasonRaw": "Infrazione regolamento AC",
+    "reasonCount": 10,
+    "moderator": "17wraith",
+    "timestamp": "2026-08-22T23:02:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "30",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787775957435",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to kekkofvm. Reason: Infrazione regolamento AC",
+    "moderator": "17wraith",
+    "timestamp": "2026-08-26T20:25:57.435Z"
+  },
+  {
+    "id": "log_1787775969007",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: svgmh7 (663530729887629389)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:26:09.007Z"
+  },
+  {
+    "id": "a1787776000198",
+    "playerId": "p1787775969001",
+    "type": "BAN",
+    "reason": "Insulti allo staff, Player non idoneo",
+    "reasonKey": "Insulti allo staff",
+    "reasonKeys": [
+      "Insulti allo staff",
+      "Player non idoneo"
+    ],
+    "reasonRaw": "Insulti allo staff, Player non idoneo",
+    "reasonCount": 10,
+    "moderator": "Leoisbello",
+    "timestamp": "2026-08-23T14:06:00.000Z",
+    "permanent": true,
+    "lastChance": false,
+    "duration": null,
+    "durationUnit": null,
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787776000203",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to svgmh7. Reason: Insulti allo staff, Player non idoneo",
+    "moderator": "Leoisbello",
+    "timestamp": "2026-08-26T20:26:40.203Z"
+  },
+  {
+    "id": "log_1787776043275",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: rresettare (1492836259742220349)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:27:23.275Z"
+  },
+  {
+    "id": "a1787776066174",
+    "playerId": "p1787776043271",
+    "type": "BAN",
+    "reason": "Powergame",
+    "reasonKey": "Powergame",
+    "reasonKeys": [
+      "Powergame"
+    ],
+    "reasonRaw": "Powergame",
+    "reasonCount": 3,
+    "moderator": "Typhlosiion",
+    "timestamp": "2026-08-23T17:12:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "4",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": ""
+  },
+  {
+    "id": "log_1787776066180",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to rresettare. Reason: Powergame",
+    "moderator": "Typhlosiion",
+    "timestamp": "2026-08-26T20:27:46.180Z"
+  },
+  {
+    "id": "a1787776103874",
+    "playerId": "p1787775856024",
+    "type": "BAN",
+    "reason": "Infrazione regolamento AC",
+    "reasonKey": "Infrazione regolamento AC",
+    "reasonKeys": [
+      "Infrazione regolamento AC"
+    ],
+    "reasonRaw": "Infrazione regolamento AC",
+    "reasonCount": 11,
+    "moderator": "Leoisbello",
+    "timestamp": "2026-08-23T17:28:00.000Z",
+    "permanent": true,
+    "lastChance": false,
+    "duration": null,
+    "durationUnit": null,
+    "banCategory": "traditional",
+    "note": "Recidivo"
+  },
+  {
+    "id": "log_1787776103880",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to peakyblinders01. Reason: Infrazione regolamento AC",
+    "moderator": "Leoisbello",
+    "timestamp": "2026-08-26T20:28:23.880Z"
+  },
+  {
+    "id": "a1787776170373",
+    "playerId": "p1787757750922",
+    "type": "BAN",
+    "reason": "Respawn in Azione, Mancanza clip",
+    "reasonKey": "Respawn in Azione",
+    "reasonKeys": [
+      "Respawn in Azione",
+      "Mancanza clip"
+    ],
+    "reasonRaw": "Respawn in Azione, Mancanza clip",
+    "reasonCount": 18,
+    "moderator": "Leoisbello",
+    "timestamp": "2026-08-23T19:15:00.000Z",
+    "permanent": false,
+    "lastChance": true,
+    "duration": "5",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787776170379",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to safari_._._. Reason: Respawn in Azione, Mancanza clip",
+    "moderator": "Leoisbello",
+    "timestamp": "2026-08-26T20:29:30.379Z"
+  },
+  {
+    "id": "log_1787776244013",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: vvdocvv (1016538269984497674)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:30:44.013Z"
+  },
+  {
+    "id": "a1787776266808",
+    "playerId": "p1787776244008",
+    "type": "BAN",
+    "reason": "Ricerca ingaggio",
+    "reasonKey": "Ricerca ingaggio",
+    "reasonKeys": [
+      "Ricerca ingaggio"
+    ],
+    "reasonRaw": "Ricerca ingaggio",
+    "reasonCount": 5,
+    "moderator": "Leoisbello",
+    "timestamp": "2026-08-23T20:38:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "10",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": ""
+  },
+  {
+    "id": "log_1787776266814",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to vvdocvv. Reason: Ricerca ingaggio",
+    "moderator": "Leoisbello",
+    "timestamp": "2026-08-26T20:31:06.814Z"
+  },
+  {
+    "id": "log_1787776276472",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: nizeev (720579433097986088)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:31:16.472Z"
+  },
+  {
+    "id": "a1787776301196",
+    "playerId": "p1787776276467",
+    "type": "BAN",
+    "reason": "Metagame OOC",
+    "reasonKey": "Metagame OOC",
+    "reasonKeys": [
+      "Metagame OOC"
+    ],
+    "reasonRaw": "Metagame OOC",
+    "reasonCount": 2,
+    "moderator": ".dxviidd.",
+    "timestamp": "2026-08-23T21:31:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "5",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787776301202",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to nizeev. Reason: Metagame OOC",
+    "moderator": ".dxviidd.",
+    "timestamp": "2026-08-26T20:31:41.202Z"
+  },
+  {
+    "id": "log_1787776310493",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: issam_cuorebianco (847936774092095578)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:31:50.493Z"
+  },
+  {
+    "id": "a1787776324756",
+    "playerId": "p1787776310487",
+    "type": "BAN",
+    "reason": "Spawnkill",
+    "reasonKey": "Spawnkill",
+    "reasonKeys": [
+      "Spawnkill"
+    ],
+    "reasonRaw": "Spawnkill",
+    "reasonCount": 13,
+    "moderator": ".dxviidd.",
+    "timestamp": "2026-08-23T21:48:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "4",
+    "durationUnit": "Hours",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787776324762",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to issam_cuorebianco. Reason: Spawnkill",
+    "moderator": ".dxviidd.",
+    "timestamp": "2026-08-26T20:32:04.762Z"
+  },
+  {
+    "id": "log_1787776341903",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: xstefxn0 (711201608775761960)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:32:21.903Z"
+  },
+  {
+    "id": "a1787776358675",
+    "playerId": "p1787776341898",
+    "type": "BAN",
+    "reason": "Metagame OOC",
+    "reasonKey": "Metagame OOC",
+    "reasonKeys": [
+      "Metagame OOC"
+    ],
+    "reasonRaw": "Metagame OOC",
+    "reasonCount": 3,
+    "moderator": ".dxviidd.",
+    "timestamp": "2026-08-23T22:06:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "3",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787776358681",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to xstefxn0. Reason: Metagame OOC",
+    "moderator": ".dxviidd.",
+    "timestamp": "2026-08-26T20:32:38.681Z"
+  },
+  {
+    "id": "log_1787776370129",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: pipposcala (837150124169625660)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:32:50.129Z"
+  },
+  {
+    "id": "a1787776390830",
+    "playerId": "p1787776370124",
+    "type": "BAN",
+    "reason": "Slog in azione",
+    "reasonKey": "Slog in azione",
+    "reasonKeys": [
+      "Slog in azione"
+    ],
+    "reasonRaw": "Slog in azione",
+    "reasonCount": 5,
+    "moderator": ".dxviidd.",
+    "timestamp": "2026-08-23T22:06:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "5",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787776390836",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to pipposcala. Reason: Slog in azione",
+    "moderator": ".dxviidd.",
+    "timestamp": "2026-08-26T20:33:10.836Z"
+  },
+  {
+    "id": "log_1787776408093",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: ybn.willy (761304672782778389)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:33:28.093Z"
+  },
+  {
+    "id": "a1787776439108",
+    "playerId": "p1787776408088",
+    "type": "BAN",
+    "reason": "Scorretto Uso /Ambulanza",
+    "reasonKey": "Scorretto Uso /Ambulanza",
+    "reasonKeys": [
+      "Scorretto Uso /Ambulanza"
+    ],
+    "reasonRaw": "Scorretto Uso /Ambulanza",
+    "reasonCount": 2,
+    "moderator": "Hi.happy",
+    "timestamp": "2026-08-23T23:08:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "3",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787776439114",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to ybn.willy. Reason: Scorretto Uso /Ambulanza",
+    "moderator": "Hi.happy",
+    "timestamp": "2026-08-26T20:33:59.114Z"
+  },
+  {
+    "id": "log_1787776451672",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: omegus_aim (324597042741772289)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:34:11.672Z"
+  },
+  {
+    "id": "a1787776496044",
+    "playerId": "p1787776451667",
+    "type": "BAN",
+    "reason": "Infrazione Regolamento",
+    "reasonKey": "Infrazione Regolamento",
+    "reasonKeys": [
+      "Infrazione Regolamento"
+    ],
+    "reasonRaw": "Infrazione Regolamento",
+    "reasonCount": 8,
+    "moderator": "Hi.happy",
+    "timestamp": "2026-08-23T23:20:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "10",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": "Wipe PG"
+  },
+  {
+    "id": "log_1787776496050",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to omegus_aim. Reason: Infrazione Regolamento",
+    "moderator": "Hi.happy",
+    "timestamp": "2026-08-26T20:34:56.050Z"
+  },
+  {
+    "id": "log_1787776506071",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: jeancap73_0302 (805879023891644497)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:35:06.071Z"
+  },
+  {
+    "id": "a1787776526407",
+    "playerId": "p1787776506066",
+    "type": "BAN",
+    "reason": "Infrazione Regolamento",
+    "reasonKey": "Infrazione Regolamento",
+    "reasonKeys": [
+      "Infrazione Regolamento"
+    ],
+    "reasonRaw": "Infrazione Regolamento",
+    "reasonCount": 9,
+    "moderator": "Hi.happy",
+    "timestamp": "2026-08-23T23:28:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "20",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": "Wipe PG"
+  },
+  {
+    "id": "log_1787776526413",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to jeancap73_0302. Reason: Infrazione Regolamento",
+    "moderator": "Hi.happy",
+    "timestamp": "2026-08-26T20:35:26.413Z"
+  },
+  {
+    "id": "log_1787776547331",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: nvrcisss1sst (1097103642382839842)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:35:47.331Z"
+  },
+  {
+    "id": "a1787776558866",
+    "playerId": "p1787776547326",
+    "type": "BAN",
+    "reason": "Infrazione Regolamento",
+    "reasonKey": "Infrazione Regolamento",
+    "reasonKeys": [
+      "Infrazione Regolamento"
+    ],
+    "reasonRaw": "Infrazione Regolamento",
+    "reasonCount": 10,
+    "moderator": "Hi.happy",
+    "timestamp": "2026-08-26T20:35:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "8",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": ""
+  },
+  {
+    "id": "log_1787776558872",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to nvrcisss1sst. Reason: Infrazione Regolamento",
+    "moderator": "Hi.happy",
+    "timestamp": "2026-08-26T20:35:58.872Z"
+  },
+  {
+    "id": "log_1787776571099",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: bomba_._. (1286701286288265310)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:36:11.099Z"
+  },
+  {
+    "id": "a1787776590728",
+    "playerId": "p1787776571094",
+    "type": "BAN",
+    "reason": "Infrazione regolamento AC",
+    "reasonKey": "Infrazione regolamento AC",
+    "reasonKeys": [
+      "Infrazione regolamento AC"
+    ],
+    "reasonRaw": "Infrazione regolamento AC",
+    "reasonCount": 12,
+    "moderator": "Hi.happy",
+    "timestamp": "2026-08-24T15:58:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "7",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787776590734",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to bomba_._.. Reason: Infrazione regolamento AC",
+    "moderator": "Hi.happy",
+    "timestamp": "2026-08-26T20:36:30.734Z"
+  },
+  {
+    "id": "log_1787776604879",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: zicoaim (1016293849628430417)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:36:44.879Z"
+  },
+  {
+    "id": "a1787776631551",
+    "playerId": "p1787776604874",
+    "type": "BAN",
+    "reason": "Infrazione Regolamento",
+    "reasonKey": "Infrazione Regolamento",
+    "reasonKeys": [
+      "Infrazione Regolamento"
+    ],
+    "reasonRaw": "Infrazione Regolamento",
+    "reasonCount": 11,
+    "moderator": "Hi.happy",
+    "timestamp": "2026-08-24T15:58:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "10",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": ""
+  },
+  {
+    "id": "log_1787776631557",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to zicoaim. Reason: Infrazione Regolamento",
+    "moderator": "Hi.happy",
+    "timestamp": "2026-08-26T20:37:11.557Z"
+  },
+  {
+    "id": "log_1787776647999",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: __paolo.bonolis__ (1084139800610754673)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:37:27.999Z"
+  },
+  {
+    "id": "a1787776672554",
+    "playerId": "p1787776647993",
+    "type": "BAN",
+    "reason": "Mancanza clip",
+    "reasonKey": "Mancanza clip",
+    "reasonKeys": [
+      "Mancanza clip"
+    ],
+    "reasonRaw": "Mancanza clip",
+    "reasonCount": 14,
+    "moderator": "Antovm",
+    "timestamp": "2026-08-24T16:12:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "3",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787776672560",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to __paolo.bonolis__. Reason: Mancanza clip",
+    "moderator": "Antovm",
+    "timestamp": "2026-08-26T20:37:52.560Z"
+  },
+  {
+    "id": "log_1787776696952",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: brook.z (388377855903399937)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:38:16.952Z"
+  },
+  {
+    "id": "a1787776730459",
+    "playerId": "p1787776696946",
+    "type": "BAN",
+    "reason": "VDM",
+    "reasonKey": "VDM",
+    "reasonKeys": [
+      "VDM"
+    ],
+    "reasonRaw": "VDM",
+    "reasonCount": 1,
+    "moderator": "Bindend0",
+    "timestamp": "2026-08-24T22:59:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "4",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": ""
+  },
+  {
+    "id": "log_1787776730465",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to brook.z. Reason: VDM",
+    "moderator": "Bindend0",
+    "timestamp": "2026-08-26T20:38:50.465Z"
+  },
+  {
+    "id": "a1787776763331",
+    "playerId": "p1787756498498",
+    "type": "BAN",
+    "reason": "Powergame",
+    "reasonKey": "Powergame",
+    "reasonKeys": [
+      "Powergame"
+    ],
+    "reasonRaw": "Powergame",
+    "reasonCount": 4,
+    "moderator": "Succo2006",
+    "timestamp": "2026-08-26T20:39:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "4",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": ""
+  },
+  {
+    "id": "log_1787776763337",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to geckoguy17. Reason: Powergame",
+    "moderator": "Succo2006",
+    "timestamp": "2026-08-26T20:39:23.337Z"
+  },
+  {
+    "id": "log_1787776777678",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: tso.kso (824000036169449492)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:39:37.678Z"
+  },
+  {
+    "id": "a1787776793214",
+    "playerId": "p1787776777674",
+    "type": "BAN",
+    "reason": "Infrazione regolamento AC",
+    "reasonKey": "Infrazione regolamento AC",
+    "reasonKeys": [
+      "Infrazione regolamento AC"
+    ],
+    "reasonRaw": "Infrazione regolamento AC",
+    "reasonCount": 13,
+    "moderator": "Official.zen",
+    "timestamp": "2026-08-25T09:15:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "7",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787776793220",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to tso.kso. Reason: Infrazione regolamento AC",
+    "moderator": "Official.zen",
+    "timestamp": "2026-08-26T20:39:53.220Z"
+  },
+  {
+    "id": "log_1787776830868",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: lil_orby (833650529527398401)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:40:30.868Z"
+  },
+  {
+    "id": "a1787776857241",
+    "playerId": "p1787776830863",
+    "type": "BAN",
+    "reason": "Player non idoneo",
+    "reasonKey": "Player non idoneo",
+    "reasonKeys": [
+      "Player non idoneo"
+    ],
+    "reasonRaw": "Player non idoneo",
+    "reasonCount": 10,
+    "moderator": "Lukemnd2617",
+    "timestamp": "2026-08-25T16:18:00.000Z",
+    "permanent": true,
+    "lastChance": false,
+    "duration": null,
+    "durationUnit": null,
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787776857247",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to lil_orby. Reason: Player non idoneo",
+    "moderator": "Lukemnd2617",
+    "timestamp": "2026-08-26T20:40:57.247Z"
+  },
+  {
+    "id": "a1787776895287",
+    "playerId": "p1787755859170",
+    "type": "BAN",
+    "reason": "Ricerca ingaggio",
+    "reasonKey": "Ricerca ingaggio",
+    "reasonKeys": [
+      "Ricerca ingaggio"
+    ],
+    "reasonRaw": "Ricerca ingaggio",
+    "reasonCount": 6,
+    "moderator": "Succo2006",
+    "timestamp": "2026-08-25T18:34:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "4",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": ""
+  },
+  {
+    "id": "log_1787776895293",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to ootrrrrrrre. Reason: Ricerca ingaggio",
+    "moderator": "Succo2006",
+    "timestamp": "2026-08-26T20:41:35.293Z"
+  },
+  {
+    "id": "log_1787776909152",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: 69stylish (1248332268368560160)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:41:49.152Z"
+  },
+  {
+    "id": "a1787776942636",
+    "playerId": "p1787776909147",
+    "type": "BAN",
+    "reason": "Mancanza modulo",
+    "reasonKey": "Mancanza modulo",
+    "reasonKeys": [
+      "Mancanza modulo"
+    ],
+    "reasonRaw": "Mancanza modulo",
+    "reasonCount": 2,
+    "moderator": "Karbaa_",
+    "timestamp": "2026-08-25T18:36:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "10",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": ""
+  },
+  {
+    "id": "log_1787776942643",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to 69stylish. Reason: Mancanza modulo",
+    "moderator": "Karbaa_",
+    "timestamp": "2026-08-26T20:42:22.643Z"
+  },
+  {
+    "id": "log_1787776960916",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: siriasole (963845278778155048)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:42:40.916Z"
+  },
+  {
+    "id": "a1787776988329",
+    "playerId": "p1787776960911",
+    "type": "BAN",
+    "reason": "Infrazione Regolamento",
+    "reasonKey": "Infrazione Regolamento",
+    "reasonKeys": [
+      "Infrazione Regolamento"
+    ],
+    "reasonRaw": "Infrazione Regolamento",
+    "reasonCount": 12,
+    "moderator": "Hi.happy",
+    "timestamp": "2026-08-25T20:32:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "10",
+    "durationUnit": "Hours",
+    "banCategory": "weapon",
+    "note": "Wipe PG"
+  },
+  {
+    "id": "log_1787776988336",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to siriasole. Reason: Infrazione Regolamento",
+    "moderator": "Hi.happy",
+    "timestamp": "2026-08-26T20:43:08.336Z"
+  },
+  {
+    "id": "log_1787777015983",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Registered new player: .dominpt (743627352625381458)",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:43:35.983Z"
+  },
+  {
+    "id": "a1787777047734",
+    "playerId": "p1787777015978",
+    "type": "BAN",
+    "reason": "Respawn in Azione, Bug Abuse",
+    "reasonKey": "Respawn in Azione",
+    "reasonKeys": [
+      "Respawn in Azione",
+      "Bug Abuse"
+    ],
+    "reasonRaw": "Respawn in Azione, Bug Abuse",
+    "reasonCount": 10,
+    "moderator": "Succo2006",
+    "timestamp": "2026-08-26T13:31:00.000Z",
+    "permanent": false,
+    "lastChance": false,
+    "duration": "5",
+    "durationUnit": "Days",
+    "banCategory": "traditional",
+    "note": ""
+  },
+  {
+    "id": "log_1787777047740",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Issued BAN to .dominpt. Reason: Respawn in Azione, Bug Abuse",
+    "moderator": "Succo2006",
+    "timestamp": "2026-08-26T20:44:07.740Z"
+  },
+  {
+    "id": "log_1787777348102",
+    "playerId": "SYSTEM",
+    "type": "LOG",
+    "reason": "Edited BAN for player 19shadow78. From [BAN, reason: Mancanza clip, issuer: Zero_dvx, duration: 3 Days] to [BAN, reason: Mancanza clip, issuer: Zero_dvx, duration: 3 Days]",
+    "moderator": "System Admin",
+    "timestamp": "2026-08-26T20:49:08.102Z"
+  }
+]

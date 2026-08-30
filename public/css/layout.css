@@ -1,0 +1,286 @@
+/* =========================================================================
+   SANCTIONANALYSER - DARK GLASS LAYOUT SYSTEM
+   ========================================================================= */
+
+.sidebar {
+    width: 260px;
+    background: rgba(15, 23, 42, 0.78);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    z-index: 100;
+}
+
+.sidebar .logo {
+    padding: 22px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 19px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: -0.3px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.sidebar .logo img,
+.sidebar-logo-img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+    border-radius: 6px;
+    flex-shrink: 0;
+    box-shadow: 0 0 12px rgba(129, 140, 248, 0.35);
+}
+
+.sidebar .logo i {
+    width: 26px;
+    height: 26px;
+    color: #818cf8;
+    filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.5));
+}
+
+.sidebar nav {
+    display: flex;
+    flex-direction: column;
+    padding: 16px 12px;
+    gap: 4px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.sidebar nav a {
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 10px;
+    font-size: 13.5px;
+    font-weight: 600;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.sidebar nav a i {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.sidebar nav a:hover {
+    background: rgba(255, 255, 255, 0.04);
+    color: #f1f5f9;
+    border-color: rgba(255, 255, 255, 0.06);
+}
+
+.sidebar nav a:hover i {
+    transform: scale(1.08);
+    color: #818cf8;
+}
+
+.sidebar nav a.active {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.18), rgba(79, 70, 229, 0.1));
+    border: 1px solid rgba(129, 140, 248, 0.35);
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.2);
+}
+
+.sidebar nav a.active i {
+    color: #818cf8;
+}
+
+.sidebar nav a.sub-link {
+    padding-left: 36px;
+    font-size: 12.5px;
+    opacity: 0.9;
+}
+
+.sidebar-footer {
+    padding: 16px 20px;
+    font-size: 11px;
+    color: #64748b;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    line-height: 1.4;
+    text-align: center;
+}
+
+/* --- Main Content & Topbar --- */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    background: #0b0f19;
+    min-width: 0;
+}
+
+.topbar {
+    height: 64px;
+    background: rgba(15, 23, 42, 0.72);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 12px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 90;
+}
+
+.topbar .breadcrumb {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: #cbd5e1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.topbar .breadcrumb a {
+    color: #94a3b8;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.topbar .breadcrumb a:hover {
+    color: #818cf8;
+}
+
+.topbar .breadcrumb-separator {
+    margin: 0 8px;
+    color: #475569;
+    font-size: 12px;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    background: rgba(15, 23, 42, 0.85);
+    padding: 7px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: text;
+    transition: all 0.2s ease;
+}
+
+.search-box:focus-within {
+    border-color: #818cf8;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+.search-box input {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: #f8fafc;
+    margin-left: 8px;
+    outline: none;
+    font-size: 13px;
+}
+
+.indicator.green {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: #10b981;
+    border-radius: 50%;
+    margin-right: 6px;
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+}
+
+/* Dashboard Grid */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+    padding: 26px;
+}
+
+@media (max-width: 1100px) {
+    .dashboard-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 900px) {
+    .sidebar { width: 72px; }
+    .sidebar .logo span, .sidebar nav a span, .sidebar-footer { display: none; }
+    .sidebar .logo { justify-content: center; padding: 20px 0; }
+    .sidebar nav a { justify-content: center; padding: 12px 0; }
+    .sidebar nav a.sub-link { padding-left: 0; }
+}
+
+/* Topbar Actions & FiveM Key Integration */
+.topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.btn-fivem-sync {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(56, 189, 248, 0.15));
+    border: 1px solid rgba(129, 140, 248, 0.35);
+    color: #e2e8f0;
+    padding: 7px 14px;
+    border-radius: 10px;
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-fivem-sync i {
+    width: 15px;
+    height: 15px;
+    color: #818cf8;
+}
+
+.btn-fivem-sync:hover {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.35), rgba(56, 189, 248, 0.25));
+    border-color: rgba(129, 140, 248, 0.6);
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(99, 102, 241, 0.25);
+}
+
+.topbar-status-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    color: #34d399;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+}
+
+.pulse-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: #10b981;
+    box-shadow: 0 0 8px #10b981;
+    animation: pulseGlow 2s infinite;
+}
+
+@keyframes pulseGlow {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.85); }
+}

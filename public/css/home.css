@@ -1,0 +1,72 @@
+:root{
+    --bg:#0f1724;
+    --card:#111827;
+    --accent:#5b8cff;
+    --muted:#94a3b8;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif;background:linear-gradient(180deg,#071021 0%, #0b1522 60%);color:#e6eef8}
+.home-root{min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:48px 32px}
+.home-header{max-width:980px;text-align:center;width:100%;margin-bottom:28px;margin-left:auto;margin-right:auto}
+.home-header .logo{font-weight:800;font-size:34px;letter-spacing:0.6px;margin:0 auto;display:inline-flex;align-items:center;justify-content:center;gap:14px;color:#ffffff}
+.home-header-logo-img{width:40px;height:40px;object-fit:contain;border-radius:10px;box-shadow:0 0 16px rgba(129,140,248,0.3)}
+.home-header .tag{color:var(--muted);margin-top:6px;text-align:center}
+
+/* Intro overlay - refined */
+#intro-overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#071021 0%, rgba(7,16,33,0.88) 65%);z-index:1400;pointer-events:auto}
+.intro-logo{font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif;font-weight:800;font-size:20px;color:#071022;padding:28px;border-radius:18px;background:transparent;box-shadow:none;transform:translateY(0) scale(1);opacity:1}
+
+/* Animated SVG/Image container */
+#introLogo{display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:auto}
+.intro-svg,.intro-img{width:220px;height:220px;object-fit:contain;border-radius:24px;transition:transform .72s cubic-bezier(.2,.9,.2,1),filter .48s;box-shadow:0 0 40px rgba(129,140,248,0.3)}
+.intro-text{margin-top:16px;font-size:24px;font-weight:800;color:#e6f7ff;letter-spacing:0.6px}
+
+/* Keyframes for pop & move */
+@keyframes intro-pop {
+    0% { transform: scale(.6) translateY(10vh); opacity:0 }
+    45% { transform: scale(1.06) translateY(-2vh); opacity:1 }
+    70% { transform: scale(.98) translateY(0) }
+    100% { transform: scale(1) translateY(0) }
+}
+
+@keyframes logo-shift {
+    0% { transform: translateY(0) scale(1) }
+    60% { transform: translateY(-18vh) scale(.9) }
+    100% { transform: translateY(-48vh) scale(.44) }
+}
+
+/* states applied by JS orchestrator */
+.intro-animate .intro-svg{animation:intro-pop 780ms cubic-bezier(.2,.9,.2,1) both}
+.intro-shrink .intro-svg{animation:logo-shift 720ms cubic-bezier(.2,.9,.2,1) 420ms both}
+
+/* fade overlay out */
+.intro-hidden{opacity:0;visibility:hidden;transition:opacity .48s ease,visibility .48s ease}
+
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px;width:100%;max-width:1200px;margin-top:24px}
+.tool-card{background:rgba(15, 23, 42, 0.72);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.08);padding:24px;border-radius:16px;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:12px;transform:translateY(0);transition:all .25s ease;opacity:0;transform:translateY(12px);animation:cardIn .6s cubic-bezier(.2,.9,.2,1) forwards;box-shadow:0 12px 36px rgba(0,0,0,0.35)}
+.tool-card:hover{transform:translateY(-6px);border-color:rgba(129, 140, 248, 0.4);box-shadow:0 18px 48px rgba(0,0,0,0.5),0 0 20px rgba(99,102,241,0.15)}
+.tool-icon{width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,rgba(99,102,241,0.25),rgba(56,189,248,0.15));border:1px solid rgba(129,140,248,0.35);box-shadow:0 4px 14px rgba(99,102,241,0.2);display:flex;align-items:center;justify-content:center;font-weight:700;color:#38bdf8}
+.tool-card h3{margin:0;font-size:17px;font-weight:700;color:#ffffff}
+.tool-card p{margin:0;color:var(--muted);font-size:13px;line-height:1.4}
+
+.home-footer{margin-top:40px;color:var(--muted);font-size:13px}
+
+/* subtle animated background circles */
+.home-root::before,.home-root::after{content:"";position:fixed;left:50%;top:10%;width:600px;height:600px;border-radius:50%;transform:translateX(-50%);filter:blur(80px);opacity:.08;z-index:0}
+.home-root::before{background:radial-gradient(circle at 30% 30%, #7dd3fc, transparent 40%)}
+.home-root::after{top:70%;background:radial-gradient(circle at 70% 70%, #5b8cff, transparent 40%)}
+
+@media(max-width:640px){.home-header .logo{font-size:22px}.tools-grid{gap:12px}}
+
+/* entrance animation for cards */
+@keyframes cardIn{to{opacity:1;transform:translateY(0)}}
+.tools-grid .tool-card:nth-child(1){animation-delay:0.06s}
+.tools-grid .tool-card:nth-child(2){animation-delay:0.14s}
+.tools-grid .tool-card:nth-child(3){animation-delay:0.22s}
+.tools-grid .tool-card:nth-child(4){animation-delay:0.30s}
+
+/* Tools are hidden until intro completes */
+.tools-grid{opacity:0;transition:opacity .5s ease .4s}
+.show-tools .tools-grid{opacity:1}
+
+

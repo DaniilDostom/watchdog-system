@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reasons | Moderation System</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="dark-theme">
+    <aside class="sidebar">
+        <div class="logo">
+            <img src="logo.png" alt="Watchdog Logo" class="sidebar-logo-img">
+            <span>SanctionAnalyser</span>
+        </div>
+        <nav>
+            <a href="index.html"><i data-lucide="layout-dashboard"></i> Dashboard</a>
+            <a href="players.html"><i data-lucide="users"></i> Players</a>
+            <a href="moderators.html" class="sub-link"><i data-lucide="user-cog"></i> Staffers</a>
+            <a href="reasons.html" class="sub-link active"><i data-lucide="list-checks"></i> Reasons</a>
+            <a href="statistics.html"><i data-lucide="bar-chart-2"></i> Statistics</a>
+            <a href="activity.html"><i data-lucide="activity"></i> Activity</a>
+        </nav>
+        <div class="sidebar-footer">
+            Made by Watchdog, purely for statistics forensis investigation
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <div class="breadcrumb"><a href="index.html">Dashboard</a><span class="breadcrumb-separator">/</span><a href="players.html">Players</a><span class="breadcrumb-separator">/</span><a href="reasons.html">Reasons</a></div>
+        </header>
+
+        <section style="padding: 24px;">
+            <!-- Header Title Row -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
+                <div>
+                    <h2 style="font-size: 26px; font-weight: 700; color: #ffffff; margin: 0 0 4px 0;">Disciplinary Reasons Catalog</h2>
+                    <p style="color: #94a3b8; font-size: 13.5px; margin: 0;">Configure predefined rationale presets used across Warnings, Bans, and Sanction Removals.</p>
+                </div>
+            </div>
+
+            <!-- Overview Stats Grid -->
+            <div class="page-overview-stats">
+                <div class="stat-glass-card theme-accent-indigo">
+                    <div class="stat-glass-icon"><i data-lucide="list-checks"></i></div>
+                    <div class="stat-glass-body">
+                        <span class="stat-glass-label">Total Reasons</span>
+                        <span class="stat-glass-val" id="stat-total-reasons">0</span>
+                    </div>
+                </div>
+                <div class="stat-glass-card theme-accent-indigo">
+                    <div class="stat-glass-icon"><i data-lucide="shield-alert"></i></div>
+                    <div class="stat-glass-body">
+                        <span class="stat-glass-label">Normal (Warn/Ban)</span>
+                        <span class="stat-glass-val" id="count-normal">0</span>
+                    </div>
+                </div>
+                <div class="stat-glass-card theme-accent-rose">
+                    <div class="stat-glass-icon"><i data-lucide="ban"></i></div>
+                    <div class="stat-glass-body">
+                        <span class="stat-glass-label">Severe (Perm Ban)</span>
+                        <span class="stat-glass-val" id="count-bad">0</span>
+                    </div>
+                </div>
+                <div class="stat-glass-card theme-accent-emerald">
+                    <div class="stat-glass-icon"><i data-lucide="check-circle-2"></i></div>
+                    <div class="stat-glass-body">
+                        <span class="stat-glass-label">Pardon / Removals</span>
+                        <span class="stat-glass-val" id="count-good">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Glass Toolbar Search -->
+            <div class="glass-toolbar">
+                <div class="search-input-wrap">
+                    <span class="search-input-icon"><i data-lucide="search" style="width: 16px; height: 16px;"></i></span>
+                    <input type="text" id="reasons-search-input" placeholder="Search across all reason presets..." autocomplete="off" spellcheck="false">
+                    <button type="button" id="reasons-search-clear" class="search-clear-btn" title="Clear search"><i data-lucide="x" style="width: 14px; height: 14px;"></i></button>
+                </div>
+            </div>
+
+            <!-- Three Columns Neon Glass Container -->
+            <div class="reasons-container-v2">
+                <!-- Normal Reasons -->
+                <div class="reason-category-v2 cat-normal">
+                    <div class="reason-cat-header">
+                        <div class="reason-cat-icon"><i data-lucide="shield-alert" style="width: 18px; height: 18px;"></i></div>
+                        <div>
+                            <div class="reason-cat-title">Normal Reasons</div>
+                        </div>
+                        <span class="reason-cat-badge" id="badge-normal">0</span>
+                    </div>
+                    <p class="reason-cat-desc">Standard infractions for Warnings & Temporary Bans</p>
+
+                    <div class="reason-add-form-v2">
+                        <input type="text" id="add-normal-input" placeholder="Add a new standard reason..." autocomplete="off">
+                        <button type="button" data-add="normal"><i data-lucide="plus" style="width: 14px; height: 14px; vertical-align: -2px;"></i> Add</button>
+                    </div>
+
+                    <ul id="list-normal" class="reason-items-list-v2"></ul>
+                </div>
+
+                <!-- Severe / Bad Reasons -->
+                <div class="reason-category-v2 cat-bad">
+                    <div class="reason-cat-header">
+                        <div class="reason-cat-icon"><i data-lucide="skull" style="width: 18px; height: 18px;"></i></div>
+                        <div>
+                            <div class="reason-cat-title">Severe Reasons</div>
+                        </div>
+                        <span class="reason-cat-badge" id="badge-bad">0</span>
+                    </div>
+                    <p class="reason-cat-desc">Extreme infractions reserved for Permanent Bans</p>
+
+                    <div class="reason-add-form-v2">
+                        <input type="text" id="add-bad-input" placeholder="Add a severe infraction..." autocomplete="off">
+                        <button type="button" data-add="bad"><i data-lucide="plus" style="width: 14px; height: 14px; vertical-align: -2px;"></i> Add</button>
+                    </div>
+
+                    <ul id="list-bad" class="reason-items-list-v2"></ul>
+                </div>
+
+                <!-- Pardon / Good Reasons -->
+                <div class="reason-category-v2 cat-good">
+                    <div class="reason-cat-header">
+                        <div class="reason-cat-icon"><i data-lucide="rotate-ccw" style="width: 18px; height: 18px;"></i></div>
+                        <div>
+                            <div class="reason-cat-title">Pardon Reasons</div>
+                        </div>
+                        <span class="reason-cat-badge" id="badge-good">0</span>
+                    </div>
+                    <p class="reason-cat-desc">Legitimate grounds for Sanction Removals & Last Chance Lifting</p>
+
+                    <div class="reason-add-form-v2">
+                        <input type="text" id="add-good-input" placeholder="Add a pardon/removal reason..." autocomplete="off">
+                        <button type="button" data-add="good"><i data-lucide="plus" style="width: 14px; height: 14px; vertical-align: -2px;"></i> Add</button>
+                    </div>
+
+                    <ul id="list-good" class="reason-items-list-v2"></ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Edit Reason Modal -->
+    <div class="modal-overlay" id="edit-reason-modal">
+        <div class="modal modal-pro modal-anim" style="max-width: 480px;">
+            <div class="modal-hero-header">
+                <div class="modal-title-box">
+                    <div class="modal-icon-badge" style="background: rgba(99, 102, 241, 0.2); color: #818cf8;">
+                        <i data-lucide="edit-3"></i>
+                    </div>
+                    <div>
+                        <h2>Edit Reason Preset</h2>
+                        <span style="font-size: 12px; color: var(--text-secondary);">Renaming will update all associated sanctions in history</span>
+                    </div>
+                </div>
+                <button type="button" class="modal-close" aria-label="Close" title="Close" onclick="closeEditReasonModal()"><i data-lucide="x"></i></button>
+            </div>
+
+            <form id="edit-reason-form" novalidate>
+                <input type="hidden" id="edit-reason-category">
+                <input type="hidden" id="edit-reason-original">
+
+                <div class="form-group">
+                    <label>Current Reason Name</label>
+                    <input type="text" id="edit-reason-current-display" disabled style="opacity: 0.7; cursor: not-allowed;">
+                </div>
+
+                <div class="form-group">
+                    <label>New Reason Name</label>
+                    <input type="text" id="edit-reason-new-input" placeholder="Enter updated reason text..." autocomplete="off" required>
+                </div>
+
+                <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.25); border-radius: 8px; padding: 10px 12px; display: flex; gap: 10px; align-items: flex-start; margin-top: 16px;">
+                    <i data-lucide="alert-circle" style="width: 16px; height: 16px; color: #fbbf24; flex-shrink: 0; margin-top: 2px;"></i>
+                    <span style="font-size: 11.5px; color: #cbd5e1; line-height: 1.4;">All existing warnings, bans, and activity logs referencing this reason will be updated automatically to keep records synchronized.</span>
+                </div>
+
+                <div class="modal-actions" style="margin-top: 24px; display: flex; gap: 12px; justify-content: flex-end;">
+                    <button type="button" class="cta" style="background: transparent; border: 1px solid var(--border); width: auto;" onclick="closeEditReasonModal()">Cancel</button>
+                    <button type="submit" class="cta" style="width: auto; background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); color: white; box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);">Save & Cascade</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+    <script src="js/api.js?v=9"></script>
+    <script src="js/ui.js?v=14"></script>
+    <script src="js/reasons.js?v=4"></script>
+</body>
+</html>
