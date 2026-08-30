@@ -146,7 +146,7 @@ function resolveServerId(req) {
     if (queryServerId && typeof queryServerId === 'string' && queryServerId.trim()) {
         return queryServerId.trim();
     }
-    return 'default_server';
+    return 'unauthenticated_empty';
 }
 
 // Staff verification & Discord Login endpoint

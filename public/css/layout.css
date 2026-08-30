@@ -383,22 +383,32 @@
     color: #ef4444;
 }
 
-/* Discord Auth Gate Overlay */
+/* Discord Auth Gate Overlay (100% Opaque Cyber Screen - Zero Background Bleed) */
 .auth-gate-overlay {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(3, 7, 18, 0.94);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    z-index: 99999;
+    background: #030712 !important;
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.18) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(56, 189, 248, 0.12) 0px, transparent 50%) !important;
+    z-index: 999999;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 20px;
-    animation: authFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: authFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body.auth-locked aside.sidebar,
+body.auth-locked main.main-content,
+body.auth-locked header.topbar,
+body.auth-locked .page-overview-stats,
+body.auth-locked table {
+    display: none !important;
+    visibility: hidden !important;
 }
 
 @keyframes authFadeIn {

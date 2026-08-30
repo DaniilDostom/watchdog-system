@@ -653,12 +653,15 @@ window.renderTopbarUser = renderTopbarUser;
 
 function initDiscordAuthGate() {
     const user = getAuthUser();
-    renderTopbarUser();
-
+    
     if (user && user.authorized) {
-        // User is already logged in
+        document.body.classList.remove('auth-locked');
+        renderTopbarUser();
         return;
     }
+
+    // Completely lock and hide the dashboard and all underlying elements
+    document.body.classList.add('auth-locked');
 
     // Show Auth Gate Modal
     let overlay = document.getElementById('discord-auth-gate-overlay');

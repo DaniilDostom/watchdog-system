@@ -21,6 +21,8 @@ const UNKNOWN_ISSUER = 'Unknow';
 // Reason lists are managed on the Reasons page and persisted server-side; refresh the
 // in-place arrays (keeping the same references other modules already read from).
 async function loadReasonLists() {
+    const user = (typeof getAuthUser === 'function') ? getAuthUser() : null;
+    if (!user || !user.authorized) return;
     try {
         const data = await fetchDB('reasons');
         if (Array.isArray(data.normal) && data.normal.length) { COMMON_REASONS.length = 0; COMMON_REASONS.push(...data.normal); }
@@ -37,9 +39,11 @@ const inFlightRequests = new Map();
 
 function getActiveServerId() {
     try {
+        const user = (typeof getAuthUser === 'function') ? getAuthUser() : null;
+        if (!user || !user.authorized) return 'unauthenticated_empty';
         return localStorage.getItem('watchdog_active_server_id') || 'default_server';
     } catch {
-        return 'default_server';
+        return 'unauthenticated_empty';
     }
 }
 window.getActiveServerId = getActiveServerId;
@@ -52,6 +56,12 @@ function setActiveServerId(serverId) {
 window.setActiveServerId = setActiveServerId;
 
 async function fetchDB(endpoint, forceFresh = false) {
+    const user = (typeof getAuthUser === 'function') ? getAuthUser() : null;
+    if (!user || !user.authorized) {
+        if (endpoint === 'reasons') return { normal: [], bad: [], good: [] };
+        return [];
+    }
+
     const serverId = getActiveServerId();
     const cacheKey = `${serverId}:${endpoint}`;
 
