@@ -89,14 +89,15 @@ function showCustomConfirm({
         const safeCancel = String(cancelText).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
         overlay.innerHTML = `
-            <div class="modal custom-confirm-box modal-anim" style="border-top: 3px solid ${type === 'danger' ? '#ef4444' : '#f59e0b'};">
-                <div class="confirm-icon-badge ${type}">
-                    <i data-lucide="${icon}"></i>
+            <div class="modal custom-confirm-box modal-anim" style="max-width: 440px; padding: 26px; text-align: center; border-top: 3px solid ${type === 'danger' ? '#ef4444' : '#6366f1'};">
+                <div style="width: 52px; height: 52px; border-radius: 14px; background: ${type === 'danger' ? 'rgba(239, 68, 68, 0.15)' : 'rgba(99, 102, 241, 0.15)'}; color: ${type === 'danger' ? '#f87171' : '#818cf8'}; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px auto; border: 1px solid rgba(255, 255, 255, 0.1);">
+                    <i data-lucide="${icon}" style="width: 26px; height: 26px;"></i>
                 </div>
-                <h3 style="font-size: 18px; font-weight: 700; color: #f8fafc; margin-bottom: 8px;">${safeTitle}</h3>
+                <h3 style="font-size: 19px; font-weight: 800; color: #f8fafc; margin-bottom: 8px;">${safeTitle}</h3>
                 <p style="font-size: 13.5px; color: #94a3b8; line-height: 1.5; margin-bottom: 24px;">${message}</p>
-                <div style="display: flex; gap: 12px; justify-content: flex-end;">
-                    <button type="button" class="cta btn-confirm-ok" style="background: ${confirmBtnBg}; color: white; box-shadow: ${confirmBtnShadow}; width: auto; padding: 9px 20px; font-weight: 600;">${safeConfirm}</button>
+                <div style="display: flex; gap: 10px; justify-content: center;">
+                    <button type="button" class="cta btn-confirm-cancel" style="width: auto; flex: 1; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); color: #cbd5e1; border-radius: 8px;">${safeCancel}</button>
+                    <button type="button" class="cta btn-confirm-ok" style="background: ${confirmBtnBg}; color: white; box-shadow: ${confirmBtnShadow}; width: auto; flex: 1; padding: 9px 20px; font-weight: 700; border-radius: 8px;">${safeConfirm}</button>
                 </div>
             </div>
         `;
@@ -117,8 +118,10 @@ function showCustomConfirm({
 
         document.addEventListener('keydown', onKeyDown);
 
-        overlay.querySelector('.btn-confirm-cancel').onclick = () => cleanup(false);
-        overlay.querySelector('.btn-confirm-ok').onclick = () => cleanup(true);
+        const cancelBtn = overlay.querySelector('.btn-confirm-cancel');
+        if (cancelBtn) cancelBtn.onclick = () => cleanup(false);
+        const okBtn = overlay.querySelector('.btn-confirm-ok');
+        if (okBtn) okBtn.onclick = () => cleanup(true);
         overlay.onclick = (e) => {
             if (e.target === overlay) cleanup(false);
         };
@@ -550,7 +553,15 @@ function copyFivemConfigSnippet() {
 window.copyFivemConfigSnippet = copyFivemConfigSnippet;
 
 async function regenerateFivemKey() {
-    if (!confirm('Are you sure you want to regenerate the Secret API Key? You will need to update your config.lua on your FiveM server.')) return;
+    const confirmed = await showCustomConfirm({
+        title: 'Regenerate Secret API Key?',
+        message: 'This will permanently invalidate your current Secret Key. You will need to update the config.lua on your FiveM server.',
+        confirmText: 'Regenerate Key',
+        cancelText: 'Cancel',
+        type: 'danger',
+        icon: 'refresh-cw'
+    });
+    if (!confirmed) return;
     try {
         const res = await fetch(`${API_URL}/server/api-key/regenerate`, { method: 'POST' });
         const data = await res.json();

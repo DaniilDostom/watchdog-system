@@ -182,7 +182,15 @@ async function toggleServerStatus(id) {
 window.toggleServerStatus = toggleServerStatus;
 
 async function regenerateKey(id) {
-    if (!confirm('Are you sure you want to regenerate this server\'s Secret API Key? The FiveM server will need its config.lua updated.')) return;
+    const confirmed = await showCustomConfirm({
+        title: 'Regenerate Secret API Key?',
+        message: 'This will permanently invalidate the current Secret Key for this customer server. The FiveM server will need its config.lua updated.',
+        confirmText: 'Regenerate Key',
+        cancelText: 'Cancel',
+        type: 'danger',
+        icon: 'refresh-cw'
+    });
+    if (!confirmed) return;
     const user = getAuthUser();
     try {
         const res = await fetch(`${API_URL}/admin/servers/${encodeURIComponent(id)}/regenerate-key`, {
@@ -216,7 +224,15 @@ function inspectServerDatabase(id, name) {
 window.inspectServerDatabase = inspectServerDatabase;
 
 async function deleteServerLicense(id, name) {
-    if (!confirm(`Are you sure you want to permanently delete "${name}" (${id}) and all its data?`)) return;
+    const confirmed = await showCustomConfirm({
+        title: `Delete Server License?`,
+        message: `Are you sure you want to permanently delete "${name}" (${id}) and all its database records? This action cannot be reversed.`,
+        confirmText: 'Delete Server',
+        cancelText: 'Cancel',
+        type: 'danger',
+        icon: 'trash-2'
+    });
+    if (!confirmed) return;
     const user = getAuthUser();
     try {
         const res = await fetch(`${API_URL}/admin/servers/${encodeURIComponent(id)}`, {
