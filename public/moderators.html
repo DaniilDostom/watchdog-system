@@ -22,6 +22,37 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/layout.css">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .role-option-btn {
+            padding: 12px 8px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(15, 23, 42, 0.6);
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none;
+        }
+        .role-option-btn:hover {
+            transform: translateY(-2px);
+            background: rgba(30, 41, 59, 0.8);
+        }
+        .role-option-btn.active.role-helper {
+            border-color: #22c55e !important;
+            background: rgba(34, 197, 94, 0.18) !important;
+            box-shadow: 0 0 16px rgba(34, 197, 94, 0.25);
+        }
+        .role-option-btn.active.role-moderator {
+            border-color: #eab308 !important;
+            background: rgba(234, 179, 8, 0.18) !important;
+            box-shadow: 0 0 16px rgba(234, 179, 8, 0.25);
+        }
+        .role-option-btn.active.role-admin {
+            border-color: #a855f7 !important;
+            background: rgba(168, 85, 247, 0.18) !important;
+            box-shadow: 0 0 16px rgba(168, 85, 247, 0.25);
+        }
+    </style>
 </head>
 <body class="dark-theme">
     <aside class="sidebar">
@@ -52,7 +83,7 @@
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
                 <div>
                     <h2 style="font-size: 26px; font-weight: 700; color: #ffffff; margin: 0 0 4px 0;">Staff Directory</h2>
-                    <p style="color: #94a3b8; font-size: 13.5px; margin: 0;">Moderation team members, disciplinary activities and Discord link management.</p>
+                    <p style="color: #94a3b8; font-size: 13.5px; margin: 0;">Moderation team members, permissions hierarchy and Discord account links.</p>
                 </div>
             </div>
 
@@ -128,7 +159,7 @@
 
     <!-- Edit Staffer Modal -->
     <div class="modal-overlay" id="mod-edit-modal">
-        <div class="modal modal-pro modal-anim" style="max-width: 460px;">
+        <div class="modal modal-pro modal-anim" style="max-width: 480px;">
             <div class="modal-hero-header">
                 <div class="modal-title-box">
                     <div class="modal-icon-badge" style="background: rgba(88, 101, 242, 0.2); color: #818cf8;">
@@ -136,7 +167,7 @@
                     </div>
                     <div>
                         <h2>Edit Staff Profile</h2>
-                        <span style="font-size: 12px; color: var(--text-secondary);">Manage staff status and Discord sync</span>
+                        <span style="font-size: 12px; color: var(--text-secondary);">Manage staff role, status and Discord sync</span>
                     </div>
                 </div>
                 <button type="button" class="modal-close" aria-label="Close" title="Close" onclick="closeStaffEditModal()"><i data-lucide="x"></i></button>
@@ -145,7 +176,32 @@
             <p style="color: #94a3b8; font-size: 13px; margin-bottom: 16px;">Staff Member: <strong id="mod-edit-name" style="color: #ffffff; font-size: 14px;"></strong></p>
             
             <form id="mod-edit-form" novalidate>
-                <div class="form-group">
+                <!-- Role Selector (Helper, Moderatore, Admin) -->
+                <div class="form-group" id="mod-edit-role-group" style="margin-bottom: 18px;">
+                    <label style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <span style="font-weight: 600; color: #cbd5e1; font-size: 13px;">Staff Role & Permissions</span>
+                    </label>
+                    <div class="role-selector-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
+                        <button type="button" class="role-option-btn role-helper" id="role-btn-helper" onclick="setModEditRole('helper')">
+                            <div style="color: #22c55e; margin-bottom: 4px;"><i data-lucide="eye" style="width: 18px; height: 18px;"></i></div>
+                            <div style="color: #22c55e; font-weight: 700; font-size: 12.5px;">Helper</div>
+                            <div style="font-size: 10px; color: #94a3b8; margin-top: 2px;">Solo Lettura</div>
+                        </button>
+                        <button type="button" class="role-option-btn role-moderator" id="role-btn-moderator" onclick="setModEditRole('moderator')">
+                            <div style="color: #eab308; margin-bottom: 4px;"><i data-lucide="shield-check" style="width: 18px; height: 18px;"></i></div>
+                            <div style="color: #eab308; font-weight: 700; font-size: 12.5px;">Moderatore</div>
+                            <div style="font-size: 10px; color: #94a3b8; margin-top: 2px;">Sanzioni & Ban</div>
+                        </button>
+                        <button type="button" class="role-option-btn role-admin" id="role-btn-admin" onclick="setModEditRole('admin')">
+                            <div style="color: #a855f7; margin-bottom: 4px;"><i data-lucide="shield-alert" style="width: 18px; height: 18px;"></i></div>
+                            <div style="color: #a855f7; font-weight: 700; font-size: 12.5px;">Admin</div>
+                            <div style="font-size: 10px; color: #94a3b8; margin-top: 2px;">Gestione Staff</div>
+                        </button>
+                    </div>
+                    <input type="hidden" id="mod-edit-role-input" value="moderator">
+                </div>
+
+                <div class="form-group" style="margin-bottom: 16px;">
                     <label>Staff Status</label>
                     <div class="segmented-control" id="mod-edit-status-segmented" style="display: flex; gap: 8px;">
                         <button type="button" class="seg-btn active" id="btn-status-active" onclick="setModEditStatus(false)"><i data-lucide="shield-check" style="width: 14px; height: 14px;"></i> Active Staffer</button>
@@ -168,8 +224,8 @@
     </div>
 
     <div id="toast-container"></div>
-    <script src="js/api.js?v=9"></script>
-    <script src="js/ui.js?v=14"></script>
-    <script src="js/moderators.js?v=4"></script>
+    <script src="js/api.js?v=12"></script>
+    <script src="js/ui.js?v=15"></script>
+    <script src="js/moderators.js?v=6"></script>
 </body>
 </html>

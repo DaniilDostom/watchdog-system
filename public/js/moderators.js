@@ -356,6 +356,10 @@ window.openStaffEditModal = (name) => {
     if (inputEl) inputEl.value = staffer?.discordId || '';
 
     setModEditStatus(Boolean(staffer?.isFormer));
+    const currentRole = (staffer?.staffRole || 'moderator').toLowerCase();
+    if (typeof setModEditRole === 'function') {
+        setModEditRole(currentRole);
+    }
 
     if (modalEl) {
         modalEl.dataset.name = staffer ? staffer.name : name;
@@ -402,12 +406,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     bannerUrl = null;
                 }
 
+                const roleInput = document.getElementById('mod-edit-role-input');
+                const staffRole = roleInput ? roleInput.value : 'moderator';
                 staffersCache[idx] = {
                     ...staffersCache[idx],
                     discordId: discordId || null,
                     avatarUrl,
                     bannerUrl,
-                    isFormer
+                    isFormer,
+                    staffRole
                 };
             }
             await ModAPI.saveModerators(staffersCache);
