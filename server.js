@@ -50,6 +50,21 @@ app.use(cookieParser());
 // 2. Cryptographic Session Token Engine (HMAC-SHA256)
 const AUTH_SECRET = process.env.AUTH_SECRET || 'wd_super_secret_auth_key_2026_' + (process.env.DISCORD_BOT_TOKEN || 'seed_key').substring(0, 16);
 
+
+function resolveStaffMemberRole(serverId, discordId, isOwner, isMaster) {
+    if (isMaster || isOwner) return 'owner';
+    try {
+        const moderators = db.getModerators(serverId || 'default_server');
+        if (Array.isArray(moderators)) {
+            const matched = moderators.find(m => m.discordId === discordId);
+            if (matched && matched.staffRole) {
+                return String(matched.staffRole).toLowerCase();
+            }
+        }
+    } catch {}
+    return 'moderator';
+}
+
 function generateAuthToken(payload) {
     const data = {
         ...payload,
@@ -359,7 +374,8 @@ app.post('/api/auth/verify-staff', async (req, res) => {
     }
 
     // 3. STAFFER / NON-OWNER: Authenticated with Discord, now requires DB Password
-    const tokenPayload = { discordId, role: 'staffer', isOwner: false, isMaster: false, serverId: srv.id };
+    const resolvedRole = resolveStaffMemberRole(srv.id, discordId, false, false);
+    const tokenPayload = { discordId, role: resolvedRole, isOwner: false, isMaster: false, serverId: srv.id };
     const token = generateAuthToken(tokenPayload);
     setSecureAuthCookie(res, token);
     return res.json({
@@ -415,9 +431,14 @@ app.post('/api/auth/verify-staff-db-password', async (req, res) => {
         }
     } catch (e) {}
 
+    const resolvedRole = resolveStaffMemberRole(srv.id, discordId, false, false);
+    const tokenPayload = { discordId, role: resolvedRole, isOwner: false, isMaster: false, serverId: srv.id };
+    const token = generateAuthToken(tokenPayload);
+    setSecureAuthCookie(res, token);
+
     return res.json({
         authorized: true,
-        role: 'staffer',
+        role: resolvedRole,
         isOwner: false,
         isMaster: false,
         requiresDbPassword: false,

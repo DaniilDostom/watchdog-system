@@ -65,16 +65,19 @@ try { db.exec("ALTER TABLE servers ADD COLUMN guildId TEXT DEFAULT NULL;"); } ca
 try { db.exec("ALTER TABLE players ADD COLUMN serverId TEXT DEFAULT 'default_server';"); } catch (e) {}
 try { db.exec("ALTER TABLE actions ADD COLUMN serverId TEXT DEFAULT 'default_server';"); } catch (e) {}
 try { db.exec("ALTER TABLE moderators ADD COLUMN serverId TEXT DEFAULT 'default_server';"); } catch (e) {}
+try { db.exec("ALTER TABLE moderators ADD COLUMN staffRole TEXT DEFAULT 'moderator';"); } catch (e) {}
 try { db.exec("ALTER TABLE settings ADD COLUMN serverId TEXT DEFAULT 'default_server';"); } catch (e) {}
 try { db.exec("CREATE INDEX IF NOT EXISTS idx_players_serverId ON players(serverId);"); } catch (e) {}
 try { db.exec("CREATE INDEX IF NOT EXISTS idx_actions_serverId ON actions(serverId);"); } catch (e) {}
 try { db.exec("CREATE INDEX IF NOT EXISTS idx_actions_playerId ON actions(playerId);"); } catch (e) {}
 try { db.exec("CREATE INDEX IF NOT EXISTS idx_actions_type ON actions(type);"); } catch (e) {}
+try { db.exec("CREATE UNIQUE INDEX IF NOT EXISTS idx_moderators_server_name ON moderators(serverId, name);"); } catch (e) {}
 
 // Ensure all unassigned legacy records belong to 'default_server'
 db.exec("UPDATE players SET serverId = 'default_server' WHERE serverId IS NULL OR serverId = '';");
 db.exec("UPDATE actions SET serverId = 'default_server' WHERE serverId IS NULL OR serverId = '';");
 db.exec("UPDATE moderators SET serverId = 'default_server' WHERE serverId IS NULL OR serverId = '';");
+db.exec("UPDATE moderators SET staffRole = 'moderator' WHERE staffRole IS NULL OR staffRole = '';");
 db.exec("UPDATE settings SET serverId = 'default_server' WHERE serverId IS NULL OR serverId = '';");
 
 const DEFAULT_REASON_LISTS = {
@@ -154,7 +157,7 @@ function saveReasons(reasons, serverId = 'default_server') {
 function getModerators(serverId = 'default_server') {
     if (!memoryCache.moderators) memoryCache.moderators = {};
     if (memoryCache.moderators[serverId]) return memoryCache.moderators[serverId];
-    const list = db.prepare('SELECT name, discordId, avatarUrl, bannerUrl, isFormer FROM moderators WHERE serverId = ? ORDER BY name COLLATE NOCASE ASC').all(serverId);
+    const list = db.prepare('SELECT name, discordId, avatarUrl, bannerUrl, isFormer, staffRole FROM moderators WHERE serverId = ? ORDER BY name COLLATE NOCASE ASC').all(serverId);
     memoryCache.moderators[serverId] = list;
     return list;
 }
@@ -164,13 +167,14 @@ function saveModerators(list, serverId = 'default_server') {
     if (!memoryCache.moderators) memoryCache.moderators = {};
     memoryCache.moderators[serverId] = list;
     const upsert = db.prepare(`
-        INSERT INTO moderators (serverId, name, discordId, avatarUrl, bannerUrl, isFormer)
-        VALUES (@serverId, @name, @discordId, @avatarUrl, @bannerUrl, @isFormer)
+        INSERT INTO moderators (serverId, name, discordId, avatarUrl, bannerUrl, isFormer, staffRole)
+        VALUES (@serverId, @name, @discordId, @avatarUrl, @bannerUrl, @isFormer, @staffRole)
         ON CONFLICT(serverId, name) DO UPDATE SET
             discordId = excluded.discordId,
             avatarUrl = excluded.avatarUrl,
             bannerUrl = excluded.bannerUrl,
-            isFormer = excluded.isFormer
+            isFormer = excluded.isFormer,
+            staffRole = excluded.staffRole
     `);
     const runAll = db.transaction((items) => {
         for (const item of items) {
@@ -180,7 +184,8 @@ function saveModerators(list, serverId = 'default_server') {
                 discordId: item.discordId ? String(item.discordId).trim() : null,
                 avatarUrl: item.avatarUrl || null,
                 bannerUrl: item.bannerUrl || null,
-                isFormer: item.isFormer ? 1 : 0
+                isFormer: item.isFormer ? 1 : 0,
+                staffRole: item.staffRole || 'moderator'
             });
         }
     });

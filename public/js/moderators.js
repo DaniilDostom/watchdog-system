@@ -1,3 +1,20 @@
+
+let currentEditingStaffer = null;
+
+function setModEditRole(role) {
+    const input = document.getElementById('mod-edit-role-input');
+    if (input) input.value = role;
+
+    ['helper', 'moderator', 'admin'].forEach(r => {
+        const btn = document.getElementById('role-btn-' + r);
+        if (!btn) return;
+        const isSel = (r === role);
+        btn.style.borderColor = isSel ? (r === 'helper' ? '#22c55e' : (r === 'admin' ? '#a855f7' : '#eab308')) : 'rgba(255, 255, 255, 0.1)';
+        btn.style.background = isSel ? (r === 'helper' ? 'rgba(34, 197, 94, 0.18)' : (r === 'admin' ? 'rgba(168, 85, 247, 0.18)' : 'rgba(234, 179, 8, 0.18)')) : 'rgba(15, 23, 42, 0.6)';
+    });
+}
+window.setModEditRole = setModEditRole;
+
 let staffersCache = [];
 let allActionsCache = [];
 

@@ -72,6 +72,7 @@ async function initReasons() {
 
     updateOverviewCounters();
     renderAll();
+    applyRbacToReasons();
 
     document.querySelectorAll('[data-add]').forEach(button => {
         button.addEventListener('click', () => addReason(button.dataset.add));
@@ -318,3 +319,19 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+
+function applyRbacToReasons() {
+    if (typeof canManageReasons === 'function' && !canManageReasons()) {
+        document.querySelectorAll('.reason-add-form, .add-reason-wrap, form[onsubmit*="addReason"]').forEach(el => {
+            el.style.display = 'none';
+        });
+        const header = document.querySelector('.page-header, .topbar, h2');
+        if (header && !document.getElementById('reasons-rbac-notice')) {
+            const notice = document.createElement('div');
+            notice.id = 'reasons-rbac-notice';
+            notice.style.cssText = 'background: rgba(148, 163, 184, 0.1); border: 1px solid rgba(148, 163, 184, 0.2); padding: 8px 14px; border-radius: 8px; font-size: 12.5px; color: #94a3b8; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;';
+            notice.innerHTML = '<i data-lucide="info" style="width: 15px; height: 15px; color: #38bdf8;"></i> Reasons catalog is in Read-Only mode for your staff role.';
+            header.parentNode.insertBefore(notice, header.nextSibling);
+        }
+    }
+}

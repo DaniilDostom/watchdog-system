@@ -420,6 +420,7 @@ function renderTable() {
         paginationInfo.innerText = `Showing ${start + 1}–${Math.min(end, filteredData.length)} of ${filteredData.length} players`;
     }
     if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
+    if (typeof applyRbacUiGuards === 'function') applyRbacUiGuards();
 
     // Load real Discord avatars for current page in background
     preloadRealAvatars(paginated);

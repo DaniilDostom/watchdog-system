@@ -1,3 +1,125 @@
+
+// ==========================================
+// WATCHDOG RBAC ROLE & PERMISSIONS HIERARCHY
+// ==========================================
+const STAFF_ROLES = {
+    HELPER: 'helper',       // 🟢 Verde: Solo visualizzazione (Player, Statistiche, Attività)
+    MODERATOR: 'moderator', // 🟡 Giallo: Può sanzionare (Warn, Ban, Perma, Last Chance), no eliminazione, no reason
+    ADMIN: 'admin',         // 🟣 Viola: Tutto tranne eliminare player e database
+    OWNER: 'owner'          // 🔴 Rosso: Potere completo
+};
+
+function getStaffRole() {
+    const u = (typeof getAuthUser === 'function') ? getAuthUser() : null;
+    if (!u || !u.authorized) return STAFF_ROLES.HELPER;
+    if (u.isMaster || u.isOwner || (u.role && u.role.toLowerCase() === 'owner')) {
+        return STAFF_ROLES.OWNER;
+    }
+    const r = String(u.role || '').toLowerCase();
+    if (r === 'admin') return STAFF_ROLES.ADMIN;
+    if (r === 'helper') return STAFF_ROLES.HELPER;
+    return STAFF_ROLES.MODERATOR;
+}
+window.getStaffRole = getStaffRole;
+
+function canDeletePlayer() {
+    return getStaffRole() === STAFF_ROLES.OWNER;
+}
+window.canDeletePlayer = canDeletePlayer;
+
+function canIssueSanctions() {
+    const r = getStaffRole();
+    return r === STAFF_ROLES.OWNER || r === STAFF_ROLES.ADMIN || r === STAFF_ROLES.MODERATOR;
+}
+window.canIssueSanctions = canIssueSanctions;
+
+function canManageReasons() {
+    const r = getStaffRole();
+    return r === STAFF_ROLES.OWNER || r === STAFF_ROLES.ADMIN;
+}
+window.canManageReasons = canManageReasons;
+
+function canManageStaff() {
+    const r = getStaffRole();
+    return r === STAFF_ROLES.OWNER || r === STAFF_ROLES.ADMIN;
+}
+window.canManageStaff = canManageStaff;
+
+function canAssignAdminRole() {
+    return getStaffRole() === STAFF_ROLES.OWNER;
+}
+window.canAssignAdminRole = canAssignAdminRole;
+
+function getRoleBadgeConfig(roleName) {
+    const r = String(roleName || 'moderator').toLowerCase();
+    switch (r) {
+        case 'owner':
+            return {
+                name: 'Owner',
+                color: '#ef4444',
+                bg: 'rgba(239, 68, 68, 0.15)',
+                border: 'rgba(239, 68, 68, 0.35)',
+                icon: 'crown'
+            };
+        case 'admin':
+            return {
+                name: 'Admin',
+                color: '#a855f7',
+                bg: 'rgba(168, 85, 247, 0.15)',
+                border: 'rgba(168, 85, 247, 0.35)',
+                icon: 'shield-alert'
+            };
+        case 'helper':
+            return {
+                name: 'Helper',
+                color: '#22c55e',
+                bg: 'rgba(34, 197, 94, 0.15)',
+                border: 'rgba(34, 197, 94, 0.35)',
+                icon: 'eye'
+            };
+        case 'moderator':
+        default:
+            return {
+                name: 'Moderatore',
+                color: '#eab308',
+                bg: 'rgba(234, 179, 8, 0.15)',
+                border: 'rgba(234, 179, 8, 0.35)',
+                icon: 'shield-check'
+            };
+    }
+}
+window.getRoleBadgeConfig = getRoleBadgeConfig;
+
+// Synchronous DOM element visibility adjustment according to role
+function applyRbacUiGuards() {
+    const role = getStaffRole();
+
+    // 1. Helper restrictions (view-only)
+    if (role === STAFF_ROLES.HELPER) {
+        document.querySelectorAll('.btn-act-warn, .btn-act-ban, .btn-act-lastchance, #btn-apply-last-chance, .btn-staff-link, .history-actions, #btn-add-player, .action-btn-add').forEach(el => {
+            el.style.display = 'none';
+        });
+        document.querySelectorAll('.btn-act-delete, .action-delete-btn, .btn-delete-sanction').forEach(el => {
+            el.style.display = 'none';
+        });
+    }
+
+    // 2. Moderator restrictions (no delete player, no clear all, no reason editing)
+    if (role === STAFF_ROLES.MODERATOR) {
+        document.querySelectorAll('.btn-act-delete, .action-delete-btn, .history-actions').forEach(el => {
+            el.style.display = 'none';
+        });
+    }
+
+    // 3. Admin restrictions (no delete player, no delete DB)
+    if (role === STAFF_ROLES.ADMIN) {
+        document.querySelectorAll('.btn-act-delete, .action-delete-btn').forEach(el => {
+            el.style.display = 'none';
+        });
+    }
+}
+window.applyRbacUiGuards = applyRbacUiGuards;
+
 // Initialize Icons
 if (typeof lucide !== 'undefined' && lucide.createIcons) {
     lucide.createIcons();
