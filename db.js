@@ -390,7 +390,7 @@ function createServer({ name, ownerDiscordId, durationDays }) {
     const crypto = require('crypto');
     const slug = name.toLowerCase().replace(/[^a-z0-9]/g, '_').slice(0, 12) || 'server';
     const id = `srv_${slug}_${crypto.randomBytes(3).toString('hex')}`;
-    const apiKey = 'wd_live_' + crypto.randomBytes(20).toString('hex');
+    const apiKey = 'wd_live_' + crypto.randomBytes(32).toString('hex'); // 256-bit entropy
     const days = Number(durationDays);
     const expiresAt = Number.isFinite(days) && days > 0 ? Date.now() + (days * 86400000) : null;
     const createdAt = Date.now();
@@ -430,7 +430,7 @@ function updateServer(id, fields = {}) {
 
 function regenerateServerApiKey(id) {
     const crypto = require('crypto');
-    const newKey = 'wd_live_' + crypto.randomBytes(20).toString('hex');
+    const newKey = 'wd_live_' + crypto.randomBytes(32).toString('hex'); // 256-bit entropy
     db.prepare('UPDATE servers SET apiKey = ? WHERE id = ?').run(newKey, id);
     return newKey;
 }
@@ -466,15 +466,45 @@ getModerators('default_server');
 getDiscordCache();
 
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 
-function setServerPassword(serverId, password) {
+// Application-Layer Column AEAD Encryption (AES-256-GCM)
+const AEAD_KEY = crypto.createHash('sha256').update(process.env.AEAD_SECRET || 'wd_aead_secret_key_2026_fivem').digest();
+
+function encryptDataAEAD(text) {
+    if (!text) return text;
+    const iv = crypto.randomBytes(12);
+    const cipher = crypto.createCipheriv('aes-256-gcm', AEAD_KEY, iv);
+    let encrypted = cipher.update(String(text), 'utf8', 'hex');
+    encrypted += cipher.final('hex');
+    const authTag = cipher.getAuthTag().toString('hex');
+    return `${iv.toString('hex')}:${authTag}:${encrypted}`;
+}
+
+function decryptDataAEAD(cipherText) {
+    if (!cipherText || typeof cipherText !== 'string' || !cipherText.includes(':')) return cipherText;
+    try {
+        const [ivHex, authTagHex, encryptedHex] = cipherText.split(':');
+        const decipher = crypto.createDecipheriv('aes-256-gcm', AEAD_KEY, Buffer.from(ivHex, 'hex'));
+        decipher.setAuthTag(Buffer.from(authTagHex, 'hex'));
+        let decrypted = decipher.update(encryptedHex, 'hex', 'utf8');
+        decrypted += decipher.final('utf8');
+        return decrypted;
+    } catch {
+        return cipherText;
+    }
+}
+
+// Bcrypt with Cost Factor 12 & Transparent Auto-Migration
+function setServerPassword(serverId, password, costFactor = 12) {
     if (!serverId) throw new Error('Server ID is required');
     if (!password) {
         db.prepare('UPDATE servers SET password = NULL WHERE id = ?').run(serverId);
         return true;
     }
     const pwd = String(password).trim();
-    const hash = (pwd.startsWith('$2a$') || pwd.startsWith('$2b$')) ? pwd : bcrypt.hashSync(pwd, 10);
+    const isCost12 = pwd.startsWith('$2a$12$') || pwd.startsWith('$2b$12$');
+    const hash = isCost12 ? pwd : bcrypt.hashSync(pwd, costFactor);
     db.prepare('UPDATE servers SET password = ? WHERE id = ?').run(hash, serverId);
     return true;
 }
@@ -486,11 +516,19 @@ function verifyServerPassword(password, serverId = null) {
     if (serverId) {
         const srv = db.prepare("SELECT * FROM servers WHERE id = ? AND status = 'ACTIVE'").get(serverId);
         if (!srv || !srv.password) return null;
+        
+        let isMatch = false;
         if (srv.password.startsWith('$2a$') || srv.password.startsWith('$2b$')) {
-            return bcrypt.compareSync(pwd, srv.password) ? srv : null;
+            isMatch = bcrypt.compareSync(pwd, srv.password);
+        } else if (srv.password === pwd) {
+            isMatch = true;
         }
-        if (srv.password === pwd) {
-            setServerPassword(srv.id, pwd);
+
+        if (isMatch) {
+            // Auto-migrate older hashes or plaintext to Bcrypt Cost Factor 12
+            if (!srv.password.startsWith('$2a$12$') && !srv.password.startsWith('$2b$12$')) {
+                setServerPassword(srv.id, pwd, 12);
+            }
             return srv;
         }
         return null;
@@ -498,10 +536,17 @@ function verifyServerPassword(password, serverId = null) {
 
     const activeServers = db.prepare("SELECT * FROM servers WHERE status = 'ACTIVE' AND password IS NOT NULL").all();
     for (const srv of activeServers) {
+        let isMatch = false;
         if (srv.password.startsWith('$2a$') || srv.password.startsWith('$2b$')) {
-            if (bcrypt.compareSync(pwd, srv.password)) return srv;
+            isMatch = bcrypt.compareSync(pwd, srv.password);
         } else if (srv.password === pwd) {
-            setServerPassword(srv.id, pwd);
+            isMatch = true;
+        }
+
+        if (isMatch) {
+            if (!srv.password.startsWith('$2a$12$') && !srv.password.startsWith('$2b$12$')) {
+                setServerPassword(srv.id, pwd, 12);
+            }
             return srv;
         }
     }
@@ -549,5 +594,7 @@ module.exports = {
     setServerPassword,
     verifyServerPassword,
     getServerPassword,
+    encryptDataAEAD,
+    decryptDataAEAD,
     setServerGuildId
 };

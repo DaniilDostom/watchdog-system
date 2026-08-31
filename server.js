@@ -11,6 +11,20 @@ const db = require('./db');
 
 const app = express();
 
+// Append-Only Structured SIEM Audit Logger
+function logSiemSecurityEvent(eventType, metadata = {}) {
+    const logEntry = {
+        timestamp: new Date().toISOString(),
+        event: eventType,
+        environment: process.env.NODE_ENV || 'development',
+        source: 'watchdog-saas-core',
+        ...metadata
+    };
+    // Standard immutable structured JSON stream for SIEM ingestion (Elastic/Splunk/Datadog)
+    process.stdout.write(JSON.stringify(logEntry) + '\n');
+}
+
+
 // 1. Enhanced Security Headers (Helmet)
 app.use(helmet({
     contentSecurityPolicy: false,
@@ -61,6 +75,18 @@ function verifyAuthToken(token) {
     } catch {
         return null;
     }
+}
+
+
+function setSecureAuthCookie(res, token) {
+    const isProd = process.env.NODE_ENV === 'production' || process.env.RENDER === 'true';
+    res.cookie('watchdog_auth_token', token, {
+        httpOnly: true,
+        secure: isProd,
+        sameSite: 'Lax',
+        path: '/',
+        maxAge: 7 * 24 * 60 * 60 * 1000
+    });
 }
 
 function extractToken(req) {
@@ -278,7 +304,7 @@ app.post('/api/auth/verify-staff', async (req, res) => {
     if (isMaster) {
         const tokenPayload = { discordId, role: 'owner', isOwner: true, isMaster: true, serverId: 'default_server' };
         const token = generateAuthToken(tokenPayload);
-        res.cookie('watchdog_auth_token', token, { path: '/', maxAge: 7 * 24 * 60 * 60 * 1000, sameSite: 'lax' });
+        setSecureAuthCookie(res, token);
         return res.json({
             authorized: true,
             token,
@@ -314,7 +340,7 @@ app.post('/api/auth/verify-staff', async (req, res) => {
         const requiresPasswordSetup = !customerServer.password;
         const tokenPayload = { discordId, role: 'owner', isOwner: true, isMaster: false, serverId: customerServer.id };
         const token = generateAuthToken(tokenPayload);
-        res.cookie('watchdog_auth_token', token, { path: '/', maxAge: 7 * 24 * 60 * 60 * 1000, sameSite: 'lax' });
+        setSecureAuthCookie(res, token);
         return res.json({
             authorized: true,
             token,
@@ -335,7 +361,7 @@ app.post('/api/auth/verify-staff', async (req, res) => {
     // 3. STAFFER / NON-OWNER: Authenticated with Discord, now requires DB Password
     const tokenPayload = { discordId, role: 'staffer', isOwner: false, isMaster: false, serverId: srv.id };
     const token = generateAuthToken(tokenPayload);
-    res.cookie('watchdog_auth_token', token, { path: '/', maxAge: 7 * 24 * 60 * 60 * 1000, sameSite: 'lax' });
+    setSecureAuthCookie(res, token);
     return res.json({
         authorized: true,
         token,
