@@ -72,6 +72,7 @@ try { db.exec("CREATE INDEX IF NOT EXISTS idx_actions_serverId ON actions(server
 try { db.exec("CREATE INDEX IF NOT EXISTS idx_actions_playerId ON actions(playerId);"); } catch (e) {}
 try { db.exec("CREATE INDEX IF NOT EXISTS idx_actions_type ON actions(type);"); } catch (e) {}
 try { db.exec("CREATE UNIQUE INDEX IF NOT EXISTS idx_moderators_server_name ON moderators(serverId, name);"); } catch (e) {}
+try { db.exec("CREATE UNIQUE INDEX IF NOT EXISTS idx_settings_server_key ON settings(serverId, key);"); } catch (e) {}
 
 // Ensure all unassigned legacy records belong to 'default_server'
 db.exec("UPDATE players SET serverId = 'default_server' WHERE serverId IS NULL OR serverId = '';");
@@ -155,11 +156,7 @@ function saveReasons(reasons, serverId = 'default_server') {
 }
 
 function getModerators(serverId = 'default_server') {
-    if (!memoryCache.moderators) memoryCache.moderators = {};
-    if (memoryCache.moderators[serverId]) return memoryCache.moderators[serverId];
-    const list = db.prepare('SELECT name, discordId, avatarUrl, bannerUrl, isFormer, staffRole FROM moderators WHERE serverId = ? ORDER BY name COLLATE NOCASE ASC').all(serverId);
-    memoryCache.moderators[serverId] = list;
-    return list;
+    return db.prepare('SELECT name, discordId, avatarUrl, bannerUrl, isFormer, staffRole FROM moderators WHERE serverId = ? ORDER BY name COLLATE NOCASE ASC').all(serverId);
 }
 
 function saveModerators(list, serverId = 'default_server') {

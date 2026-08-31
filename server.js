@@ -56,9 +56,14 @@ function resolveStaffMemberRole(serverId, discordId, isOwner, isMaster) {
     try {
         const moderators = db.getModerators(serverId || 'default_server');
         if (Array.isArray(moderators)) {
-            const matched = moderators.find(m => m.discordId === discordId);
-            if (matched && matched.staffRole) {
-                return String(matched.staffRole).toLowerCase();
+            const matched = moderators.find(m => String(m.discordId) === String(discordId));
+            if (matched) {
+                if (matched.isFormer === 1 || matched.isFormer === true || matched.isFormer === '1') {
+                    return 'former'; // Deactivated
+                }
+                if (matched.staffRole) {
+                    return String(matched.staffRole).toLowerCase();
+                }
             }
         }
     } catch {}
@@ -162,6 +167,15 @@ app.use((req, res, next) => {
         // If unauthenticated at the server level, immediately 302 Redirect to /login.html
         if (!user) {
             return res.redirect('/login.html');
+        }
+
+        // Real-time check: If staffer was marked as Former, revoke access immediately
+        if (!user.isMaster && !user.isOwner && user.serverId) {
+            const currentRole = resolveStaffMemberRole(user.serverId, user.discordId, false, false);
+            if (currentRole === 'former') {
+                res.clearCookie('watchdog_auth_token');
+                return res.redirect('/login.html?error=former_staffer');
+            }
         }
 
         // Server-Side Role Authorization
@@ -315,65 +329,30 @@ app.post('/api/auth/verify-staff', async (req, res) => {
     // Resolve real live Discord profile (avatar, display name)
     const profile = await resolveDiscordProfile(discordId);
 
-    // 1. MASTER CREATOR
-    if (isMaster) {
-        const tokenPayload = { discordId, role: 'owner', isOwner: true, isMaster: true, serverId: 'default_server' };
-        const token = generateAuthToken(tokenPayload);
-        setSecureAuthCookie(res, token);
-        return res.json({
-            authorized: true,
-            token,
-            role: 'owner',
-            isOwner: true,
-            isMaster: true,
-            requiresDbPassword: false,
-            requiresPasswordSetup: false,
-            serverId: 'default_server',
-            serverName: 'Main Watchdog Server',
-            name: profile.globalName || profile.username || 'Dos',
-            username: profile.username || 'dosfpsss',
-            discordId,
-            avatarUrl: profile.url || null
+    // Check if staffer is marked as Former Staffer (Access Revoked)
+    const mods = db.getModerators(srv.id) || [];
+    const existingStaff = mods.find(m => String(m.discordId) === String(discordId));
+    if (existingStaff && (existingStaff.isFormer === 1 || existingStaff.isFormer === true || existingStaff.isFormer === '1')) {
+        return res.status(403).json({
+            authorized: false,
+            error: 'Access Denied: Your staff account has been set to Former Staffer. You no longer have access to this server database.'
         });
     }
 
-    // 2. CUSTOMER SERVER OWNER
-    if (customerServer) {
-        if (customerServer.status === 'SUSPENDED') {
-            return res.status(403).json({
-                authorized: false,
-                error: 'License Suspended: Access to this server database has been suspended by the Master Administrator.'
+    try {
+        if (!existingStaff) {
+            mods.push({
+                name: profile.globalName || profile.username || 'Staffer',
+                discordId: String(discordId),
+                avatarUrl: profile.url || null,
+                bannerUrl: profile.bannerUrl || null,
+                isFormer: 0,
+                staffRole: 'moderator'
             });
+            db.saveModerators(mods, srv.id);
         }
-        if (customerServer.expiresAt && Date.now() > customerServer.expiresAt) {
-            return res.status(403).json({
-                authorized: false,
-                error: 'License Expired: Your server subscription has expired. Please contact the administrator.'
-            });
-        }
+    } catch (e) {}
 
-        const requiresPasswordSetup = !customerServer.password;
-        const tokenPayload = { discordId, role: 'owner', isOwner: true, isMaster: false, serverId: customerServer.id };
-        const token = generateAuthToken(tokenPayload);
-        setSecureAuthCookie(res, token);
-        return res.json({
-            authorized: true,
-            token,
-            role: 'owner',
-            isOwner: true,
-            isMaster: false,
-            requiresDbPassword: false,
-            requiresPasswordSetup,
-            serverId: customerServer.id,
-            serverName: customerServer.name,
-            name: profile.globalName || profile.username || 'Owner',
-            username: profile.username || 'User',
-            discordId,
-            avatarUrl: profile.url || null
-        });
-    }
-
-    // 3. STAFFER / NON-OWNER: Authenticated with Discord, now requires DB Password
     const resolvedRole = resolveStaffMemberRole(srv.id, discordId, false, false);
     const tokenPayload = { discordId, role: resolvedRole, isOwner: false, isMaster: false, serverId: srv.id };
     const token = generateAuthToken(tokenPayload);
@@ -415,17 +394,26 @@ app.post('/api/auth/verify-staff-db-password', async (req, res) => {
 
     const profile = await resolveDiscordProfile(discordId);
 
-    // Auto-register staff member into moderators list for this server
+    // Check if staffer is marked as Former Staffer (Access Revoked)
+    const mods = db.getModerators(srv.id) || [];
+    const existingStaff = mods.find(m => String(m.discordId) === String(discordId));
+    if (existingStaff && (existingStaff.isFormer === 1 || existingStaff.isFormer === true || existingStaff.isFormer === '1')) {
+        return res.status(403).json({
+            authorized: false,
+            error: 'Access Denied: Your staff account has been set to Former Staffer. You no longer have access to this server database.'
+        });
+    }
+
+    // Auto-register new staff member into moderators list for this server
     try {
-        const mods = db.getModerators(srv.id) || [];
-        const exists = mods.some(m => String(m.discordId) === String(discordId));
-        if (!exists) {
+        if (!existingStaff) {
             mods.push({
                 name: profile.globalName || profile.username || 'Staffer',
                 discordId: String(discordId),
                 avatarUrl: profile.url || null,
                 bannerUrl: profile.bannerUrl || null,
-                isFormer: false
+                isFormer: 0,
+                staffRole: 'moderator'
             });
             db.saveModerators(mods, srv.id);
         }
