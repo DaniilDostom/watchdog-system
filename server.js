@@ -329,37 +329,60 @@ app.post('/api/auth/verify-staff', async (req, res) => {
     // Resolve real live Discord profile (avatar, display name)
     const profile = await resolveDiscordProfile(discordId);
 
-    // Check if staffer is marked as Former Staffer (Access Revoked)
-    const mods = db.getModerators(srv.id) || [];
-    const existingStaff = mods.find(m => String(m.discordId) === String(discordId));
-    if (existingStaff && (existingStaff.isFormer === 1 || existingStaff.isFormer === true || existingStaff.isFormer === '1')) {
-        return res.status(403).json({
-            authorized: false,
-            error: 'Access Denied: Your staff account has been set to Former Staffer. You no longer have access to this server database.'
+    // 1. MASTER CREATOR
+    if (isMaster) {
+        const tokenPayload = { discordId, role: 'owner', isOwner: true, isMaster: true, serverId: 'default_server' };
+        const token = generateAuthToken(tokenPayload);
+        setSecureAuthCookie(res, token);
+        return res.json({
+            authorized: true,
+            token,
+            role: 'owner',
+            isOwner: true,
+            isMaster: true,
+            requiresDbPassword: false,
+            requiresPasswordSetup: false,
+            serverId: 'default_server',
+            serverName: 'Main System',
+            name: profile.globalName || profile.username || 'Master Creator',
+            username: profile.username || 'Admin',
+            discordId,
+            avatarUrl: profile.url || null
         });
     }
 
-    try {
-        if (!existingStaff) {
-            mods.push({
-                name: profile.globalName || profile.username || 'Staffer',
-                discordId: String(discordId),
-                avatarUrl: profile.url || null,
-                bannerUrl: profile.bannerUrl || null,
-                isFormer: 0,
-                staffRole: 'moderator'
-            });
-            db.saveModerators(mods, srv.id);
+    // 2. SERVER OWNER
+    if (customerServer) {
+        if (customerServer.status === 'SUSPENDED') {
+            return res.status(403).json({ authorized: false, error: 'License Suspended: Your server database access is currently suspended.' });
         }
-    } catch (e) {}
+        if (customerServer.expiresAt && Date.now() > customerServer.expiresAt) {
+            return res.status(403).json({ authorized: false, error: 'License Expired: Your server subscription has expired.' });
+        }
 
-    const resolvedRole = resolveStaffMemberRole(srv.id, discordId, false, false);
-    const tokenPayload = { discordId, role: resolvedRole, isOwner: false, isMaster: false, serverId: srv.id };
-    const token = generateAuthToken(tokenPayload);
-    setSecureAuthCookie(res, token);
+        const tokenPayload = { discordId, role: 'owner', isOwner: true, isMaster: false, serverId: customerServer.id };
+        const token = generateAuthToken(tokenPayload);
+        setSecureAuthCookie(res, token);
+        return res.json({
+            authorized: true,
+            token,
+            role: 'owner',
+            isOwner: true,
+            isMaster: false,
+            requiresDbPassword: false,
+            requiresPasswordSetup: !customerServer.password,
+            serverId: customerServer.id,
+            serverName: customerServer.name,
+            name: profile.globalName || profile.username || 'Owner',
+            username: profile.username || 'user',
+            discordId,
+            avatarUrl: profile.url || null
+        });
+    }
+
+    // 3. STAFF / NON-OWNER (Must submit DB password)
     return res.json({
         authorized: true,
-        token,
         role: 'staffer',
         isOwner: false,
         isMaster: false,
