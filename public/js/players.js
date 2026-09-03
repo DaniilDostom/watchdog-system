@@ -42,45 +42,53 @@ function getAvatarUrl(discordId) {
 // After render, batch-fetch real Discord avatars and update DOM in-place
 async function preloadRealAvatars(players) {
     const cache = getAvatarCache();
-    const ids = players
-        .map(p => p.discordId)
-        .filter(id => id && /^\d{17,20}$/.test(id));
+    const ids = (players || [])
+        .map(p => String(p.discordId || '').trim())
+        .filter(id => /^\d{17,20}$/.test(id));
+
+    if (ids.length === 0) return;
 
     // Re-fetch if not in cache OR if what we have is a default avatar URL
     const needFetch = ids.filter(id => {
         const entry = cache[id];
-        return !entry || isDefaultAvatarUrl(entry.url);
+        return !entry || !entry.url || isDefaultAvatarUrl(entry.url);
     });
 
     if (needFetch.length > 0) {
         try {
-            const res = await fetch('/api/discord-avatars', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userIds: needFetch })
-            });
-            if (res.ok) {
-                const results = await res.json();
+            const results = (typeof ModAPI !== 'undefined' && ModAPI.getDiscordAvatars)
+                ? await ModAPI.getDiscordAvatars(needFetch)
+                : null;
+            if (results && typeof results === 'object') {
                 Object.entries(results).forEach(([id, profile]) => {
                     if (profile?.url) {
-                        cache[id] = { url: profile.url };
+                        cache[id] = { url: profile.url, isDefault: Boolean(profile.isDefault) };
                     }
                 });
                 setAvatarCache(cache);
             }
-        } catch {}
+        } catch (err) {
+            console.warn('Background avatar preloading failed:', err);
+        }
     }
 
     updateVisibleAvatars(cache);
 }
 
-// Swap <img> src to real avatar URL without re-rendering the table
+// Swap <img> src to real avatar URL and ensure visibility
 function updateVisibleAvatars(cache) {
+    if (!cache) cache = getAvatarCache();
     document.querySelectorAll('.player-avatar-img[data-discord-id]').forEach(img => {
         const id = img.dataset.discordId;
         const entry = cache[id];
-        if (entry?.url && !isDefaultAvatarUrl(entry.url) && img.src !== entry.url) {
-            img.src = entry.url;
+        if (entry?.url) {
+            if (img.getAttribute('src') !== entry.url) {
+                img.setAttribute('src', entry.url);
+            }
+            img.style.display = 'block';
+            if (img.nextElementSibling && img.nextElementSibling.classList.contains('player-avatar-fallback')) {
+                img.nextElementSibling.style.display = 'none';
+            }
         }
     });
 }
@@ -98,51 +106,50 @@ function formatTimeAgo(timestamp) {
     const diffHours = Math.floor(diffMin / 60);
     const diffDays = Math.floor(diffHours / 24);
 
-    if (diffMin < 1) return 'Just now';
-    if (diffMin < 60) return `${diffMin}m ago`;
-    if (diffHours < 24) return `${diffHours}h ago`;
-    if (diffDays === 1) return '1d ago';
-    if (diffDays < 30) return `${diffDays}d ago`;
-    const diffMonths = Math.floor(diffDays / 30);
-    if (diffMonths < 12) return `${diffMonths}mo ago`;
-    const diffYears = Math.floor(diffDays / 365);
-    return `${diffYears}y ago`;
+    if (diffDays > 0) return `${diffDays}d ago`;
+    if (diffHours > 0) return `${diffHours}h ago`;
+    if (diffMin > 0) return `${diffMin}m ago`;
+    return 'Just now';
+}
+
+function isActionActive(action) {
+    if (!action) return false;
+    if (action.removed) return false;
+    if (action.type !== 'BAN') return false;
+    if (action.permanent) return true;
+    const dur = Number(action.duration);
+    if (!Number.isFinite(dur) || dur <= 0) return true;
+    const unit = String(action.durationUnit || 'Days').toLowerCase();
+    const ms = unit.startsWith('hour') ? dur * 3600000 : dur * 86400000;
+    return Date.now() < new Date(action.timestamp).getTime() + ms;
+}
+
+function isWarningActive(action, allPlayerActions) {
+    if (!action || action.type !== 'WARN') return false;
+    if (action.removed) return false;
+    if (allPlayerActions.some(a => a.warningRemoval && a.removedFromActionId === action.id)) return false;
+    return true;
+}
+
+function hasActiveLastChance(actions) {
+    return actions.some(a => (a.type === 'LAST_CHANCE' || (a.type === 'BAN' && a.lastChance)) && !a.removed);
 }
 
 function getLastViewedPlayers() {
-    try { return JSON.parse(sessionStorage.getItem(PLAYERS_VIEWED_KEY) || '{}'); } catch { return {}; }
-}
-
-window.openPlayerPage = async (playerId, button, event) => {
-    if (event && (event.ctrlKey || event.metaKey || event.button === 1)) {
-        return; // Allow browser to open in new tab
-    }
-    if (event && event.preventDefault) event.preventDefault();
-
-    if (button) {
-        button.disabled = true;
-        button.innerHTML = '<i data-lucide="loader" style="width:13px;height:13px;"></i> Loading...';
-        if (typeof lucide !== 'undefined') lucide.createIcons();
-    }
     try {
-        const [players, actions] = await Promise.all([ModAPI.getPlayers(), ModAPI.getActions()]);
-        const player = players.find(item => item.id === playerId);
-        const avatar = player ? await ModAPI.getDiscordAvatar(player.discordId) : { url: null };
-        sessionStorage.setItem(PLAYER_PREFETCH_KEY, JSON.stringify({ playerId, players, actions, avatar, createdAt: Date.now() }));
-        location.href = `player.html?id=${encodeURIComponent(playerId)}`;
-    } catch {
-        location.href = `player.html?id=${encodeURIComponent(playerId)}`;
-    }
-};
-
-function resetPlayerViewButtons() {
-    document.querySelectorAll('#players-list-tbody button[onclick*="openPlayerPage"]').forEach(button => {
-        button.disabled = false;
-        button.innerHTML = '<i data-lucide="eye" style="width:13px;height:13px;"></i> View';
-    });
-    if (typeof lucide !== 'undefined') lucide.createIcons();
+        const raw = localStorage.getItem(PLAYERS_VIEWED_KEY);
+        return raw ? JSON.parse(raw) : {};
+    } catch { return {}; }
 }
-window.addEventListener('pageshow', resetPlayerViewButtons);
+
+function recordPlayerView(playerId) {
+    if (!playerId) return;
+    try {
+        const viewed = getLastViewedPlayers();
+        viewed[playerId] = Date.now();
+        localStorage.setItem(PLAYERS_VIEWED_KEY, JSON.stringify(viewed));
+    } catch {}
+}
 
 function getStoredPlayerPrefs() {
     try {
@@ -372,7 +379,7 @@ function renderTable() {
         const avatarUrl = (cachedEntry && cachedEntry.url) ? cachedEntry.url : getAvatarUrl(p.discordId);
         const initial = (p.username || '?').charAt(0).toUpperCase();
         const avatarHtml = avatarUrl
-            ? `<img class="player-avatar-img" src="${escapeHtml(avatarUrl)}" data-discord-id="${escapeHtml(p.discordId || '')}" alt="" loading="lazy" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';" /><span class="player-avatar-fallback" style="display:none;">${initial}</span>`
+            ? `<img class="player-avatar-img" src="${escapeHtml(avatarUrl)}" data-discord-id="${escapeHtml(p.discordId || '')}" alt="" loading="lazy" onload="this.style.display='block'; if(this.nextElementSibling) this.nextElementSibling.style.display='none';" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';" /><span class="player-avatar-fallback" style="display:none;">${initial}</span>`
             : `<span class="player-avatar-fallback">${initial}</span>`;
 
         tr.innerHTML = `
@@ -519,103 +526,144 @@ document.getElementById('add-player-form').addEventListener('submit', async (e) 
     const discordId = (discordInput?.value || '').trim();
     if (!/^\d{17,20}$/.test(discordId)) {
         if (errDiscord) {
-            errDiscord.innerText = 'Please enter a valid 17-20 digit Discord User ID';
+            errDiscord.innerText = 'Please enter a valid 17-20 digit Discord Snowflake ID.';
             errDiscord.style.display = 'block';
         }
         isValid = false;
     }
-    if (!isValid) return;
 
-    if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<span>Resolving & Creating...</span>';
+    const licenseInput = document.getElementById('add-license');
+    const licenseVal = (licenseInput?.value || '').trim();
+    if (licenseVal && !licenseVal.toLowerCase().startsWith('license:')) {
+        if (errLicense) {
+            errLicense.innerText = 'License must start with "license:" (e.g. license:a1b2c3...)';
+            errLicense.style.display = 'block';
+        }
+        isValid = false;
     }
 
+    if (!isValid) return;
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Resolving Discord...';
+
     try {
-        let profile = currentResolvedProfile;
-        if (!profile || profile.discordId !== discordId) {
-            const res = await fetch(`${API_URL}/discord-avatar/${encodeURIComponent(discordId)}`);
-            if (res.ok) profile = await res.json();
-        }
+        let username = 'Player';
+        let avatarUrl = null;
+        let bannerUrl = null;
 
-        const username = profile?.globalName || profile?.username || `Player_${discordId.slice(-4)}`;
-        let license = (document.getElementById('add-license')?.value || '').trim();
-        if (license && !license.toLowerCase().startsWith('license:')) {
-            license = `license:${license}`;
-        }
-
-        const dbPlayers = await ModAPI.getPlayers();
-        const duplicate = dbPlayers.find(player => String(player.discordId || '').trim() === discordId);
-        if (duplicate) {
-            showToast(`Player with this Discord ID already exists: ${duplicate.username}`, 'info');
-            location.href = `player.html?id=${encodeURIComponent(duplicate.id)}`;
-            return;
+        if (currentResolvedProfile) {
+            username = currentResolvedProfile.globalName || currentResolvedProfile.username || 'Player';
+            avatarUrl = currentResolvedProfile.url || null;
+            bannerUrl = currentResolvedProfile.bannerUrl || null;
+        } else {
+            try {
+                const profile = await ModAPI.getDiscordAvatar(discordId);
+                if (profile) {
+                    username = profile.globalName || profile.username || 'Player';
+                    avatarUrl = profile.url || null;
+                    bannerUrl = profile.bannerUrl || null;
+                }
+            } catch {}
         }
 
         const newPlayer = {
-            id: `p${Date.now()}`,
+            id: 'p' + Date.now(),
             username,
             discordId,
+            fivemLicense: licenseVal || null,
             createdAt: new Date().toISOString(),
-            status: 'Clean',
-            fivemLicense: license || null
+            status: 'Clean'
         };
 
-        dbPlayers.push(newPlayer);
-        await ModAPI.savePlayers(dbPlayers);
-        await ModAPI.logEvent(`Registered new player: ${newPlayer.username} (${newPlayer.discordId})`, 'Staff');
-        notifyAfterNavigation('Player registered successfully!');
-        location.href = `player.html?id=${encodeURIComponent(newPlayer.id)}`;
-    } catch (err) {
-        showToast('Failed to register player', 'error');
-        if (submitBtn) {
+        const currentPlayers = await ModAPI.getPlayers();
+        const existing = currentPlayers.find(p => p.discordId === discordId);
+        if (existing) {
+            if (errDiscord) {
+                errDiscord.innerText = `A player with this Discord ID already exists (${existing.username}).`;
+                errDiscord.style.display = 'block';
+            }
             submitBtn.disabled = false;
-            submitBtn.innerHTML = 'Register Player';
+            submitBtn.textContent = 'Add Player';
+            return;
         }
+
+        currentPlayers.push(newPlayer);
+        await ModAPI.savePlayers(currentPlayers);
+
+        if (avatarUrl) {
+            const cache = getAvatarCache();
+            cache[discordId] = { url: avatarUrl, isDefault: Boolean(currentResolvedProfile?.isDefault) };
+            setAvatarCache(cache);
+        }
+
+        await ModAPI.logEvent(`Added new player ${username} (Discord: ${discordId})`, 'System Admin');
+        closeAddPlayerModal();
+        showToast(`Player ${username} added successfully!`);
+        await initPlayers();
+    } catch (err) {
+        showToast('Error adding player: ' + (err.message || err), 'error');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Add Player';
     }
 });
 
-// --- Edit Player Modal ---
+// --- Instant View Navigation with Pre-fetch ---
+function openPlayerPage(id, el, e) {
+    if (e && (e.ctrlKey || e.metaKey)) return;
+    if (e) e.preventDefault();
+    recordPlayerView(id);
 
+    const player = allPlayers.find(p => p.id === id);
+    if (player) {
+        const cache = getAvatarCache();
+        const avatarEntry = cache[player.discordId];
+        const prefetchPayload = {
+            player,
+            avatar: avatarEntry ? { url: avatarEntry.url, isDefault: avatarEntry.isDefault } : null,
+            timestamp: Date.now()
+        };
+        try { sessionStorage.setItem(PLAYER_PREFETCH_KEY + '_' + id, JSON.stringify(prefetchPayload)); } catch {}
+    }
+    window.location.href = `player.html?id=${encodeURIComponent(id)}`;
+}
+window.openPlayerPage = openPlayerPage;
+
+// --- Edit Player Modal Logic ---
 let editingPlayerId = null;
 
-window.openEditPlayerModal = (playerId) => {
-    editingPlayerId = playerId;
-    const player = allPlayers.find(p => p.id === playerId);
-    if (!player) return;
-    document.getElementById('edit-username').value = player.username || '';
+async function openEditPlayerModal(id) {
+    const players = await ModAPI.getPlayers();
+    const player = players.find(p => p.id === id);
+    if (!player) { showToast('Player not found', 'error'); return; }
+
+    editingPlayerId = id;
+    document.getElementById('edit-username').value = player.username;
     document.getElementById('edit-discord').value = player.discordId || '';
     document.getElementById('edit-license').value = player.fivemLicense || '';
-    document.getElementById('err-edit-username').style.display = 'none';
-    document.getElementById('err-edit-discord').style.display = 'none';
-    document.getElementById('err-edit-license').style.display = 'none';
-    const modal = document.getElementById('edit-player-modal');
-    if (modal) modal.style.display = 'flex';
-    document.getElementById('edit-username')?.focus();
-    if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
-};
+    document.querySelectorAll('.error-msg').forEach(el => el.style.display = 'none');
+    document.getElementById('edit-player-modal').style.display = 'flex';
+}
+window.openEditPlayerModal = openEditPlayerModal;
 
 function closeEditPlayerModal() {
     const modal = document.getElementById('edit-player-modal');
     if (modal) modal.style.display = 'none';
     editingPlayerId = null;
 }
+window.closeEditPlayerModal = closeEditPlayerModal;
 
 document.getElementById('edit-player-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!editingPlayerId) return;
-    const usernameInput = document.getElementById('edit-username');
-    const discordInput = document.getElementById('edit-discord');
-    const errUsername = document.getElementById('err-edit-username');
-    const errDiscord = document.getElementById('err-edit-discord');
-    let isValid = true;
-    errUsername.style.display = 'none';
-    errDiscord.style.display = 'none';
-    const username = usernameInput.value.trim();
-    const discordId = discordInput.value.trim();
-    if (!username) { errUsername.innerText = 'Username is required'; errUsername.style.display = 'block'; isValid = false; }
-    if (discordId && !/^\d+$/.test(discordId)) { errDiscord.innerText = 'Discord ID must be a valid numeric string'; errDiscord.style.display = 'block'; isValid = false; }
-    if (!isValid) return;
+    const username = document.getElementById('edit-username').value.trim();
+    const discordId = document.getElementById('edit-discord').value.trim();
+    if (!username) {
+        const errU = document.getElementById('err-edit-username');
+        if (errU) { errU.innerText = 'Username is required.'; errU.style.display = 'block'; }
+        return;
+    }
     const btn = document.getElementById('btn-save-edit-player');
     btn.disabled = true;
     btn.textContent = 'Saving...';
@@ -681,10 +729,8 @@ window.deletePlayerById = async (id) => {
         if (saved.id === id) {
             localStorage.removeItem('last_active_player');
             sessionStorage.removeItem('last_active_player');
-            const link = document.getElementById('sidebar-active-player-link');
-            if (link) link.remove();
         }
     } catch {}
-    showToast('Player deleted successfully.');
+    showToast('Player and historical records deleted.');
     await initPlayers();
 };
