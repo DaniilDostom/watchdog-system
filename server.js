@@ -776,11 +776,11 @@ app.get('/api/check-license/:license', (req, res) => {
         serverId = server.id;
     }
 
-    const license = decodeURIComponent(req.params.license || '').trim().toLowerCase();
+    const license = decodeURIComponent(req.params.license || '').trim().toLowerCase().replace(/^license:/, '');
     if (!license) return res.status(400).json({ error: 'License is required' });
     const players = db.getAll('players', serverId);
     const actions = db.getAll('actions', serverId);
-    const player = players.find(p => (p.fivemLicense || '').toLowerCase() === license);
+    const player = players.find(p => (p.fivemLicense || '').toLowerCase().replace(/^license:/, '') === license);
     if (!player) return res.json({ found: false, player: null, activeBan: false, activePermanentBan: false, warnCount: 0 });
 
     const playerActions = actions.filter(a => a.playerId === player.id);
@@ -801,7 +801,7 @@ app.get('/api/check-license/:license', (req, res) => {
 
     const activeBan = activePermanentBan || activeTempBan;
     const banReason = activePermanentBanAction?.reason || activeTempBanAction?.reason || null;
-    const banIssuer = activePermanentBanAction?.issuer || activeTempBanAction?.issuer || null;
+    const banIssuer = activePermanentBanAction?.moderator || activeTempBanAction?.moderator || null;
     const warnCount = playerActions.filter(a => a.type === 'WARN' && !a.warningRemoval && !a.removed).length;
 
     res.json({

@@ -59,6 +59,25 @@ db.exec(`
     );
 `);
 
+// Legacy settings table had "key TEXT PRIMARY KEY", which blocks the same key across different serverIds.
+try {
+    const settingsTable = db.prepare("SELECT sql FROM sqlite_master WHERE type='table' AND name='settings'").get();
+    if (settingsTable && /key\s+TEXT\s+PRIMARY\s+KEY/i.test(settingsTable.sql)) {
+        db.exec(`
+            CREATE TABLE settings_new (
+                serverId TEXT NOT NULL DEFAULT 'default_server',
+                key TEXT NOT NULL,
+                value TEXT NOT NULL,
+                PRIMARY KEY (serverId, key)
+            );
+            INSERT INTO settings_new (serverId, key, value)
+                SELECT COALESCE(NULLIF(serverId, ''), 'default_server'), key, value FROM settings;
+            DROP TABLE settings;
+            ALTER TABLE settings_new RENAME TO settings;
+        `);
+    }
+} catch (e) { console.error('Settings table migration failed:', e); }
+
 // Migrations for existing columns
 try { db.exec("ALTER TABLE servers ADD COLUMN password TEXT DEFAULT NULL;"); } catch (e) {}
 try { db.exec("ALTER TABLE servers ADD COLUMN guildId TEXT DEFAULT NULL;"); } catch (e) {}

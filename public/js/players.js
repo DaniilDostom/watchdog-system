@@ -368,10 +368,11 @@ function renderTable() {
         }
 
         // Avatar: use cached real URL, or immediate Discord CDN default
-        const avatarUrl = cache[p.discordId] || getAvatarUrl(p.discordId);
+        const cachedEntry = cache[p.discordId];
+        const avatarUrl = (cachedEntry && cachedEntry.url) ? cachedEntry.url : getAvatarUrl(p.discordId);
         const initial = (p.username || '?').charAt(0).toUpperCase();
         const avatarHtml = avatarUrl
-            ? `<img class="player-avatar-img" src="${escapeHtml(avatarUrl)}" data-discord-id="${escapeHtml(p.discordId || '')}" alt="" loading="lazy" onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';" /><span class="player-avatar-fallback" style="display:none;">${initial}</span>`
+            ? `<img class="player-avatar-img" src="${escapeHtml(avatarUrl)}" data-discord-id="${escapeHtml(p.discordId || '')}" alt="" loading="lazy" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';" /><span class="player-avatar-fallback" style="display:none;">${initial}</span>`
             : `<span class="player-avatar-fallback">${initial}</span>`;
 
         tr.innerHTML = `

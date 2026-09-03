@@ -80,6 +80,7 @@ async function initPlayerProfile() {
 
     const allActions = prefetchedData?.actions || await ModAPI.getActions();
     const playerActions = allActions
+        .filter(a => a.playerId === playerId)
         .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
     
     const warns = playerActions.filter(a => a.type === 'WARN' && !a.warningRemoval);

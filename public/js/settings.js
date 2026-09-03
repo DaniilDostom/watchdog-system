@@ -63,9 +63,8 @@ function renderServerSettings(data, user) {
     if (luaBox) {
         const originUrl = window.location.origin || 'http://localhost:3000';
         luaBox.textContent = `Config = {}
-Config.WatchdogURL = "${originUrl}"
-Config.ApiKey = "${data.apiKey || 'wd_live_xxx'}"
-Config.SyncInterval = 60`;
+Config.ApiUrl = "${originUrl}"
+Config.ServerKey = "${data.apiKey || 'wd_live_xxx'}"`;
     }
     if (window.lucide && lucide.createIcons) lucide.createIcons();
 }
